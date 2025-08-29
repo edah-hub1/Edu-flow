@@ -1,0 +1,55 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+
+@Component({
+  selector: 'app-login',
+  standalone: true,
+  templateUrl: './login.html',
+  styleUrl: './login.css',
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule
+  ],
+
+})
+export class Login {
+  hide = true;
+  loginForm: FormGroup;
+  authService: any;
+  router: any;
+
+  constructor(private fb: FormBuilder) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required]
+    });
+  }
+
+onSubmit() {
+  if (this.loginForm.valid) {
+    const { email, password } = this.loginForm.value;
+    this.authService.login(email, password).subscribe({
+      next: (res: any) => {
+        console.log('Login successful:', res);
+        this.router.navigate(['/dashboard']);
+      },
+      error: (err: any) => {
+        console.error('Login failed', err);
+        alert('Invalid credentials');
+      }
+    });
+  }
+}
+
+
+}
