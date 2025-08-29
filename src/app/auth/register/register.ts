@@ -5,6 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-register',
@@ -16,6 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
+    MatProgressSpinnerModule,
     MatInputModule,
     MatButtonModule,
     MatIconModule
@@ -23,6 +25,7 @@ import { MatIconModule } from '@angular/material/icon';
  
 })
 export class Register {
+  isLoading: boolean = false; 
   hide = true;
   hideConfirm = true;
   registerForm: FormGroup;
@@ -38,8 +41,11 @@ export class Register {
     });
   }
 
+
+
  onSubmit() {
   if (this.registerForm.valid) {
+    this.isLoading = true;  // show spinner
     const { name, email, password } = this.registerForm.value;
     this.authService.register(name, email, password).subscribe({
       next: (res: any) => {
@@ -52,7 +58,9 @@ export class Register {
       }
     });
   }
+
+    setTimeout(() => {
+      this.isLoading = false;  // hide spinner
+    }, 2000);
 }
-
-
 }
