@@ -25,7 +25,7 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<AuthResponse | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  private apiUrl = `${environment.apiUrl}/auth`; // e.g. http://localhost:8080/api/v1/auth
+  private apiUrl = `${environment.apiUrl}/auth`; //  http://localhost:8080/api/auth
 
   constructor() {
     const savedUser = localStorage.getItem('currentUser');

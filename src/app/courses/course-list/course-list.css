@@ -1,0 +1,10 @@
+.card {
+  border-radius: 12px;
+}
+.card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.card-text {
+  font-size: 0.95rem;
+}
