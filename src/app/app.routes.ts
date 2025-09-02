@@ -1,7 +1,5 @@
 import { Routes } from '@angular/router';
 
-import { Sidebar } from './shared/sidebar/sidebar';
-
 // Auth
 import { Login } from './auth/login/login';
 import { Register } from './auth/register/register';
@@ -34,17 +32,16 @@ export const routes: Routes = [
   { path: 'login', component: Login },
   { path: 'register', component: Register },
   { path: 'forgot-password', component: ForgotPassword },
-  { path: 'Sidebar', component: Sidebar },
 
   // Dashboards
   { path: 'dashboard/student', component: StudentDashboard },
   { path: 'dashboard/instructor', component: InstructorDashboard },
-  
 
   // Courses
   { path: 'courses', component: CourseList },
+  { path: 'courses/new', component: CourseForm },
+  { path: 'courses/edit/:id', component: CourseForm },
   { path: 'courses/:id', component: CourseDetail },
-  { path: 'courses/create', component: CourseForm },
 
   // Enrollment
   { path: 'enrollments', component: EnrollmentList },
@@ -56,4 +53,7 @@ export const routes: Routes = [
   // Profile
   { path: 'profile', component: ProfileView },
   { path: 'profile/edit', component: ProfileEdit },
+
+  // Fallback
+  { path: '**', redirectTo: 'login' }
 ];
