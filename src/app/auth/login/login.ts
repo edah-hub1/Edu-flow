@@ -5,6 +5,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
+import { AuthService } from '../../core/service/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -20,36 +22,35 @@ import { MatIconModule } from '@angular/material/icon';
     MatButtonModule,
     MatIconModule
   ],
-
 })
 export class Login {
   hide = true;
   loginForm: FormGroup;
-  authService: any;
-  router: any;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,  
+    private router: Router             
+  ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     });
   }
 
-onSubmit() {
-  if (this.loginForm.valid) {
-    const { email, password } = this.loginForm.value;
-    this.authService.login(email, password).subscribe({
-      next: (res: any) => {
-        console.log('Login successful:', res);
-        this.router.navigate(['/dashboard']);
-      },
-      error: (err: any) => {
-        console.error('Login failed', err);
-        alert('Invalid credentials');
-      }
-    });
+  onSubmit() {
+    if (this.loginForm.valid) {
+      const { email, password } = this.loginForm.value;
+      this.authService.login({ email, password }).subscribe({
+        next: (res: any) => {
+          console.log('Login successful:', res);
+          this.router.navigate(['/dashboard/student']);
+        },
+        error: (err: any) => {
+          console.error('Login failed', err);
+          alert('Invalid credentials');
+        }
+      });
+    }
   }
-}
-
-
 }
