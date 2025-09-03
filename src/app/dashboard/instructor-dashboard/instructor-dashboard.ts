@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Sidebar } from "../../shared/sidebar/sidebar";
-import { Navbar } from '../../shared/navbar/navbar';
+// import { Sidebar } from "../../shared/sidebar/sidebar";
+// import { Navbar } from '../../shared/navbar/navbar';
 import { RouterModule } from "@angular/router";
+import { DashboardLayout } from "../dashboard-layout/dashboard-layout";
 
 @Component({
   selector: 'app-instructor-dashboard',
   standalone: true,
-  imports: [CommonModule, Sidebar, Navbar, RouterModule],
+  imports: [CommonModule,  RouterModule, DashboardLayout],
   templateUrl: './instructor-dashboard.html',
   styleUrls: ['./instructor-dashboard.css']
 })

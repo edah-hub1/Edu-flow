@@ -1,19 +1,23 @@
 <div class="container mt-4">
   <h2 class="mb-4">Available Courses</h2>
   <div class="row g-4">
-    <div class="col-md-4" *ngFor="let course of courses">
-      <div class="card shadow-sm h-100">
-        <div class="card-body">
-          <h5 class="card-title">{{ course.title }}</h5>
-          <p class="card-text text-muted">{{ course.description }}</p>
-          <p class="small text-secondary">Created on {{ course.createdAt | date:'mediumDate' }}</p>
-        </div>
-        <div class="card-footer bg-transparent">
-          <a [routerLink]="['/courses', course.id]" class="btn btn-primary btn-sm">View Details</a>
-          <a [routerLink]="['/courses/edit', course.id]" class="btn btn-outline-warning btn-sm ms-2">Edit</a>
+    @for (course of courses; track course.id) {
+      <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{ course.title }}</h5>
+            <p class="card-text text-muted">{{ course.description }}</p>
+            <p class="small text-secondary">
+              Created on {{ course.createdAt | date:'mediumDate' }}
+            </p>
+          </div>
+          <div class="card-footer bg-transparent">
+            <a [routerLink]="['/courses', course.id]" class="btn btn-primary btn-sm">View Details</a>
+            <a [routerLink]="['/courses/edit', course.id]" class="btn btn-outline-warning btn-sm ms-2">Edit</a>
+          </div>
         </div>
       </div>
-    </div>
+    }
   </div>
 
   <div class="mt-4">
