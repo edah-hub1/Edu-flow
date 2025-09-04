@@ -37,11 +37,11 @@ export class AuthService {
 
   //  Register
   register(payload: any): Observable<any> {
-    headers: new HttpHeaders({
-      'content-type': 'application/json'
-    })
-    return this.http.post<any>(`${this.apiUrl}/users`, payload);
+    return this.http.post<any>(`${this.apiUrl}/users`, payload, {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    });
   }
+
 
   //  Logout
   logout() {

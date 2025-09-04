@@ -19,7 +19,7 @@ export class CourseService {
     };
   }
 
-  /** Prepare payload for backend to strip extra fields */
+  /** Prepare payload for backend to strip extra fields*/
   private toPayload(course: Course): any {
     return {
       courseTitle: course.title,
@@ -50,16 +50,10 @@ export class CourseService {
 
   // PUT update course
   updateCourse(id: number, course: Course): Observable<Course> {
-    const payload = {
-      id,  // include id in payload for backend validation
-      courseTitle: course.title,
-      courseDescription: course.description
-    };
-    return this.http.put<any>(`${this.apiUrl}/${id}`, payload).pipe(
+    return this.http.put<any>(`${this.apiUrl}/${id}`, this.toPayload(course)).pipe(
       map(res => this.normalizeCourse(res))
     );
   }
-
 
   // DELETE course
   deleteCourse(id: number): Observable<void> {
