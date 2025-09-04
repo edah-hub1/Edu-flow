@@ -1,47 +1,10 @@
-// import { Component, OnInit } from '@angular/core';
-// import { RouterModule } from '@angular/router';
-// import { CommonModule } from '@angular/common';
-// import { CourseService } from '../course.service';
-// import { Course } from '../course.model';
-
-// @Component({
-//   selector: 'app-course-list',
-//   standalone: true,
-//   imports: [RouterModule, CommonModule],
-//   templateUrl: './course-list.html',
-//   styleUrls: ['./course-list.css']
-// })
-// export class CourseList implements OnInit {
-//   courses: Course[] = [];
- 
-
-//   constructor(private courseService: CourseService) {}
-
-//   ngOnInit(): void {
-//     this.loadCourses();
-//   }
-
-//   loadCourses(): void {
-//     this.courseService.getCourses().subscribe({
-//       next: (data) => (this.courses = data),
-//       error: (err) => console.error('Error loading courses', err)
-//     });
-//   }
-
-//   deleteCourse(id: number): void {
-//     this.courseService.deleteCourse(id).subscribe({
-//       next: () => (this.courses = this.courses.filter(c => c.id !== id)),
-//       error: (err) => console.error('Delete failed', err)
-//     });
-//   }
-// }
-
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Observable, of } from 'rxjs';
+import { catchError, map, startWith } from 'rxjs/operators';
 import { CourseService } from '../course.service';
 import { Course } from '../course.model';
-
 
 @Component({
   selector: 'app-course-list',
@@ -50,10 +13,10 @@ import { Course } from '../course.model';
   templateUrl: './course-list.html',
   styleUrls: ['./course-list.css']
 })
-export class CourseList implements OnInit {
-  courses: Course[] = [];
+export class CourseList {
+  courses$!: Observable<Course[]>;
+  loading: boolean = false;
   errorMessage: string = '';
-  isLoading: boolean = false;
 
   constructor(private courseService: CourseService) {}
 
@@ -62,44 +25,50 @@ export class CourseList implements OnInit {
   }
 
   loadCourses(): void {
-    this.isLoading = true;
+    this.loading = true;
     this.errorMessage = '';
-    console.log('Attempting to load courses...');
-    
-    this.courseService.getCourses().subscribe({
-      next: (data) => {
-        console.log('Received courses data:', data);
-        this.courses = data;
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error('Error loading courses:', {
-          error: err,
-          status: err?.status,
-          message: err?.message,
-          errorDetails: err?.error
-        });
-        this.errorMessage = 'Failed to load courses. Please check the console for details.';
-        this.isLoading = false;
-      }
-    });
 
-   
+    this.courses$ = this.courseService.getCourses().pipe(
+      map((data: any) => {
+        if (Array.isArray(data)) {
+          return data;
+        } else if (data && typeof data === 'object' && data.hasOwnProperty('courses')) {
+          return data.courses || [];
+        } else if (data && typeof data === 'object' && data.hasOwnProperty('data')) {
+          return data.data || [];
+        } else {
+          return data ? [data] : [];
+        }
+      }),
+      catchError(err => {
+        console.error('Error loading courses:', err);
+        this.errorMessage = 'Failed to load courses. Please try again.';
+        return of([]);
+      }),
+      startWith([]) // lets the UI render an initial value
+    );
+
+    // Simulate "loading complete" when observable emits
+    this.courses$.subscribe(() => {
+      this.loading = false;
+    });
   }
 
   deleteCourse(id: number): void {
     if (!confirm('Are you sure you want to delete this course?')) {
       return;
     }
-    
+
     this.courseService.deleteCourse(id).subscribe({
-      next: () => {
-        this.courses = this.courses.filter(c => c.id !== id);
-      },
-      error: (err) => {
+      next: () => this.loadCourses(),
+      error: (err:any) => {
         console.error('Delete failed:', err);
         this.errorMessage = 'Failed to delete the course. Please try again.';
-      }
-    });
+      }
+    });
+  }
+
+  trackByCourse(index: number, course: Course): any {
+    return course.id;
   }
 }

@@ -60,6 +60,7 @@ export class CourseService {
       map(res => this.normalizeCourse(res))
     );
   }
+  
 
   // POST create course
   createCourse(course: Course): Observable<Course> {

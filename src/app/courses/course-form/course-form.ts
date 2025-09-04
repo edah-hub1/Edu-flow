@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Course } from '../course.model';
 import { CourseService } from '../course.service';
+import { Observable, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-course-form',
@@ -13,7 +14,7 @@ import { CourseService } from '../course.service';
   styleUrls: ['./course-form.css']
 })
 export class CourseForm implements OnInit {
-  course: Course = { id: 0, title: '', description: '', createdAt: new Date().toISOString() };
+  course$!: Observable<Course | null>;
   isEdit = false;
 
   private route = inject(ActivatedRoute);
@@ -21,41 +22,42 @@ export class CourseForm implements OnInit {
   private courseService = inject(CourseService);
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.isEdit = true;
-      this.loadCourse(+id);
-    }
+    this.course$ = this.route.paramMap.pipe(
+      switchMap(params => {
+        const id = params.get('id');
+        if (id) {
+          this.isEdit = true;
+          return this.courseService.getCourse(+id);
+        }
+        return of({
+          id: 0,
+          title: '',
+          description: '',
+          createdAt: new Date().toISOString()
+        } as Course);
+      })
+    );
   }
 
-  loadCourse(id: number): void {
-    this.courseService.getCourse(id).subscribe({
-      next: (data) => (this.course = data),
-      error: (err) => console.error('Error loading course', err)
-    });
-  }
-
-  saveCourse(): void {
+  saveCourse(course: Course): void {
     if (this.isEdit) {
-      // On update exclude createdAt
       const payload = {
-        title: this.course.title,
-        description: this.course.description
+        title: course.title,
+        description: course.description
       };
-      this.courseService.updateCourse(this.course.id, payload as Course).subscribe({
+      this.courseService.updateCourse(course.id, payload as Course).subscribe({
         next: () => this.router.navigate(['/courses']),
         error: (err) => console.error('Update failed', err)
       });
     } else {
-      // On create only send the required fields
       const payload = {
-        title: this.course.title,
-        description: this.course.description
+        title: course.title,
+        description: course.description
       };
       this.courseService.createCourse(payload as Course).subscribe({
         next: () => this.router.navigate(['/courses']),
         error: (err) => console.error('Create failed', err)
-      });
-    }
-  }
+      });
+    }
+  }
 }

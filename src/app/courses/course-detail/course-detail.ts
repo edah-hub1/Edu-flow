@@ -1,6 +1,8 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { catchError, startWith, tap } from 'rxjs/operators';
 import { Course } from '../course.model';
 import { CourseService } from '../course.service';
 
@@ -11,9 +13,10 @@ import { CourseService } from '../course.service';
   templateUrl: './course-detail.html',
   styleUrls: ['./course-detail.css']
 })
-export class CourseDetail implements OnInit {
-  course: Course | null = null;
-  isLoading = true;
+export class CourseDetail {
+  // Note the Course | null type
+  course$!: Observable<Course | null>;
+  loading = false;
   errorMessage = '';
 
   private route = inject(ActivatedRoute);
@@ -25,21 +28,22 @@ export class CourseDetail implements OnInit {
       this.loadCourse(+id);
     } else {
       this.errorMessage = 'Invalid course ID';
-      this.isLoading = false;
     }
   }
 
   loadCourse(id: number): void {
-    this.courseService.getCourse(id).subscribe({
-      next: (data) => {
-        this.course = data;
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error('Error loading course', err);
-        this.errorMessage = 'Failed to load course details.';
-        this.isLoading = false;
-      }
-    });
-  }
+    this.loading = true;
+    this.errorMessage = '';
+
+    this.course$ = this.courseService.getCourse(id).pipe(
+      tap(() => (this.loading = false)),
+      // catchError(err => {
+      //   console.error('Error loading course', err);
+      //   this.errorMessage = 'Failed to load course details.';
+      //   this.loading = false;
+      //   return of(null); // ✅ now matches Course | null
+      // }),
+      startWith(null) // ✅ makes initial state valid
+    );
+  }
 }

@@ -1,28 +1,57 @@
-
 <div class="container mt-4">
   <h2 class="mb-4">Available Courses</h2>
-  <div class="row g-4">
+
+  <!-- Error message -->
+  <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Loading spinner -->
+  <div *ngIf="loading" class="text-center alert alert-warning">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2">Loading courses...</p>
+  </div>
+
+  <!-- Show courses with async pipe -->
+  <ng-container *ngIf="courses$ | async as courses">
     
-    @for (course of courses; track course.id) {
-      <div class="col-md-4">
-        <div class="card shadow-sm h-100">
-          <div class="card-body">
-            <h5 class="card-title">{{ course.title }}</h5>
-            <p class="card-text text-muted">{{ course.description }}</p>
-            <p class="small text-secondary">
-              Created on {{ course.createdAt | date:'mediumDate' }}
-            </p>
-          </div>
-          <div class="card-footer bg-transparent">
-            <a [routerLink]="['/courses', course.id]" class="btn btn-primary btn-sm">View Details</a>
-            <a [routerLink]="['/courses/edit', course.id]" class="btn btn-outline-warning btn-sm ms-2">Edit</a>
+    <div *ngIf="courses.length > 0 && !loading; else noCourses">
+      <div class="row g-4">
+        <div class="col-md-4" *ngFor="let course of courses; trackBy: trackByCourse; let i = index">
+          <div class="card shadow-sm h-100">
+            <div class="card-header bg-primary text-white">
+              <small>Course #{{ i + 1 }} (ID: {{ course.id }})</small>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{ course.title || 'No title available' }}</h5>
+              <p class="card-text text-muted">{{ course.description || 'No description available' }}</p>
+              <p class="small text-secondary" *ngIf="course.createdAt">
+                Created: {{ course.createdAt }}
+              </p>
+            </div>
+            <div class="card-footer bg-transparent">
+              <a [routerLink]="['/courses', course.id]" class="btn btn-primary btn-sm">View Details</a>
+              <a [routerLink]="['/courses/edit', course.id]" class="btn btn-outline-warning btn-sm ms-2">Edit</a>
+              <button (click)="deleteCourse(course.id)" class="btn btn-outline-danger btn-sm ms-2">Delete</button>
+            </div>
           </div>
         </div>
       </div>
-    }
-  </div>
+    </div>
 
+    <!-- No courses fallback -->
+    <ng-template #noCourses>
+      <div *ngIf="!loading" class="alert alert-info mt-3">
+        <h4>Loading Courses </h4>
+      </div>
+    </ng-template>
+
+  </ng-container>
+
+  <!-- Add new course -->
   <div class="mt-4">
     <a routerLink="/courses/new" class="btn btn-success">+ Add New Course</a>
-  </div>
+  </div>
 </div>
