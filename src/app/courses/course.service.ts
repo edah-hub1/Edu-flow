@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, catchError, map, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Course } from './course.model';
 
@@ -28,11 +28,31 @@ export class CourseService {
   }
 
   // GET all courses
+  // getCourses(): Observable<Course[]> {
+  //   return this.http.get<any[]>(this.apiUrl).pipe(
+  //     map(res => res.map(item => this.normalizeCourse(item)))
+  //   );
+  // }
+  
+  // GET all courses
   getCourses(): Observable<Course[]> {
+    console.log('Fetching courses from:', this.apiUrl);
     return this.http.get<any[]>(this.apiUrl).pipe(
-      map(res => res.map(item => this.normalizeCourse(item)))
-    );
-  }
+      map(res => {
+        console.log('Courses API Response:', res);
+        return res.map(item => this.normalizeCourse(item));
+      }),
+      catchError(error => {
+        console.error('Error fetching courses:', error);
+        console.error('Error details:', {
+          status: error.status,
+          message: error.message,
+          error: error.error
+        });
+        return throwError(() => new Error('Failed to fetch courses. Please try again later.'));
+      })
+    );
+  }
 
   // GET single course
   getCourse(id: number): Observable<Course> {
@@ -43,6 +63,7 @@ export class CourseService {
 
   // POST create course
   createCourse(course: Course): Observable<Course> {
+     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     return this.http.post<any>(this.apiUrl, this.toPayload(course)).pipe(
       map(res => this.normalizeCourse(res))
     );
@@ -50,6 +71,7 @@ export class CourseService {
 
   // PUT update course
   updateCourse(id: number, course: Course): Observable<Course> {
+     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     return this.http.put<any>(`${this.apiUrl}/${id}`, this.toPayload(course)).pipe(
       map(res => this.normalizeCourse(res))
     );
