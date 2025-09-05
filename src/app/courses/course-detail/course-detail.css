@@ -1,0 +1,47 @@
+.course-details-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 85vh;
+  padding: 16px;
+}
+
+.course-card {
+  max-width: 650px;
+  width: 100%;
+  padding: 24px;
+  text-align: center;
+}
+
+.course-header  {
+  
+    text-align: center;
+}
+
+.course-header mat-card-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.course-meta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  margin-top: 12px;
+  color: #333;
+}
+
+.course-description {
+  margin-top: 16px;
+  font-size: 1rem;
+  color: #555;
+}
+
+.course-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+}

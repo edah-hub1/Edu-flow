@@ -25,6 +25,9 @@ import { NotificationList } from './notifications/notification-list/notification
 import { ProfileView } from './profile/profile-view/profile-view';
 import { ProfileEdit } from './profile/profile-edit/profile-edit';
 
+// Certificates
+import { Certificates } from './courses/certificates/certificates';
+
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
@@ -53,6 +56,9 @@ export const routes: Routes = [
   // Profile
   { path: 'profile', component: ProfileView },
   { path: 'profile/edit', component: ProfileEdit },
+
+  // Certificate
+   { path: 'certificates', component: Certificates },
 
   // Fallback
   { path: '**', redirectTo: 'login' }

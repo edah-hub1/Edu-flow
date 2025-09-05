@@ -1,0 +1,11 @@
+.container {
+  max-width: 900px;
+}
+
+img {
+  opacity: 0.8;
+}
+
+.card {
+  border-radius: 10px;
+}

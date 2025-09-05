@@ -1,0 +1,29 @@
+<div class="container mt-4 text-center">
+  <h2 class="mb-4">Certificates</h2>
+
+  <!-- If user has no certificates -->
+  @if (certificates.length === 0) {
+    <div class="p-5">
+      <img src="assets/no-certificate.png" alt="No Certificate" width="150" class="mb-3"/>
+      <h4>No Certificate</h4>
+      <p>You will be able to view your certificate once you graduate</p>
+    </div>
+  }
+
+  <!-- If user has certificates -->
+  @if (certificates.length > 0) {
+    <div class="row">
+      @for (cert of certificates; track cert) {
+        <div class="col-md-4">
+          <div class="card shadow-sm p-3">
+            <h5>{{ cert.title }}</h5>
+            <p class="text-muted">{{ cert.date | date:'longDate' }}</p>
+            <a [href]="cert.url" target="_blank" class="btn btn-success btn-sm">
+              View Certificate
+            </a>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

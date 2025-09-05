@@ -5,11 +5,19 @@ import { Observable, of } from 'rxjs';
 import { catchError, startWith, tap } from 'rxjs/operators';
 import { Course } from '../course.model';
 import { CourseService } from '../course.service';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 
 @Component({
   selector: 'app-course-detail',
   standalone: true,
-  imports: [CommonModule, DatePipe, RouterModule],
+  imports: [CommonModule, DatePipe, RouterModule,MatCardModule,
+    MatProgressSpinnerModule,
+    MatButtonModule,
+    MatIconModule],
   templateUrl: './course-detail.html',
   styleUrls: ['./course-detail.css']
 })
