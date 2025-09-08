@@ -1,0 +1,15 @@
+.container-fluid {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.list-group-item.active {
+  background-color: #d63384; /* pink/red like in screenshot */
+  border-color: #d63384;
+  font-weight: bold;
+}
+.list-group-item.active:hover {
+  background-color: #c82373; /* slightly darker on hover */
+  border-color: #c82373;
+}

@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { isPlatformBrowser } from '@angular/common';
+import { jwtDecode } from 'jwt-decode';
 
 interface LoginRequest {
   email: string;
@@ -14,6 +15,15 @@ interface LoginResponse {
   message: string;
 }
 
+interface DecodedToken {
+  sub: string;  // email from JWT
+  iat: number;
+  exp: number;
+}
+
+const TOKEN_KEY = 'auth_token';
+const EMAIL_KEY = 'auth_email';
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private apiUrl = `${environment.apiUrl}`;
@@ -21,42 +31,69 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  //  Login
+  // Login
   login(payload: LoginRequest): Observable<LoginResponse> {
-  return this.http.post<LoginResponse>(`${this.apiUrl}/auth/login`, payload, {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  }).pipe(
-    tap((res) => {
-      if (isPlatformBrowser(this.platformId)) {
-        localStorage.setItem('token', res.token);
-      }
-    })
-  );
-}
-
-
-  //  Register
-  register(payload: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/users`, payload, {
+    return this.http.post<LoginResponse>(`${this.apiUrl}/auth/login`, payload, {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-    });
+    }).pipe(
+      tap((res) => this.handleAuthResponse(res))
+    );
   }
 
+  // Register → also auto-login
+  register(payload: any): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.apiUrl}/users`, payload, {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    }).pipe(
+      tap((res) => this.handleAuthResponse(res))
+    );
+  }
 
-  //  Logout
-  logout() {
+  // Logout
+  logout(): void {
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem('token');
+      localStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem(EMAIL_KEY);
     }
   }
 
-  //  Check login
+  // Check if logged in (token must not be expired)
   isLoggedIn(): boolean {
-    return isPlatformBrowser(this.platformId) && !!localStorage.getItem('token');
+    if (!isPlatformBrowser(this.platformId)) return false;
+
+    const token = localStorage.getItem(TOKEN_KEY);
+    if (!token) return false;
+
+    try {
+      const decoded = jwtDecode<DecodedToken>(token);
+      const now = Math.floor(Date.now() / 1000);
+      return decoded.exp > now; // still valid
+    } catch {
+      return false;
+    }
   }
 
-  //  Get stored JWT
+  // Get stored JWT
   getToken(): string | null {
-    return isPlatformBrowser(this.platformId) ? localStorage.getItem('token') : null;
+    return isPlatformBrowser(this.platformId)
+      ? localStorage.getItem(TOKEN_KEY)
+      : null;
+  }
+
+  // Get logged-in email
+  getEmail(): string | null {
+    return isPlatformBrowser(this.platformId)
+      ? localStorage.getItem(EMAIL_KEY)
+      : null;
+  }
+
+  // Shared logic for login/register
+  private handleAuthResponse(res: LoginResponse): void {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem(TOKEN_KEY, res.token);
+
+      const decoded = jwtDecode<DecodedToken>(res.token);
+      localStorage.setItem(EMAIL_KEY, decoded.sub);
+    }
   }
 }

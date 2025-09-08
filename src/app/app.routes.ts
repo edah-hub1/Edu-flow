@@ -14,6 +14,8 @@ import { CourseList } from './courses/course-list/course-list';
 import { CourseDetail } from './courses/course-detail/course-detail';
 import { CourseForm } from './courses/course-form/course-form';
 
+import { CourseModule } from './courses/course-module/course-module';
+
 // Enrollment
 import { EnrollmentList } from './enrollment/enrollment-list/enrollment-list';
 import { ProgressTracker } from './enrollment/progress-tracker/progress-tracker';
@@ -46,6 +48,8 @@ export const routes: Routes = [
   { path: 'courses/edit/:id', component: CourseForm },
   { path: 'courses/:id', component: CourseDetail },
 
+  { path: 'module', component: CourseModule },
+
   // Enrollment
   { path: 'enrollments', component: EnrollmentList },
   { path: 'progress', component: ProgressTracker },
@@ -56,6 +60,9 @@ export const routes: Routes = [
   // Profile
   { path: 'profile', component: ProfileView },
   { path: 'profile/edit', component: ProfileEdit },
+
+  // Enrollment
+  {path:'enrollment', component: EnrollmentList},
 
   // Certificate
    { path: 'certificates', component: Certificates },

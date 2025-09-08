@@ -13,3 +13,14 @@
 h3 {
   font-weight: 600;
 }
+.login-container {
+  height: 100vh;
+  background: #f9fafc; /* subtle background */
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 24px;
+  border-radius: 12px;
+}

@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/service/auth.service';
+import { MatCardContent, MatCardModule } from "@angular/material/card";
 
 @Component({
   selector: 'app-login',
@@ -20,8 +21,10 @@ import { AuthService } from '../../core/service/auth.service';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatIconModule
-  ],
+    MatIconModule,
+    MatCardContent,
+    MatCardModule
+],
 })
 export class Login {
   hide = true;
