@@ -1,5 +1,5 @@
 <section class="p-6 max-w-3xl mx-auto">
-  <h2 class="text-2xl font-bold mb-4 text-gray-800">
+  <h2 class=" text-2xl font-bold mb-4 text-gray-800">
     Modules for Course {{ courseId }}
   </h2>
 
@@ -56,12 +56,22 @@
       </div>
     }
   }
-
+  <!-- Action buttons -->
+  <div class="flex justify-between mt-4">
+    <!-- Back to courses -->
+    <a
+      routerLink="/courses"
+      class="ml-8 px-4 py-2 bg-gray-600 no-underline text-white rounded-lg shadow hover:bg-gray-700 transition"
+    >
+      ← All Courses
+    </a>
+    
   <!-- Button to add module -->
   <button
     (click)="goToCreate()"
-    class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
+    class="px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition"
   >
     + Add Module
   </button>
+</div>
 </section>
