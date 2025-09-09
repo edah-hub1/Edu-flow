@@ -15,6 +15,10 @@ import { CourseDetail } from './courses/course-detail/course-detail';
 import { CourseForm } from './courses/course-form/course-form';
 
 import { CourseModule } from './courses/course-module/course-module';
+import { ModuleList } from './modules/module-list/module-list';
+import { ModuleForm } from './modules/module-form/module-form';
+
+
 
 // Enrollment
 import { EnrollmentList } from './enrollment/enrollment-list/enrollment-list';
@@ -48,7 +52,10 @@ export const routes: Routes = [
   { path: 'courses/edit/:id', component: CourseForm },
   { path: 'courses/:id', component: CourseDetail },
 
-  { path: 'module', component: CourseModule },
+  { path: 'courses/:courseId/modules', component: ModuleList },
+  { path: 'courses/:courseId/modules/create', component: ModuleForm },
+
+  //{ path: 'module', component: CourseModule },
 
   // Enrollment
   { path: 'enrollments', component: EnrollmentList },

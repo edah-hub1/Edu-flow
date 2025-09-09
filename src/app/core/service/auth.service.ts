@@ -41,13 +41,21 @@ export class AuthService {
   }
 
   // Register → also auto-login
-  register(payload: any): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/users`, payload, {
+  // register(payload: any): Observable<LoginResponse> {
+  //   return this.http.post<LoginResponse>(`${this.apiUrl}/users`, payload, {
+  //     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  //   }).pipe(
+  //     tap((res) => this.handleAuthResponse(res))
+  //   );
+  // }
+    //  Register
+  register(payload: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/users`, payload, {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-    }).pipe(
-      tap((res) => this.handleAuthResponse(res))
-    );
+    });
   }
+
+  
 
   // Logout
   logout(): void {

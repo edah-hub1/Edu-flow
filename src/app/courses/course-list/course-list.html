@@ -39,7 +39,7 @@
                 }
               </div>
               <div class="card-footer bg-transparent">
-                <a [routerLink]="['/courses', course.id]" class="btn btn-primary btn-sm">View Details</a>
+                <a [routerLink]="['/courses', course.id, 'modules']" class="btn btn-primary btn-sm">View Modules</a>
                 <a [routerLink]="['/courses/edit', course.id]" class="btn btn-outline-warning btn-sm ms-2">Edit</a>
                 <button (click)="deleteCourse(course.id)" class="btn btn-outline-danger btn-sm ms-2">Delete</button>
               </div>

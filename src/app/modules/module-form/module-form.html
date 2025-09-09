@@ -1,0 +1,34 @@
+<div class="card p-3">
+  <h3>Create Module</h3>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="mb-3">
+      <label class="form-label">Title</label>
+      <input class="form-control" formControlName="title" />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Description</label>
+      <textarea class="form-control" formControlName="description" rows="4"></textarea>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <label class="form-label">Order</label>
+        <input type="number" class="form-control" formControlName="order" />
+      </div>
+
+      <div class="col-md-8 mb-3">
+        <label class="form-label">Course ID</label>
+        <input type="number" class="form-control" formControlName="courseId" readonly />
+      </div>
+    </div>
+
+    <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+    <button class="btn btn-primary" type="submit" [disabled]="form.invalid || isSubmitting">
+      <span *ngIf="!isSubmitting">Create</span>
+      <span *ngIf="isSubmitting">Creating...</span>
+    </button>
+  </form>
+</div>

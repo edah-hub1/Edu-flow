@@ -26,6 +26,10 @@
             <mat-icon>edit</mat-icon>
             Edit Course
           </button>
+            <button mat-flat-button color="primary" [routerLink]="['/courses', course.id, 'modules']">
+            <mat-icon>edit</mat-icon>
+            View Modules
+          </button>
         </mat-card-actions>
       </mat-card>
     }

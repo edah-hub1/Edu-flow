@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { EnrollmentService } from '../service/enrollment.service';
 import { Enrollment } from '../enrollment.model';
 import { Observable } from 'rxjs';
+import { DashboardLayout } from '../../dashboard/dashboard-layout/dashboard-layout';
 
 @Component({
   selector: 'app-enrollment-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,DashboardLayout],
   templateUrl: './enrollment-list.html',
   styleUrls: ['./enrollment-list.css']
 })

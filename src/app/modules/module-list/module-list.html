@@ -1,0 +1,23 @@
+<h2>Modules for Course {{ courseId }}</h2>
+
+<!-- Show spinner -->
+@if (loading) {
+  <div>Loading modules...</div>
+}
+
+<!-- Show error -->
+@if (errorMessage) {
+  <div class="error">{{ errorMessage }}</div>
+}
+
+<!-- Show modules -->
+@if (!loading && !errorMessage) {
+  <ul>
+    @for (mod of modules$ | async; track mod.id) {
+      <li>{{ mod.order }}. {{ mod.title }}</li>
+    }
+  </ul>
+}
+
+<!-- Button to add module -->
+<button (click)="goToCreate()">+ Add Module</button>
