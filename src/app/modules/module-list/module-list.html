@@ -1,23 +1,67 @@
-<h2>Modules for Course {{ courseId }}</h2>
+<section class="p-6 max-w-3xl mx-auto">
+  <h2 class="text-2xl font-bold mb-4 text-gray-800">
+    Modules for Course {{ courseId }}
+  </h2>
 
-<!-- Show spinner -->
-@if (loading) {
-  <div>Loading modules...</div>
-}
+  <!-- Show spinner -->
+  @if (loading) {
+    <div class="text-blue-500 font-medium">Loading modules...</div>
+  }
 
-<!-- Show error -->
-@if (errorMessage) {
-  <div class="error">{{ errorMessage }}</div>
-}
+  <!-- Show error -->
+  @if (errorMessage) {
+    <div class="bg-red-100 text-red-700 p-3 rounded-md mb-4">
+      {{ errorMessage }}
+    </div>
+  }
 
-<!-- Show modules -->
-@if (!loading && !errorMessage) {
-  <ul>
-    @for (mod of modules$ | async; track mod.id) {
-      <li>{{ mod.order }}. {{ mod.title }}</li>
+  <!-- Show modules -->
+  @if (!loading && !errorMessage) {
+    @let modules = modules$ | async;
+    @if (modules && modules.length > 0) {
+      <ul class="space-y-2 mb-4">
+        @for (mod of modules; track mod.id) {
+          <li
+            class="p-3 bg-gray-50 rounded-lg shadow-sm hover:bg-gray-100 transition"
+          >
+            <span class="font-semibold text-gray-700">{{ mod.order }}.</span>
+            <span class="ml-2 text-gray-800">{{ mod.title }}</span>
+          </li>
+        }
+      </ul>
+    } @else {
+      <!-- Empty state -->
+      <div
+        class="flex flex-col items-center justify-center p-6 mb-4 bg-gray-50 rounded-lg border border-dashed border-gray-300 text-center"
+      >
+        <!-- Icon (from Heroicons if installed, fallback to emoji) -->
+        <svg
+          class="w-12 h-12 text-gray-400 mb-3"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 13h6m2 0a2 2 0 002-2V7a2 2 0 00-2-2h-1V3H8v2H7a2 2 0 00-2 2v4a2 2 0 002 2h2m0 0v6m6-6v6"
+          />
+        </svg>
+        <p class="text-gray-600 font-medium">No modules found</p>
+        <p class="text-sm text-gray-500">
+          Start by adding your first module below.
+        </p>
+      </div>
     }
-  </ul>
-}
+  }
 
-<!-- Button to add module -->
-<button (click)="goToCreate()">+ Add Module</button>
+  <!-- Button to add module -->
+  <button
+    (click)="goToCreate()"
+    class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
+  >
+    + Add Module
+  </button>
+</section>

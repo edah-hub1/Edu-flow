@@ -54,7 +54,7 @@ export class ModuleList {
             this.errorMessage = 'Failed to load modules. Please try again.';
             return of([]);
           }),
-          startWith([]) // lets UI render an initial value
+          startWith([]) // let UI render an initial value
         );
       })
     );

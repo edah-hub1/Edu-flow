@@ -1,34 +1,81 @@
-<div class="card p-3">
-  <h3>Create Module</h3>
+<div class="bg-white shadow rounded-2xl p-6 max-w-2xl mx-auto">
+  <h3 class="text-xl font-semibold text-gray-800 mb-6">Create Module</h3>
 
-  <form [formGroup]="form" (ngSubmit)="submit()">
-    <div class="mb-3">
-      <label class="form-label">Title</label>
-      <input class="form-control" formControlName="title" />
+  <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-5">
+    <!-- Title -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+      <input
+        formControlName="title"
+        class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      />
+      @if (form.get('title')?.invalid && form.get('title')?.touched) {
+        <p class="mt-1 text-sm text-red-600">
+          Title is required.
+        </p>
+      }
     </div>
 
-    <div class="mb-3">
-      <label class="form-label">Description</label>
-      <textarea class="form-control" formControlName="description" rows="4"></textarea>
+    <!-- Description -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+      <textarea
+        formControlName="description"
+        rows="4"
+        class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      ></textarea>
+      @if (form.get('description')?.invalid && form.get('description')?.touched) {
+        <p class="mt-1 text-sm text-red-600">
+          Description is required.
+        </p>
+      }
     </div>
 
-    <div class="row">
-      <div class="col-md-4 mb-3">
-        <label class="form-label">Order</label>
-        <input type="number" class="form-control" formControlName="order" />
+    <!-- Order & Course ID -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Order</label>
+        <input
+          type="number"
+          formControlName="order"
+          class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        />
+        @if (form.get('order')?.invalid && form.get('order')?.touched) {
+          <p class="mt-1 text-sm text-red-600">
+            Order must be a number greater than 0.
+          </p>
+        }
       </div>
 
-      <div class="col-md-8 mb-3">
-        <label class="form-label">Course ID</label>
-        <input type="number" class="form-control" formControlName="courseId" readonly />
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Course ID</label>
+        <input
+          type="number"
+          formControlName="courseId"
+          readonly
+          class="w-full px-3 py-2 border border-gray-300 bg-gray-100 rounded-lg shadow-sm text-gray-500"
+        />
       </div>
     </div>
 
-    <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+    <!-- General error -->
+    @if (errorMessage) {
+      <div class="bg-red-100 text-red-700 px-4 py-2 rounded-lg">
+        {{ errorMessage }}
+      </div>
+    }
 
-    <button class="btn btn-primary" type="submit" [disabled]="form.invalid || isSubmitting">
-      <span *ngIf="!isSubmitting">Create</span>
-      <span *ngIf="isSubmitting">Creating...</span>
+    <!-- Submit button -->
+    <button
+      type="submit"
+      [disabled]="form.invalid || isSubmitting"
+      class="w-full md:w-auto px-6 py-2 rounded-lg bg-blue-600 text-white font-medium shadow hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      @if (!isSubmitting) {
+        <span>Create</span>
+      } @else {
+        <span>Creating...</span>
+      }
     </button>
   </form>
 </div>
