@@ -1,0 +1,61 @@
+<div class="content-form">
+  <h2>Create Content</h2>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div>
+      <label>Title</label>
+      <input formControlName="title" />
+    </div>
+
+    <div>
+      <label>Description</label>
+      <textarea formControlName="description"></textarea>
+    </div>
+
+    <div>
+      <label>Type</label>
+      <select formControlName="type">
+        <option value="PDF">PDF</option>
+        <option value="VIDEO">VIDEO</option>
+        <option value="ARTICLE">ARTICLE</option>
+      </select>
+    </div>
+
+    <div>
+      <label>Order in Module</label>
+      <input type="number" formControlName="orderInModule" />
+    </div>
+
+    <div>
+      <label>Resource URL</label>
+      <input formControlName="resourceUrl" />
+    </div>
+
+    <div>
+      <label>Article Content</label>
+      <textarea formControlName="articleContent"></textarea>
+    </div>
+
+    <div>
+      <label>Duration (minutes)</label>
+      <input type="number" formControlName="durationMinutes" />
+    </div>
+
+    <div>
+      <label>Quiz ID</label>
+      <input type="number" formControlName="quizId" />
+    </div>
+
+    <div>
+      <label>Mandatory</label>
+      <input type="checkbox" formControlName="mandatory" />
+    </div>
+
+    <button type="submit" [disabled]="isSubmitting">
+      {{ isSubmitting ? 'Saving...' : 'Save Content' }}
+    </button>
+  </form>
+
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="success">{{ successMessage }}</div>
+</div>

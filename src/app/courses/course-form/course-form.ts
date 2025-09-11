@@ -29,35 +29,35 @@ export class CourseForm implements OnInit {
           this.isEdit = true;
           return this.courseService.getCourse(+id);
         }
+        // Default new course
         return of({
           id: 0,
           title: '',
           description: '',
-          createdAt: new Date().toISOString()
+          createdAt: new Date().toISOString(),
+          instructorId: 1 //  replace with logged-in user’s ID
         } as Course);
       })
     );
   }
 
   saveCourse(course: Course): void {
+    
+    const payload: Course = {
+      ...course,
+      instructorId: course.instructorId ?? 1
+    };
+
     if (this.isEdit) {
-      const payload = {
-        title: course.title,
-        description: course.description
-      };
-      this.courseService.updateCourse(course.id, payload as Course).subscribe({
+      this.courseService.updateCourse(payload.id, payload).subscribe({
         next: () => this.router.navigate(['/courses']),
         error: (err) => console.error('Update failed', err)
       });
     } else {
-      const payload = {
-        title: course.title,
-        description: course.description
-      };
-      this.courseService.createCourse(payload as Course).subscribe({
+      this.courseService.createCourse(payload).subscribe({
         next: () => this.router.navigate(['/courses']),
         error: (err) => console.error('Create failed', err)
-      });
-    }
-  }
+      });
+    }
+  }
 }

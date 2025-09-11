@@ -9,77 +9,83 @@ export class CourseService {
   private apiUrl = `${environment.apiUrl}/courses`;
   private http = inject(HttpClient);
 
-  /** Normalize API response into the Course model */
   private normalizeCourse(data: any): Course {
     return {
       id: data.id,
+      instructorId: data.instructorId ?? null,
       title: data.title ?? data.courseTitle ?? '',
       description: data.description ?? data.courseDescription ?? '',
-      createdAt: data.createdAt ?? new Date().toISOString()
+      createdAt: data.createdAt ?? new Date().toISOString(),
     };
   }
 
-  /** Prepare payload for backend to strip extra fields*/
   private toPayload(course: Course): any {
     return {
-      courseTitle: course.title,
-      courseDescription: course.description
+      title: course.title,
+      description: course.description,
+      instructorId: course.instructorId??1,
     };
   }
 
-  // GET all courses
-  // getCourses(): Observable<Course[]> {
-  //   return this.http.get<any[]>(this.apiUrl).pipe(
-  //     map(res => res.map(item => this.normalizeCourse(item)))
-  //   );
-  // }
-  
+  /** Centralized error handler */
+  private handleError(error: any): Observable<never> {
+    console.error('API error occurred:', error);
+
+    let message = 'An unexpected error occurred. Please try again later.';
+
+    if (error.status === 0) {
+      message = 'Cannot connect to the server. Please check your network.';
+    } else if (error.status === 400) {
+      message = 'Invalid request. Please check the form and try again.';
+    } else if (error.status === 404) {
+      message = 'Resource not found.';
+    } else if (error.status === 500) {
+      message = 'Server error occurred. Please try again later.';
+    } else if (error.message) {
+      message = error.message;
+    }
+
+    return throwError(() => new Error(message));
+  }
+
   // GET all courses
   getCourses(): Observable<Course[]> {
-    console.log('Fetching courses from:', this.apiUrl);
     return this.http.get<any[]>(this.apiUrl).pipe(
-      map(res => {
-        console.log('Courses API Response:', res);
-        return res.map(item => this.normalizeCourse(item));
-      }),
-      catchError(error => {
-        console.error('Error fetching courses:', error);
-        console.error('Error details:', {
-          status: error.status,
-          message: error.message,
-          error: error.error
-        });
-        return throwError(() => new Error('Failed to fetch courses. Please try again later.'));
-      })
-    );
-  }
+      map((res) => res.map((item) => this.normalizeCourse(item))),
+      catchError(this.handleError.bind(this))
+    );
+  }
 
   // GET single course
   getCourse(id: number): Observable<Course> {
     return this.http.get<any>(`${this.apiUrl}/${id}`).pipe(
-      map(res => this.normalizeCourse(res))
+      map((res) => this.normalizeCourse(res)),
+      catchError(this.handleError.bind(this))
     );
   }
-  
 
   // POST create course
   createCourse(course: Course): Observable<Course> {
-     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-    return this.http.post<any>(this.apiUrl, this.toPayload(course)).pipe(
-      map(res => this.normalizeCourse(res))
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post<any>(this.apiUrl, this.toPayload(course), { headers }).pipe(
+      map((res) => this.normalizeCourse(res)),
+      catchError(this.handleError.bind(this))
     );
   }
 
   // PUT update course
   updateCourse(id: number, course: Course): Observable<Course> {
-     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-    return this.http.put<any>(`${this.apiUrl}/${id}`, this.toPayload(course)).pipe(
-      map(res => this.normalizeCourse(res))
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.put<any>(`${this.apiUrl}/${id}`, this.toPayload(course), { headers }).pipe(
+      map((res) => this.normalizeCourse(res)),
+      catchError(this.handleError.bind(this))
     );
   }
 
   // DELETE course
   deleteCourse(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/${id}`).pipe(
+      catchError(this.handleError.bind(this))
+    );
   }
 }

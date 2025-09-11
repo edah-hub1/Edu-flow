@@ -17,6 +17,8 @@ import { CourseForm } from './courses/course-form/course-form';
 import { CourseModule } from './courses/course-module/course-module';
 import { ModuleList } from './modules/module-list/module-list';
 import { ModuleForm } from './modules/module-form/module-form';
+import { ContentList } from './content/content/content-list';
+import { ContentForm } from './content/content-form/content-form';
 
 
 
@@ -54,6 +56,12 @@ export const routes: Routes = [
 
   { path: 'courses/:courseId/modules', component: ModuleList },
   { path: 'courses/:courseId/modules/create', component: ModuleForm },
+
+  // in app.routes.ts (or wherever)
+  { path: 'courses/:courseId/modules/:moduleId/contents', component: ContentList },
+  { path: 'courses/:courseId/modules/:moduleId/contents/create', component: ContentForm },
+  { path: 'courses/:courseId/modules/:moduleId/contents/:contentId/edit', component: ContentForm }, 
+
 
   //{ path: 'module', component: CourseModule },
 

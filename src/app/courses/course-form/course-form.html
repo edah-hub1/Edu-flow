@@ -35,6 +35,12 @@
                 <div class="text-danger small">Description is required</div>
               }
             </div>
+            <input
+                type="hidden"
+                [(ngModel)]="course.instructorId"
+                name="instructorId"
+              />
+
 
             <div class="d-flex justify-content-between">
               <button type="submit" class="btn btn-success" [disabled]="courseForm.invalid">

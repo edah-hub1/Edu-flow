@@ -1,0 +1,15 @@
+<div class="content-list">
+  <h2>Contents</h2>
+
+  <ul>
+    @for (c of contents; track c.id) {
+      <li>
+        <strong>{{ c.title }}</strong> ({{ c.type }})
+        <a [routerLink]="['./', c.id, 'edit']">Edit</a>
+      </li>
+    }
+  </ul>
+
+  <a [routerLink]="['create']">+ Add New Content</a>
+</div>
+    
