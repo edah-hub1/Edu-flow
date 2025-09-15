@@ -9,6 +9,9 @@ import { ForgotPassword } from './auth/forgot-password/forgot-password';
 import { StudentDashboard } from './dashboard/student-dashboard/student-dashboard';
 import { InstructorDashboard } from './dashboard/instructor-dashboard/instructor-dashboard';
 import { AdminDashboard } from './dashboard/admin-dashboard/admin-dashboard';
+import { LandingPage } from './dashboard/landing-page/landing-page';
+
+
 
 // Courses
 import { CourseList } from './courses/course-list/course-list';
@@ -49,6 +52,7 @@ export const routes: Routes = [
   { path: 'dashboard/student', component: StudentDashboard },
   { path: 'dashboard/instructor', component: InstructorDashboard },
   { path: 'dashboard/admin', component: AdminDashboard },
+  { path: 'landing-page', component: LandingPage },
 
   // Courses
   { path: 'courses', component: CourseList },

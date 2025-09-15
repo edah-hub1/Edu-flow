@@ -1,0 +1,66 @@
+<!-- Hero Section -->
+<section
+  class="flex flex-col md:flex-row items-center justify-between px-8 py-16 bg-white"
+>
+  <div class="max-w-lg">
+    <h1 class="text-4xl font-bold text-gray-800 mb-4">Expand Your Skills</h1>
+    <p class="text-gray-600 mb-6">
+      Learn new skills online with top educators
+    </p>
+    <button
+      (click)="goToCourses()"
+      class="px-6 py-3 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700 transition"
+    >
+      Get Started
+    </button>
+  </div>
+
+  <img
+    src="assets/hero-illustration.png"
+    alt="Learning illustration"
+    class="w-80 md:w-96 mt-8 md:mt-0"
+  />
+</section>
+
+<!-- Popular Courses Section -->
+<section class="px-8 py-12 bg-gray-50">
+  <h2 class="text-2xl font-bold text-gray-800 mb-6">Popular Courses</h2>
+
+  <!-- Loading -->
+  @if (loading) {
+    <div class="text-blue-500">Loading courses...</div>
+  }
+
+  <!-- Error -->
+  @if (errorMessage) {
+    <div class="text-red-600">{{ errorMessage }}</div>
+  }
+
+  <!-- Course Cards -->
+  @if (!loading && courses.length) {
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      @for (course of courses; track course.id) {
+        <div
+          class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition cursor-pointer"
+          (click)="goToCourseDetail(course.id)"
+        >
+          <img
+            [src]="course.thumbnailUrl || 'assets/course-placeholder.png'"
+            alt="Course Image"
+            class="w-full h-40 object-cover rounded mb-4"
+          />
+          <h3 class="font-semibold text-lg text-gray-800 mb-1">
+            {{ course.title }}
+          </h3>
+          <p class="text-sm text-gray-600 mb-2">
+            {{ course.category }}
+          </p>
+          <div class="flex items-center">
+            <span class="text-yellow-500">★</span>
+            <span class="ml-1 text-gray-700">{{ course.rating || 5 }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</section>

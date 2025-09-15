@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { ChartConfiguration } from 'chart.js';
 import { DashboardLayout } from '../dashboard-layout/dashboard-layout';
+import { CommonModule } from '@angular/common'; 
 
 @Component({
   selector: 'app-admin-dashboard',
-  imports: [DashboardLayout],
+  imports: [DashboardLayout,CommonModule],
   standalone: true,
   templateUrl: './admin-dashboard.html',
   styleUrls: ['./admin-dashboard.css']
