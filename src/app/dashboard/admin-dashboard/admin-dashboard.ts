@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { ChartConfiguration } from 'chart.js';
+import { DashboardLayout } from '../dashboard-layout/dashboard-layout';
 
 @Component({
   selector: 'app-admin-dashboard',
+  imports: [DashboardLayout],
   standalone: true,
   templateUrl: './admin-dashboard.html',
   styleUrls: ['./admin-dashboard.css']

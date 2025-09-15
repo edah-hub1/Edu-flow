@@ -1,0 +1,72 @@
+<app-dashboard-layout>
+  <div class="container mt-4">
+    <h4>Welcome, {{ adminName }}</h4>
+    <h2 class="mb-4">Admin Dashboard</h2>
+
+    <!-- Stats -->
+    <div class="row mb-4">
+      <div class="col-md-3" *ngFor="let stat of [
+          { label: 'Total Users', value: stats.users },
+          { label: 'Instructors', value: stats.instructors },
+          { label: 'Pending Courses', value: stats.coursesPending },
+          { label: 'Revenue', value: stats.revenue }
+        ]">
+        <div class="card shadow-sm p-3 text-center">
+          <h6 class="text-muted">{{ stat.label }}</h6>
+          <p class="fs-4 fw-bold">{{ stat.value }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- User Management -->
+      <div class="col-md-6">
+        <div class="card shadow-sm p-3 h-100">
+          <h5>User Management</h5>
+          <p class="text-muted">Manage students, instructors, and roles.</p>
+          <a routerLink="/admin/users" class="btn btn-primary btn-sm">Go to User Management</a>
+        </div>
+      </div>
+
+      <!-- Course Approval -->
+      <div class="col-md-6">
+        <div class="card shadow-sm p-3 h-100">
+          <h5>Course Approval</h5>
+          <p class="text-muted">Review and approve instructor-submitted courses.</p>
+          <a routerLink="/admin/courses" class="btn btn-warning btn-sm">Review Courses</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <!-- System Analytics -->
+      <div class="col-md-6">
+        <div class="card shadow-sm p-3 h-100">
+          <h5>System Analytics</h5>
+          <p class="text-muted">Track platform usage, engagement, and revenue.</p>
+          <a routerLink="/admin/analytics" class="btn btn-success btn-sm">View Analytics</a>
+        </div>
+      </div>
+
+      <!-- Certificate Management -->
+      <div class="col-md-6">
+        <div class="card shadow-sm p-3 h-100">
+          <h5>Certificate Management</h5>
+          <p class="text-muted">Issue, revoke, and verify student certificates.</p>
+          <a routerLink="/admin/certificates" class="btn btn-info btn-sm">Manage Certificates</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notifications -->
+    <div class="card shadow-sm p-3 mt-4">
+      <h5>Recent Notifications</h5>
+      <ul class="list-group">
+        <li *ngFor="let note of notifications" class="list-group-item">
+          <div class="fw-bold">{{ note.message }}</div>
+          <small class="text-muted">{{ note.time }}</small>
+        </li>
+      </ul>
+    </div>
+  </div>
+</app-dashboard-layout>
