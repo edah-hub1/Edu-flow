@@ -12,7 +12,7 @@ export class ModuleService {
 
   // Create a new module
   createModule(payload: Module): Observable<Module> {
-    return this.http.post<Module>(`${this.apiUrl}/modules/create`, payload);
+    return this.http.post<Module>(`${this.apiUrl}/modules`, payload);
   }
 
   // Get modules for a specific course

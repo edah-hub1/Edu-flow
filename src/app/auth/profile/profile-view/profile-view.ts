@@ -4,8 +4,9 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { AuthService } from '../../core/service/auth.service';
-import { UserService, User } from '../../core/service/user.service';
+import { AuthService } from '../../service/auth.service';
+import { UserService, User } from '../../service/user.service';
+
 
 @Component({
   selector: 'app-profile',

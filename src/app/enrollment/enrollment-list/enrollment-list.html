@@ -1,48 +1,52 @@
-<app-dashboard-layout>
-<div class="container mt-4">
-  <h2 class="mb-4">My Enrolled Courses</h2>
+<section class="p-6 max-w-4xl mx-auto">
+  <h2 class="text-2xl font-bold mb-4 text-gray-800">My Enrollments</h2>
 
-  <div *ngIf="loading" class="text-center alert alert-warning">
-    <div class="spinner-border" role="status">
-      <span class="visually-hidden">Loading...</span>
-    </div>
-    <p class="mt-2">Loading enrollments...</p>
-  </div>
+  <!-- Loading -->
+  @if (loading) {
+    <div class="text-blue-500">Loading enrollments...</div>
+  }
 
-  <ng-container *ngIf="enrollments$ | async as enrollments">
-    <div *ngIf="enrollments.length > 0; else noEnrollments">
-      <table class="table table-striped table-bordered">
-        <thead class="table-dark">
-          <tr>
-            <th>#</th>
-            <th>Course ID</th>
-            <th>Status</th>
-            <th>Progress</th>
-            <th>Enrolled At</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let enrollment of enrollments; let i = index; trackBy: trackByEnrollment">
-            <td>{{ i + 1 }}</td>
-            <td>{{ enrollment.courseId }}</td>
-            <td>
-              <span [ngClass]="{
-                'badge bg-success': enrollment.status === 'ACTIVE',
-                'badge bg-secondary': enrollment.completed
-              }">
-                {{ enrollment.status }}
+  <!-- Error -->
+  @if (errorMessage) {
+    <div class="bg-red-100 text-red-700 p-3 rounded mb-4">{{ errorMessage }}</div>
+  }
+
+  <!-- Enrollment list -->
+  @if (!loading && !errorMessage) {
+    @let enrollments = enrollments$ | async;
+
+    @if (enrollments && enrollments.length > 0) {
+      <ul class="space-y-3">
+        @for (e of enrollments; track e.id) {
+          <li class="p-4 bg-white shadow rounded-lg border flex flex-col gap-1">
+            <div class="flex justify-between items-center">
+              <span class="font-semibold text-gray-800">
+                Course ID: {{ e.courseId }}
               </span>
-            </td>
-            <td>{{ enrollment.progressPercentage }}%</td>
-            <td>{{ enrollment.enrolledAt | date:'short' }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <ng-template #noEnrollments>
-      <div class="alert alert-info">You are not enrolled in any courses yet.</div>
-    </ng-template>
-  </ng-container>
-</div>
-</app-dashboard-layout>
+              <span
+                class="px-2 py-1 text-xs rounded"
+                [ngClass]="{
+                  'bg-green-100 text-green-700': e.status === 'ACTIVE',
+                  'bg-gray-200 text-gray-600': e.status === 'COMPLETED',
+                  'bg-red-100 text-red-700': e.status === 'DROPPED'
+                }"
+              >
+                {{ e.status }}
+              </span>
+            </div>
+            <p class="text-sm text-gray-500">
+              Enrolled on: {{ e.enrolledAt | date: 'medium' }}
+            </p>
+            <p class="text-sm text-blue-600">
+              Progress: {{ e.progressPercentage ?? 0 }}%
+            </p>
+          </li>
+        }
+      </ul>
+    } @else {
+      <div class="bg-gray-50 text-gray-600 p-4 rounded text-center">
+        No enrollments found.
+      </div>
+    }
+  }
+</section>

@@ -1,65 +1,63 @@
-<div class="container mt-4">
-  <h2 class="mb-4">Available Courses</h2>
+<div class="max-w-7xl mx-auto px-4 py-8">
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-bold text-indigo-600">Available Courses</h2>
+    <a routerLink="/courses/new"
+       class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition">
+      + Add New Course
+    </a>
+  </div>
 
-  <!-- Error message -->
+  <!-- Error -->
   @if (errorMessage) {
-    <div class="alert alert-danger" role="alert">
-      {{ errorMessage }}
-    </div>
+    <div class="p-4 bg-red-100 text-red-700 rounded-lg mb-4">{{ errorMessage }}</div>
   }
 
-  <!-- Loading spinner -->
+  <!-- Loading -->
   @if (loading) {
-    <div class="text-center alert alert-warning">
-      <div class="spinner-border" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-      <p class="mt-2">Loading courses...</p>
+    <div class="flex flex-col items-center py-10">
+      <div class="animate-spin h-10 w-10 border-4 border-indigo-500 border-t-transparent rounded-full"></div>
+      <p class="mt-3 text-gray-600">Loading courses...</p>
     </div>
   }
 
-  <!-- Show courses with async pipe -->
+  <!-- Courses -->
   @if (courses$ | async; as courses) {
-
     @if (courses.length > 0 && !loading) {
-      <div class="row g-4">
+      <div class="grid md:grid-cols-3 gap-6">
         @for (course of courses; track course.id; let i = $index) {
-          <div class="col-md-4">
-            <div class="card shadow-sm h-100">
-              <div class="card-header bg-primary text-white">
-                <small>Course {{ i + 1 }}</small>
-              </div>
-              <div class="card-body">
-                <h5 class="card-title">{{ course.title || 'No title available' }}</h5>
-                <p class="card-text text-muted">{{ course.description || 'No description available' }}</p>
-                @if (course.createdAt) {
-                  <p class="small text-secondary">
-                    Created: {{ course.createdAt }}
-                  </p>
-                }
-              </div>
-              <div class="card-footer bg-transparent">
-                <a [routerLink]="['/courses', course.id, 'modules']" class="btn btn-primary btn-sm">View Modules</a>
-                <a [routerLink]="['/courses/edit', course.id]" class="btn btn-outline-warning btn-sm ms-2">Edit</a>
-                <button (click)="deleteCourse(course.id)" class="btn btn-outline-danger btn-sm ms-2">Delete</button>
+          <div class="bg-white shadow-lg rounded-xl p-5 flex flex-col hover:shadow-2xl transition">
+            <h5 class="text-lg font-semibold text-gray-800">
+              {{ course.title || 'Untitled Course' }}
+            </h5>
+            <p class="text-gray-500 flex-grow mt-2">
+              {{ course.description || 'No description available' }}
+            </p>
+            @if (course.createdAt) {
+              <p class="text-sm text-gray-400 mt-2">📅 {{ course.createdAt }}</p>
+            }
+            <div class="flex justify-between mt-4">
+              <a [routerLink]="['/courses', course.id, 'modules']"
+                 class="px-3 py-1 bg-indigo-600 text-white rounded hover:bg-indigo-700 text-sm">
+                View Modules
+              </a>
+              <div class="space-x-2">
+                <a [routerLink]="['/courses/edit', course.id]"
+                   class="px-3 py-1 border border-yellow-500 text-yellow-600 rounded text-sm hover:bg-yellow-50">
+                  Edit
+                </a>
+                <button (click)="deleteCourse(course.id)"
+                        class="px-3 py-1 border border-red-500 text-red-600 rounded text-sm hover:bg-red-50">
+                  Delete
+                </button>
               </div>
             </div>
           </div>
         }
       </div>
     } @else {
-      <!-- No courses fallback -->
-      @if (!loading) {
-        <div class="alert alert-info mt-3">
-          <h4>No Courses Found</h4>
-          <p>The courses array is empty.</p>
-        </div>
-      }
+      <div class="bg-blue-50 text-blue-700 text-center p-6 rounded-lg mt-4">
+        No Courses Found
+      </div>
     }
   }
-
-  <!-- Add new course -->
-  <div class="mt-4">
-    <a routerLink="/courses/new" class="btn btn-success">+ Add New Course</a>
-  </div>
 </div>

@@ -1,9 +1,9 @@
 export interface Enrollment {
-  id: number;
+  id?: number;
   userId: number;
   courseId: number;
-  enrolledAt: string;
-  progressPercentage: number;
-  completed: boolean;
-  status: string;
+  enrolledAt?: string;
+  progressPercentage?: number;
+  completedAt?: string | null;
+  status?: 'ACTIVE' | 'COMPLETED' | 'DROPPED';
 }

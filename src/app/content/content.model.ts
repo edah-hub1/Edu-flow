@@ -2,12 +2,13 @@ export interface Content {
   id?: number;
   title: string;
   description: string;
-  moduleId: number;
-  type: string; // e.g. "PDF", "VIDEO", "ARTICLE"
+  type: 'VIDEO' | 'PDF' | 'ARTICLE' | 'QUIZ'; // enum-like
   orderInModule: number;
   resourceUrl?: string;
   articleContent?: string;
   durationMinutes?: number | null;
   quizId?: number | null;
-  mandatory: boolean | null;
+  moduleId: number;
+  mandatory?: boolean | null;
 }
+

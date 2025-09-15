@@ -8,6 +8,7 @@ import { ForgotPassword } from './auth/forgot-password/forgot-password';
 // Dashboard
 import { StudentDashboard } from './dashboard/student-dashboard/student-dashboard';
 import { InstructorDashboard } from './dashboard/instructor-dashboard/instructor-dashboard';
+import { AdminDashboard } from './dashboard/admin-dashboard/admin-dashboard';
 
 // Courses
 import { CourseList } from './courses/course-list/course-list';
@@ -17,7 +18,7 @@ import { CourseForm } from './courses/course-form/course-form';
 import { CourseModule } from './courses/course-module/course-module';
 import { ModuleList } from './modules/module-list/module-list';
 import { ModuleForm } from './modules/module-form/module-form';
-import { ContentList } from './content/content/content-list';
+import { ContentList } from './content/content-list/content-list';
 import { ContentForm } from './content/content-form/content-form';
 
 
@@ -30,8 +31,8 @@ import { ProgressTracker } from './enrollment/progress-tracker/progress-tracker'
 import { NotificationList } from './notifications/notification-list/notification-list';
 
 // Profile
-import { ProfileView } from './profile/profile-view/profile-view';
-import { ProfileEdit } from './profile/profile-edit/profile-edit';
+import { ProfileView } from './auth/profile/profile-view/profile-view';
+import { ProfileEdit } from './auth/profile/profile-edit/profile-edit';
 
 // Certificates
 import { Certificates } from './courses/certificates/certificates';
@@ -47,6 +48,7 @@ export const routes: Routes = [
   // Dashboards
   { path: 'dashboard/student', component: StudentDashboard },
   { path: 'dashboard/instructor', component: InstructorDashboard },
+  { path: 'dashboard/admin', component: AdminDashboard },
 
   // Courses
   { path: 'courses', component: CourseList },
@@ -57,7 +59,7 @@ export const routes: Routes = [
   { path: 'courses/:courseId/modules', component: ModuleList },
   { path: 'courses/:courseId/modules/create', component: ModuleForm },
 
-  // in app.routes.ts (or wherever)
+    // Modules
   { path: 'courses/:courseId/modules/:moduleId/contents', component: ContentList },
   { path: 'courses/:courseId/modules/:moduleId/contents/create', component: ContentForm },
   { path: 'courses/:courseId/modules/:moduleId/contents/:contentId/edit', component: ContentForm }, 

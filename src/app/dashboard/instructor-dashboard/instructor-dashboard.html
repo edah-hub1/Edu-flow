@@ -1,57 +1,51 @@
 <app-dashboard-layout>
-<div class="container mt-4">
-  <h4>Welcome, {{ instructorName }}</h4>
-  <h2 class="mb-4">Instructor Dashboard</h2>
+  <div class="max-w-6xl mx-auto mt-6 px-4">
+    <h4 class="mb-2 text-lg font-medium">Welcome, {{ instructorName }}</h4>
+    <h2 class="mb-6 text-2xl font-bold">Instructor Dashboard</h2>
 
-  <div class="row mb-4">
-    <div class="col-md-6">
-      <div class="card shadow-sm p-3">
-        <h5>Total Courses</h5>
-        <p class="fs-4 fw-bold">{{ totalCourses }}</p>
+    <!-- Top Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <div class="rounded-xl shadow-sm p-4 bg-white">
+        <h5 class="text-gray-600 font-medium">Total Courses</h5>
+        <p class="text-2xl font-bold">{{ totalCourses }}</p>
+      </div>
+
+      <div class="rounded-xl shadow-sm p-4 bg-white">
+        <h5 class="text-gray-600 font-medium">Enrolled Students</h5>
+        <p class="text-2xl font-bold">{{ enrolledStudents }}</p>
       </div>
     </div>
-    <div class="col-md-6">
-      <div class="card shadow-sm p-3">
-        <h5>Enrolled Students</h5>
-        <p class="fs-4 fw-bold">{{ enrolledStudents }}</p>
-      </div>
-    </div>
-  </div>
 
-  <div class="row">
-    <!-- Courses -->
-    <div class="col-md-8">
-      <div class="card shadow-sm p-3">
-        <h5>Courses</h5>
-        <table class="table">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Courses -->
+      <div class="md:col-span-2 rounded-xl shadow-sm p-4 bg-white">
+        <h5 class="mb-3 font-semibold">Courses</h5>
+        <table class="min-w-full text-left text-sm">
           <thead>
-            <tr>
-              <th>Course</th>
-              <th>Enrolled</th>
+            <tr class="border-b bg-gray-50 text-gray-700">
+              <th class="py-2 px-3 font-medium">Course</th>
+              <th class="py-2 px-3 font-medium">Enrolled</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let course of courses">
-              <td>{{ course.title }}</td>
-              <td>{{ course.enrolled }}</td>
+            <tr *ngFor="let course of courses" class="border-b last:border-0">
+              <td class="py-2 px-3">{{ course.title }}</td>
+              <td class="py-2 px-3">{{ course.enrolled }}</td>
             </tr>
           </tbody>
         </table>
       </div>
-    </div>
 
-    <!-- Notifications -->
-    <div class="col-md-4">
-      <div class="card shadow-sm p-3">
-        <h5>Notifications</h5>
-        <ul class="list-group">
-          <li *ngFor="let note of notifications" class="list-group-item">
-            <div class="fw-bold">{{ note.message }}</div>
-            <small class="text-muted">{{ note.time }}</small>
+      <!-- Notifications -->
+      <div class="rounded-xl shadow-sm p-4 bg-white">
+        <h5 class="mb-3 font-semibold">Notifications</h5>
+        <ul class="divide-y divide-gray-200">
+          <li *ngFor="let note of notifications" class="py-3">
+            <div class="font-medium text-gray-800">{{ note.message }}</div>
+            <small class="text-gray-500">{{ note.time }}</small>
           </li>
         </ul>
       </div>
     </div>
   </div>
-</div>
 </app-dashboard-layout>

@@ -1,30 +1,32 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EnrollmentService } from '../service/enrollment.service';
+import { EnrollmentService } from './enrollment.service';
 import { Enrollment } from '../enrollment.model';
 import { Observable } from 'rxjs';
-import { DashboardLayout } from '../../dashboard/dashboard-layout/dashboard-layout';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-enrollment-list',
   standalone: true,
-  imports: [CommonModule,DashboardLayout],
+  imports: [CommonModule, RouterModule],
   templateUrl: './enrollment-list.html',
-  styleUrls: ['./enrollment-list.css']
 })
-export class EnrollmentList {
+export class EnrollmentList implements OnInit {
   enrollments$!: Observable<Enrollment[]>;
+  loading = false;
   errorMessage = '';
-  loading = true;
 
-  private enrollmentService = inject(EnrollmentService);
+  constructor(private enrollmentService: EnrollmentService) {}
 
   ngOnInit(): void {
-    this.enrollments$ = this.enrollmentService.getEnrollments();
-    this.loading = false;
+    this.loadEnrollments();
   }
 
-  trackByEnrollment(index: number, enrollment: Enrollment) {
-    return enrollment.id;
+  loadEnrollments(): void {
+    this.loading = true;
+    this.errorMessage = '';
+
+    this.enrollments$ = this.enrollmentService.getEnrollments();
+    this.loading = false;
   }
 }
