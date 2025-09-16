@@ -34,6 +34,7 @@
             </p>
             @if (course.createdAt) {
               <p class="text-sm text-gray-400 mt-2">📅 {{ course.createdAt }}</p>
+              <small class="text-muted">Created {{ course.createdAt | dateCount }}</small>
             }
             <div class="flex justify-between mt-4">
               <a [routerLink]="['/courses', course.id, 'modules']"

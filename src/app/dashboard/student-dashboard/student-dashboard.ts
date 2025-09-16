@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardLayout } from "../dashboard-layout/dashboard-layout";
+import { DateCountPipe } from '../../date-count-pipe';
 
 @Component({
   selector: 'app-student-dashboard',
   standalone: true,
-  imports: [CommonModule, DashboardLayout],
+  imports: [CommonModule, DashboardLayout, DateCountPipe],
   templateUrl: './student-dashboard.html',
   styleUrls: ['./student-dashboard.css']
 })
@@ -29,3 +30,4 @@ export class StudentDashboard {
     { message: 'Instructor Feedback Received', time: '3 days ago' }
   ];
 }
+

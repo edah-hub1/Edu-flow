@@ -1,0 +1,83 @@
+<section class="max-w-3xl mx-auto p-6 bg-white shadow rounded">
+  <h2 class="text-2xl font-bold mb-4">Create Quiz</h2>
+
+  <form [formGroup]="quizForm" (ngSubmit)="submit()">
+    <!-- Quiz Title -->
+    <mat-form-field class="w-full mb-4">
+      <mat-label>Quiz Title</mat-label>
+      <input matInput formControlName="title" />
+    </mat-form-field>
+
+    <!-- Questions -->
+    <div formArrayName="questions">
+      @for (q of questions.controls; track $index) {
+        <div [formGroupName]="$index" class="border p-4 rounded mb-4">
+          <h3 class="font-semibold">Question {{ $index + 1 }}</h3>
+
+          <!-- Question text -->
+          <mat-form-field class="w-full">
+            <mat-label>Question Text</mat-label>
+            <input matInput formControlName="text" />
+          </mat-form-field>
+
+          <!-- Options -->
+          <!-- <div formArrayName="options" class="mt-2">
+            @for (option of getOptions($index).controls; track $index) {
+              <mat-form-field class="w-full">
+                <mat-label>Option {{ $index + 1 }}</mat-label>
+                <input matInput [formControlName]="$index" />
+              </mat-form-field>
+            }
+          </div> -->
+
+          <!-- Add option button -->
+          <button 
+            type="button" 
+            mat-stroked-button 
+            color="primary" 
+            (click)="addOption($index)">
+            + Add Option
+          </button>
+
+          <!-- Correct answer index -->
+          <mat-form-field class="w-full mt-3">
+            <mat-label>Correct Answer Index</mat-label>
+            <input 
+              matInput 
+              type="number" 
+              formControlName="correctAnswer" 
+              min="0" />
+          </mat-form-field>
+
+          <!-- Remove question -->
+          <button 
+            type="button" 
+            mat-button 
+            color="warn" 
+            (click)="removeQuestion($index)">
+            Remove Question
+          </button>
+        </div>
+      }
+    </div>
+
+    <!-- Footer buttons -->
+    <div class="flex gap-2 mt-4">
+      <button 
+        type="button" 
+        mat-raised-button 
+        color="accent" 
+        (click)="addQuestion()">
+        + Add Question
+      </button>
+
+      <button 
+        type="submit" 
+        mat-raised-button 
+        color="primary" 
+        [disabled]="loading">
+        Save Quiz
+      </button>
+    </div>
+  </form>
+</section>

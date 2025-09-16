@@ -24,6 +24,8 @@ import { ModuleForm } from './modules/module-form/module-form';
 import { ContentList } from './content/content-list/content-list';
 import { ContentForm } from './content/content-form/content-form';
 
+import { Quiz  } from './Quizz/quiz/quiz';
+
 
 
 // Enrollment
@@ -62,6 +64,12 @@ export const routes: Routes = [
 
   { path: 'courses/:courseId/modules', component: ModuleList },
   { path: 'courses/:courseId/modules/create', component: ModuleForm },
+
+     // Quizzes
+  { path: 'courses/:courseId/quizzes', component: Quiz },
+  { path: 'courses/:courseId/quizzes/create', component: Quiz },
+  { path: 'courses/:courseId/quizzes/:quizId/edit', component: Quiz },
+  
 
     // Modules
   { path: 'courses/:courseId/modules/:moduleId/contents', component: ContentList },

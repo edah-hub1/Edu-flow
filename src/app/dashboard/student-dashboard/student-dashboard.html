@@ -42,7 +42,7 @@
         <ul class="divide-y divide-gray-200">
           <li *ngFor="let note of notifications" class="py-3">
             <div class="font-medium text-gray-800">{{ note.message }}</div>
-            <small class="text-gray-500">{{ note.time }}</small>
+            <small class="text-gray-500">{{ note.time | dateCount }}</small>
           </li>
         </ul>
       </div>

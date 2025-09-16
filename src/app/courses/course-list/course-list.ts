@@ -5,11 +5,12 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, startWith } from 'rxjs/operators';
 import { CourseService } from '../course.service';
 import { Course } from '../course.model';
+import { DateCountPipe } from '../../date-count-pipe';
 
 @Component({
   selector: 'app-course-list',
   standalone: true,
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, DateCountPipe],
   templateUrl: './course-list.html',
   styleUrls: ['./course-list.css']
 })

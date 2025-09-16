@@ -35,7 +35,7 @@ export class CourseForm implements OnInit {
           title: '',
           description: '',
           createdAt: new Date().toISOString(),
-          instructorId: 1 //  replace with logged-in user’s ID
+          instructorId: 1 // to replace with logged-in user’s ID
         } as Course);
       })
     );
