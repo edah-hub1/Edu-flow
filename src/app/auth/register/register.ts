@@ -61,13 +61,7 @@ export class Register {
         next: (res: any) => {
           console.log('Registration successful:', res);
           this.router.navigate(['/login']);
-        },
-
-        // error: (err: any) => {
-        //   console.error('Registration failed', err);
-        //   alert('Something went wrong');
-        //   this.isLoading = false;
-        // },
+        },     
         error: (err: any) => {
           console.error('Registration failed', err);
           alert(err.error?.message || 'Something went wrong');

@@ -24,7 +24,8 @@ import { ModuleForm } from './modules/module-form/module-form';
 import { ContentList } from './content/content-list/content-list';
 import { ContentForm } from './content/content-form/content-form';
 
-import { Quiz  } from './Quizz/quiz/quiz';
+import { QuizForm  } from './Quizz/quiz/quiz-form';
+import { QuestionForm } from './Quizz/question-form/question-form';
 
 
 
@@ -66,9 +67,12 @@ export const routes: Routes = [
   { path: 'courses/:courseId/modules/create', component: ModuleForm },
 
      // Quizzes
-  { path: 'courses/:courseId/quizzes', component: Quiz },
-  { path: 'courses/:courseId/quizzes/create', component: Quiz },
-  { path: 'courses/:courseId/quizzes/:quizId/edit', component: Quiz },
+  { path: 'courses/:courseId/quizzes', component: QuizForm },
+  { path: 'courses/:courseId/quizzes/create', component: QuizForm },
+  { path: 'courses/:courseId/quizzes/:quizId/edit', component: QuizForm },
+
+  { path: 'quiz/create', component: QuizForm },
+  { path: 'quiz/questions', component: QuestionForm },
   
 
     // Modules
@@ -90,9 +94,7 @@ export const routes: Routes = [
   { path: 'profile', component: ProfileView },
   { path: 'profile/edit', component: ProfileEdit },
 
-  // Enrollment
-  {path:'enrollment', component: EnrollmentList},
-
+  
   // Certificate
    { path: 'certificates', component: Certificates },
 

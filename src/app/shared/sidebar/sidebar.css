@@ -1,5 +1,5 @@
 .sidebar {
-  background-color: #0d47a1; /* same deep blue as your screenshot */
+  background-color: #0d47a1; 
 }
 
 .sidebar .nav-link {
@@ -13,6 +13,8 @@
 }
 
 .sidebar .nav-link.active {
-  background-color: #1565c0; /* lighter blue for active item */
+  background-color: #1565c0;
   font-weight: 500;
 }
+
+

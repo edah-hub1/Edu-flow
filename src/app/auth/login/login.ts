@@ -56,4 +56,27 @@ export class Login {
       });
     }
   }
-}
+    // onSubmit() {
+    //   if (this.loginForm.valid) {
+    //     const { email, password } = this.loginForm.value;
+    //     this.authService.login({ email, password }).subscribe({
+    //       next: (user) => {
+    //         console.log('Logged in user:', user);
+
+    //         if (user.userRole === 'ADMIN') {
+    //           this.router.navigate(['/dashboard/admin']);
+    //         } else if (user.userRole === 'INSTRUCTOR') {
+    //           this.router.navigate(['/dashboard/instructor']);
+    //         } else {
+    //           this.router.navigate(['/dashboard/student']);
+    //         }
+    //       },
+    //       error: (err) => {
+    //         console.error('Login failed', err);
+    //         alert('Invalid credentials');
+    //       }
+    //     });
+    // }
+  }
+
+

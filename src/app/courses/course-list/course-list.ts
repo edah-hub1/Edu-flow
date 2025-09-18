@@ -6,11 +6,12 @@ import { catchError, map, startWith } from 'rxjs/operators';
 import { CourseService } from '../course.service';
 import { Course } from '../course.model';
 import { DateCountPipe } from '../../date-count-pipe';
+import { DashboardLayout } from '../../dashboard/dashboard-layout/dashboard-layout';
 
 @Component({
   selector: 'app-course-list',
   standalone: true,
-  imports: [RouterModule, CommonModule, DateCountPipe],
+  imports: [RouterModule, CommonModule, DateCountPipe, DashboardLayout],
   templateUrl: './course-list.html',
   styleUrls: ['./course-list.css']
 })

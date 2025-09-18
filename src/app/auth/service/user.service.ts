@@ -11,6 +11,7 @@ export interface User {
   userRole: string;
   createdAt: string;
 }
+const USERID_KEY = 'auth_id';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -18,9 +19,15 @@ export class UserService {
   private apiUrl = `${environment.apiUrl}/users`;
 
   // Fetch user by email
-  getUserByEmail(email: string): Observable<User | null> {
+  // getUserByEmail(email: string): Observable<User | null> {
+  //   return this.http.get<User>(`${this.apiUrl}/email/${email}`);
+  // }
+
+  
+  getUserByEmail(email: string): Observable<User> {
     return this.http.get<User>(`${this.apiUrl}/email/${email}`);
   }
+
 
   // Update user
   updateUser(userId: number, payload: Partial<User>): Observable<User> {
