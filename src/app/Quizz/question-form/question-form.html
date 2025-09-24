@@ -1,132 +1,73 @@
 <div class="quiz-edit max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-2xl">
-  <h2 class="text-2xl font-bold mb-6 text-gray-800">Adding Questions</h2>
+  <h2 class="text-2xl font-bold mb-6 text-gray-800">Add Questions to Quiz</h2>
 
-  <form [formGroup]="questionsForm" class="space-y-6">
+  <form [formGroup]="form" class="space-y-6">
+    <!-- Quiz Metadata -->
+    <div formGroupName="quizRequest" class="card p-4 mb-6 bg-gray-50 border rounded-lg">
+      <h3 class="text-lg font-semibold mb-2">Quiz Metadata</h3>
+      <textarea formControlName="instructions"
+        class="w-full border rounded-lg p-2 mb-3"
+        rows="2"
+        placeholder="Enter quiz instructions"></textarea>
+
+      <div class="grid grid-cols-3 gap-3">
+        <input formControlName="timeLimitMinutes" type="number" placeholder="Time (min)" class="p-2 border rounded">
+        <input formControlName="maximumAttempts" type="number" placeholder="Max attempts" class="p-2 border rounded">
+        <input formControlName="passPercentage" type="number" placeholder="Pass %" class="p-2 border rounded">
+      </div>
+
+      <div class="flex gap-4 mt-3">
+        <label><input type="checkbox" formControlName="randomizeQuestions"> Randomize</label>
+        <label><input type="checkbox" formControlName="showResultsImmediately"> Show Results Immediately</label>
+      </div>
+    </div>
+
+    <!-- Questions -->
     <div formArrayName="questionRequest" class="space-y-6">
-      @for (q of questions.controls; track i; let i = $index) {
-        <div
-          [formGroupName]="i"
-          class="question-card border border-gray-200 p-6 rounded-xl shadow-sm bg-gray-50"
-        >
-          <div class="mb-4">
-            <label class="block text-sm font-semibold text-gray-700 mb-2"
-              >Question {{ i + 1 }}</label
-            >
-            <textarea
-              formControlName="questionText"
-              class="w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-indigo-300 focus:border-indigo-500"
-              rows="2"
-              placeholder="Enter your question..."
-            ></textarea>
-          </div>
+      <div *ngFor="let q of questions.controls; let i = index" [formGroupName]="i"
+        class="question-card border border-gray-200 p-4 rounded-lg bg-gray-50">
 
-          <div class="grid grid-cols-2 gap-4 mb-4">
-            <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-2"
-                >Type</label
-              >
-              <select
-                formControlName="type"
-                class="w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-indigo-300 focus:border-indigo-500"
-              >
-                <option value="SINGLE_CHOICE">Single Choice</option>
-                <option value="MULTIPLE_CHOICE">Multiple Choice</option>
-              </select>
-            </div>
+        <h3 class="font-semibold text-gray-700 mb-2">Question {{ i + 1 }}</h3>
+        <textarea formControlName="questionText" rows="2" placeholder="Enter question text"
+          class="w-full border rounded p-2 mb-3"></textarea>
 
-            <div>
-              <label class="block text-sm font-semibold text-gray-700 mb-2"
-                >Points</label
-              >
-              <input
-                type="number"
-                formControlName="points"
-                class="w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-indigo-300 focus:border-indigo-500"
-                placeholder="0"
-              />
-            </div>
-          </div>
-
-          <div class="mb-4">
-            <label class="block text-sm font-semibold text-gray-700 mb-2"
-              >Explanation</label
-            >
-            <textarea
-              formControlName="explanation"
-              class="w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-indigo-300 focus:border-indigo-500"
-              rows="2"
-              placeholder="Optional explanation..."
-            ></textarea>
-          </div>
-
-          <!-- Options -->
-          <div formArrayName="optionRequest" class="options space-y-3">
-            <h3 class="text-md font-semibold text-gray-700 mb-2">Options</h3>
-            @for (opt of options(i).controls; track j; let j = $index) {
-              <div
-                [formGroupName]="j"
-                class="option-row flex items-center gap-3 bg-white border border-gray-200 rounded-lg p-3 shadow-sm"
-              >
-                <input
-                  formControlName="optionText"
-                  placeholder="Option text"
-                  class="flex-1 border border-gray-300 rounded-lg p-2 focus:ring focus:ring-indigo-300 focus:border-indigo-500"
-                />
-                <label class="flex items-center gap-2 text-sm text-gray-600">
-                  <input
-                    type="checkbox"
-                    formControlName="correct"
-                    class="h-4 w-4 text-indigo-600 rounded"
-                  />
-                  Correct
-                </label>
-                <button
-                  type="button"
-                  (click)="removeOption(i, j)"
-                  class="px-3 py-1 bg-red-100 text-red-600 rounded-lg hover:bg-red-200"
-                >
-                  Remove
-                </button>
-              </div>
-            }
-            <button
-              type="button"
-              (click)="addOption(i)"
-              class="px-4 py-2 bg-indigo-100 text-indigo-600 rounded-lg hover:bg-indigo-200"
-            >
-              + Add Option
-            </button>
-          </div>
-
-          <div class="mt-4 text-right">
-            <button
-              type="button"
-              (click)="removeQuestion(i)"
-              class="px-4 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200"
-            >
-              Remove Question
-            </button>
-          </div>
+        <div class="grid grid-cols-2 gap-3 mb-3">
+          <select formControlName="type" class="p-2 border rounded">
+            <option value="SINGLE_CHOICE">Single Choice</option>
+            <option value="MULTIPLE_CHOICE">Multiple Choice</option>
+          </select>
+          <input formControlName="points" type="number" placeholder="Points" class="p-2 border rounded">
         </div>
-      }
+
+        <textarea formControlName="explanation" rows="2" placeholder="Explanation (optional)"
+          class="w-full border rounded p-2 mb-3"></textarea>
+
+        <!-- Options -->
+        <div formArrayName="optionRequest" class="space-y-2">
+          <div *ngFor="let opt of options(i).controls; let j = index" [formGroupName]="j"
+            class="flex items-center gap-2 bg-white border p-2 rounded">
+            <input formControlName="optionText" placeholder="Option text" class="flex-1 border rounded p-2">
+            <label><input type="checkbox" formControlName="correct"> Correct</label>
+            <button type="button" (click)="removeOption(i, j)" class="text-red-600 text-sm">Remove</button>
+          </div>
+          <button type="button" (click)="addOption(i)" class="text-blue-600 text-sm mt-2">+ Add Option</button>
+        </div>
+
+        <div class="text-right mt-3">
+          <button type="button" (click)="removeQuestion(i)" class="text-red-600 text-sm">Remove Question</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex justify-between mt-6">
+      <button type="button" (click)="addQuestion()" class="px-4 py-2 bg-indigo-600 text-white rounded">+ Add Question</button>
+      <button type="button" (click)="saveQuiz()" [disabled]="isSubmitting"
+        class="px-4 py-2 bg-green-600 text-white rounded">
+        {{ isSubmitting ? 'Saving...' : 'Save Quiz' }}
+      </button>
     </div>
   </form>
 
-  <div class="flex justify-between mt-6">
-    <button
-      type="button"
-      (click)="addQuestion()"
-      class="px-5 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
-    >
-      + Add Another Question
-    </button>
-
-    <button
-      type="button"
-      (click)="saveQuiz()"
-      class="px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
-    >
-      Save & Publish Quiz
-    </button>
-  </div>
+  <div *ngIf="errorMessage" class="mt-4 text-red-600">{{ errorMessage }}</div>
 </div>

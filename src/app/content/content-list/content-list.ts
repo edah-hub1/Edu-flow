@@ -1,5 +1,4 @@
-
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Observable, of } from 'rxjs';
@@ -14,38 +13,71 @@ import { Content } from '../content.model';
   templateUrl: './content-list.html',
   styleUrls: ['./content-list.css']
 })
-export class ContentList {
+export class ContentList implements OnInit {
+  contents: Content[] = [];
   contents$!: Observable<Content[]>;
   loading = false;
   errorMessage = '';
   moduleId!: number;
-  courseId: any|string;
+  courseId!: number | string;
+  progress = 40; // TODO: fetch actual progress
 
-  constructor(private contentService: ContentService, private route: ActivatedRoute) {}
+  constructor(
+    private contentService: ContentService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.loadContents();
+    this.loading = true;
+
+    this.route.paramMap
+      .pipe(
+        map(params => {
+          this.courseId = params.get('courseId')!;  // 👈 capture courseId
+          this.moduleId = Number(params.get('moduleId'));
+          return this.moduleId;
+        }),
+        switchMap((id: number) =>
+          this.contentService.getContentsByModule(id).pipe(
+            catchError(err => {
+              console.error('Error loading contents:', err);
+              this.errorMessage =
+                'Failed to load contents. Please try again.';
+              return of([]);
+            }),
+            startWith([])
+          )
+        )
+      )
+      .subscribe((contents: Content[]) => {
+        this.contents = contents;
+        this.loading = false;
+      });
   }
 
-  loadContents(): void {
-    this.loading = true;
-    this.errorMessage = '';
+  addQuizContent() {
+    const newQuiz: Partial<Content> = {
+      title: 'New Quiz',
+      description: 'Description for new quiz',
+      moduleId: this.moduleId,
+      type: 'QUIZ',
+      orderInModule: this.contents.length + 1,
+      resourceUrl: '',
+      articleContent: '',
+      durationMinutes: null,
+      quizId: null,
+      mandatory: false
+    };
 
-    this.contents$ = this.route.paramMap.pipe(
-      map(params => Number(params.get('moduleId'))),
-      switchMap((id: number) => {
-        this.moduleId = id;
-        return this.contentService.getContentsByModule(id).pipe(
-          catchError(err => {
-            console.error('Error loading contents:', err);
-            this.errorMessage = 'Failed to load contents. Please try again.';
-            return of([]);
-          }),
-          startWith([])
-        );
-      })
-    );
-
-    this.contents$.subscribe(() => (this.loading = false));
+    this.contentService.createContent(newQuiz as Content).subscribe({
+      next: (savedQuiz: Content) => {
+        this.contents.push(savedQuiz);
+      },
+      error: err => {
+        console.error('Failed to create quiz content:', err);
+        this.errorMessage =
+          err?.error?.message || 'Failed to create quiz';
+      }
+    });
   }
 }

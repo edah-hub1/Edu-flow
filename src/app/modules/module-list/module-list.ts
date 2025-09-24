@@ -54,13 +54,26 @@ export class ModuleList {
             this.errorMessage = 'Failed to load modules. Please try again.';
             return of([]);
           }),
-          startWith([]) // let UI render an initial value
+          startWith([]) // so UI has an initial value
         );
       })
     );
 
     this.modules$.subscribe(() => {
       this.loading = false;
+    });
+  }
+
+  // ✅ Delete logic (called from template button)
+  deleteModule(moduleId: number): void {
+    if (!confirm('Are you sure you want to delete this module?')) return;
+
+    this.moduleService.deleteModule(this.courseId, moduleId).subscribe({
+      next: () => this.loadModules(),
+      error: (err) => {
+        console.error('Failed to delete module:', err);
+        this.errorMessage = 'Could not delete module.';
+      }
     });
   }
 
@@ -72,5 +85,3 @@ export class ModuleList {
     return mod.id;
   }
 }
-
-

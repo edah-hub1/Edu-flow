@@ -19,4 +19,6 @@ export class ContentService {
     return this.http.get<Content[]>(`${this.apiUrl}/modules/${moduleId}/contents`);
   }
 }
+
+
   

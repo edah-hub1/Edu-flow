@@ -19,6 +19,11 @@ export class ModuleService {
   getModulesByCourse(courseId: number): Observable<Module[]> {
     return this.http.get<Module[]>(`${this.apiUrl}/courses/${courseId}/modules`);
   }
+
+  // Delete a module by courseId + moduleId
+  deleteModule(courseId: number, moduleId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/courses/${courseId}/modules/${moduleId}`);
+  }
 }
 
 

@@ -10,5 +10,6 @@ export interface Content {
   quizId?: number | null;
   moduleId: number;
   mandatory?: boolean | null;
+  
 }
 

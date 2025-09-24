@@ -1,75 +1,91 @@
-<!-- src/app/content/content-list/content-list.html -->
 <section class="p-6 max-w-4xl mx-auto">
   <h2 class="text-2xl font-bold mb-4 text-gray-800">
     Contents for Module {{ moduleId }}
   </h2>
 
   <!-- Loading -->
-  @if (loading) {
-    <div class="text-blue-500">Loading contents...</div>
-  }
+  <div *ngIf="loading" class="text-blue-500">Loading contents...</div>
 
   <!-- Error -->
-  @if (errorMessage) {
-    <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
-      {{ errorMessage }}
-    </div>
-  }
+  <div *ngIf="errorMessage" class="bg-red-100 text-red-700 p-3 rounded mb-4">
+    {{ errorMessage }}
+  </div>
 
   <!-- Content list -->
-  @if (!loading && !errorMessage) {
-    @let contents = contents$ | async;
-
-    @if (contents && contents.length > 0) {
-      <ul class="space-y-3">
-        @for (c of contents; track c.title) {
-          <li class="p-4 bg-white shadow rounded-lg border flex flex-col gap-1">
-            <div class="flex justify-between items-center">
-              <span class="font-semibold text-gray-800">
-                {{ c.orderInModule }}. {{ c.title }}
-              </span>
-              <span class="px-2 py-1 text-xs rounded bg-gray-200 text-gray-700">
-                {{ c.type }}
-              </span>
-            </div>
-            <p class="text-sm text-gray-600">{{ c.description }}</p>
-            @if (c.type === 'PDF' || c.type === 'VIDEO') {
-              <a
-                [href]="c.resourceUrl"
-                target="_blank"
-                class="text-blue-600 hover:underline text-sm"
-              >
-                Open Resource
-              </a>
-            }
-            @if (c.type === 'ARTICLE') {
-              <p class="text-xs text-gray-500 mt-1">{{ c.articleContent }}</p>
-            }
-          </li>
-        }
-      </ul>
-    } @else {
-      <div class="bg-gray-50 text-gray-600 p-4 rounded text-center">
-        No contents found for this module.
+  <ul *ngIf="!loading && !errorMessage && contents.length > 0" class="space-y-3">
+    <li
+      *ngFor="let c of contents"
+      class="p-4 bg-white shadow rounded-lg border flex flex-col gap-1"
+    >
+      <div class="flex justify-between items-center">
+        <span class="font-semibold text-gray-800">
+          {{ c.orderInModule }}. {{ c.title }}
+        </span>
+        <span class="px-2 py-1 text-xs rounded bg-gray-200 text-gray-700">
+          {{ c.type }}
+        </span>
       </div>
-    }
-  }
+      <p class="text-sm text-gray-600">{{ c.description }}</p>
+
+      <!-- Resource link -->
+      <a
+        *ngIf="c.type === 'PDF' || c.type === 'VIDEO'"
+        [href]="c.resourceUrl"
+        target="_blank"
+        class="text-blue-600 hover:underline text-sm"
+      >
+        Open Resource
+      </a>
+
+      <!-- Add Questions for Quiz -->
+      <a
+        *ngIf="c.type === 'QUIZ'"
+        [routerLink]="[
+          '/courses',
+          courseId,
+          'modules',
+          moduleId,
+          'contents',
+          c.id,
+          'questions'
+        ]"
+        class="text-indigo-600 text-sm font-medium hover:underline mt-2"
+      >
+        ➕ Add Questions
+      </a>
+
+
+      <!-- Article content -->
+      <p *ngIf="c.type === 'ARTICLE'" class="text-xs text-gray-500 mt-1">
+        {{ c.articleContent }}
+      </p>
+    </li>
+  </ul>
+
+  <!-- Empty State -->
+  <div
+    *ngIf="!loading && !errorMessage && contents.length === 0"
+    class="bg-gray-50 text-gray-600 p-4 rounded text-center"
+  >
+    No contents found for this module.
+  </div>
 
   <!-- Action buttons -->
   <div class="flex justify-between mt-4">
-    <!-- Back to all modules of this course -->
+    <!-- Back to all modules -->
     <a
-      [routerLink]="['/courses', moduleId, 'modules']"
+      [routerLink]="['/courses', courseId, 'modules']"
       class="ml-8 px-4 py-2 bg-gray-600 no-underline text-white rounded-lg shadow hover:bg-gray-700 transition"
     >
       ← All Modules
     </a>
 
-    <!-- Add new content to this module -->
-    <a
-      class="px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition no-underline"
+    <!-- Add new quiz content -->
+    <button
+      (click)="addQuizContent()"
+      class="px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition"
     >
-      + Add Content
-    </a>
+      + Add Quiz
+    </button>
   </div>
 </section>

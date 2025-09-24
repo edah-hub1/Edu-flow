@@ -1,94 +1,25 @@
-<div class="card max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-2xl">
-  <h2 class="text-2xl font-bold mb-6 text-gray-800">Create Quiz</h2>
+<!-- src/app/quizzes/quiz-form/quiz-form.html -->
+<div class="card p-6 max-w-2xl mx-auto">
+  <h3 class="text-xl mb-4">Create Quiz for: {{ contentTitle }}</h3>
 
-  <div class="space-y-5">
-    <div>
-      <label class="block text-sm font-semibold text-gray-700 mb-2">Quiz Title</label>
-      <input
-        formControlName="title"
-        class="w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-indigo-300 focus:border-indigo-500"
-        placeholder="Enter quiz title"
-      />
+  <div class="space-y-3">
+    <label>Instructions</label>
+    <textarea formControlName="instructions" class="w-full p-2 border rounded"></textarea>
+
+    <div class="grid grid-cols-3 gap-3">
+      <input formControlName="timeLimitMinutes" type="number" class="p-2 border rounded"/>
+      <input formControlName="maximumAttempts" type="number" class="p-2 border rounded"/>
+      <input formControlName="passPercentage" type="number" class="p-2 border rounded"/>
     </div>
 
-    <div>
-      <label class="block text-sm font-semibold text-gray-700 mb-2">Content</label>
-      <select
-        formControlName="contentId"
-        class="w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-indigo-300 focus:border-indigo-500"
-      >
-        <option [value]="1">Java 101</option>
-        <option [value]="2">Angular Basics</option>
-        <!-- populate from backend -->
-      </select>
+    <div class="flex gap-4 mt-2">
+      <label><input type="checkbox" formControlName="randomizeQuestions"/> Randomize</label>
+      <label><input type="checkbox" formControlName="showResultsImmediately"/> Show results</label>
+      <label><input type="checkbox" formControlName="published"/> Published</label>
     </div>
 
-    <div>
-      <label class="block text-sm font-semibold text-gray-700 mb-2">Instructions</label>
-      <textarea
-        formControlName="instructions"
-        class="w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-indigo-300 focus:border-indigo-500"
-        rows="3"
-        placeholder="Add quiz instructions..."
-      ></textarea>
+    <div class="text-right mt-4">
+      <button (click)="next()" class="px-4 py-2 bg-indigo-600 text-white rounded">Next: Add Questions →</button>
     </div>
-
-    <div class="grid grid-cols-3 gap-4">
-      <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-2">Time Limit (minutes)</label>
-        <input
-          type="number"
-          formControlName="timeLimitMinutes"
-          class="w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-indigo-300 focus:border-indigo-500"
-          placeholder="e.g. 30"
-        />
-      </div>
-
-      <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-2">Maximum Attempts</label>
-        <input
-          type="number"
-          formControlName="maximumAttempts"
-          class="w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-indigo-300 focus:border-indigo-500"
-          placeholder="e.g. 3"
-        />
-      </div>
-
-      <div>
-        <label class="block text-sm font-semibold text-gray-700 mb-2">Pass Percentage</label>
-        <input
-          type="number"
-          formControlName="passPercentage"
-          class="w-full border border-gray-300 rounded-lg p-2 focus:ring focus:ring-indigo-300 focus:border-indigo-500"
-          placeholder="e.g. 60"
-        />
-      </div>
-    </div>
-
-    <div class="flex flex-col gap-2">
-      <label class="flex items-center gap-2 text-sm text-gray-700">
-        <input type="checkbox" formControlName="randomizeQuestions" class="h-4 w-4 text-indigo-600 rounded" />
-        Randomize Questions
-      </label>
-
-      <label class="flex items-center gap-2 text-sm text-gray-700">
-        <input type="checkbox" formControlName="showResultsImmediately" class="h-4 w-4 text-indigo-600 rounded" />
-        Show Results Immediately
-      </label>
-
-      <label class="flex items-center gap-2 text-sm text-gray-700">
-        <input type="checkbox" formControlName="published" class="h-4 w-4 text-indigo-600 rounded" />
-        Published
-      </label>
-    </div>
-  </div>
-
-  <div class="mt-6 text-right">
-    <button
-      (click)="next()"
-      class="px-5 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
-    >
-      Next: Add Questions →
-    </button>
   </div>
 </div>
