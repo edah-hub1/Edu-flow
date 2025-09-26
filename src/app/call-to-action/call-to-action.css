@@ -1,0 +1,15 @@
+/* Button hover scale */
+button:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Font Awesome icons spacing */
+.text-center i {
+  margin: 0;
+}
+
+/* Optional: gradient text balance */
+.text-balance {
+  display: inline-block;
+}

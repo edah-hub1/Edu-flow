@@ -1,0 +1,67 @@
+<section class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Section Header -->
+    <div class="text-center mb-16">
+      <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-2 text-balance">
+        Featured <span class="text-primary-600">Courses</span>
+      </h2>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto text-pretty">
+        Discover our most popular courses designed by industry experts to help you master new skills
+      </p>
+    </div>
+
+    <!-- Courses Grid -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div *ngFor="let course of featuredCourses" class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow overflow-hidden group">
+
+        <!-- Course Image -->
+        <div class="relative overflow-hidden">
+          <img [src]="course.image" [alt]="course.title"
+            class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+          <div class="absolute top-4 left-4">
+            <span class="bg-accent-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+              {{ course.category }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Course Content -->
+        <div class="p-6">
+          <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">
+            {{ course.title }}
+          </h3>
+          <p class="text-gray-600 mb-4">by {{ course.instructor }}</p>
+
+          <!-- Course Stats -->
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center space-x-4 text-sm text-gray-500">
+              <span class="flex items-center">
+                <i class="far fa-clock mr-1"></i> {{ course.duration }}
+              </span>
+              <span class="flex items-center">
+                <i class="fas fa-user-graduate mr-1"></i> {{ course.students }}
+              </span>
+            </div>
+            <div class="flex items-center">
+              <i class="fas fa-star text-yellow-400 mr-1"></i>
+              <span class="text-sm text-gray-600">{{ course.rating }}</span>
+            </div>
+          </div>
+
+          <!-- Price and Enroll -->
+          <div class="flex items-center justify-between">
+            <div class="text-2xl font-bold text-primary-600">
+              ${{ course.price }}
+            </div>
+            <button class="bg-primary-600 hover:bg-primary-700 text-gray-900 px-6 py-2 rounded-full font-medium transition-colors">
+              Enroll Now
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

@@ -3,24 +3,24 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // Import your standalone components
-import { HeaderComponent } from './header/header.component';
-import { HeroComponent } from './hero/hero.component';
-import { FeaturedCoursesComponent } from './featured-courses/featured-courses.component';
+import { Header } from './header/header';
+import { Hero } from './hero/hero';
+import { FeaturedCourses } from './featured-courses/featured-courses';
 import { TopRatedCoursesComponent } from './top-rated-courses/top-rated-courses.component';
-import { CallToActionComponent } from './call-to-action/call-to-action.component';
-import { FooterComponent } from './footer/footer.component';
+import { CallToAction } from './call-to-action/call-to-action';
+import { Footer } from './footer/footer';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
     CommonModule,
-    HeaderComponent,
-    HeroComponent,
-    FeaturedCoursesComponent,
+    Header,
+    Hero,
+    FeaturedCourses,
     TopRatedCoursesComponent,
-    CallToActionComponent,
-    FooterComponent,
+    CallToAction,
+    Footer,
   ],
   template: `
     <div class="min-h-screen bg-gray-50 flex flex-col">

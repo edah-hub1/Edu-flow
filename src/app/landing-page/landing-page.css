@@ -1,0 +1,21 @@
+/* Hero Section */
+.hero-section {
+  @apply bg-gradient-to-r from-primary-600 to-primary-700 text-white;
+}
+
+.hero-title {
+  @apply text-4xl lg:text-5xl font-bold mb-6 leading-tight text-balance;
+}
+
+.hero-subtitle {
+  @apply text-lg lg:text-xl text-primary-100 mb-8 max-w-2xl mx-auto text-pretty;
+}
+
+/* Buttons */
+.btn-primary {
+  @apply bg-accent-500 hover:bg-accent-600 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all shadow-lg;
+}
+
+.btn-secondary {
+  @apply bg-white text-primary-600 hover:bg-gray-100 px-8 py-4 rounded-full font-semibold text-lg transition-all shadow-lg;
+}

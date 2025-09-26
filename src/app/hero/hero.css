@@ -1,0 +1,6 @@
+/* Add component-scoped overrides here if Tailwind isn’t enough */
+
+/* Example: adjust floating card shadows */
+.shadow-lg {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
