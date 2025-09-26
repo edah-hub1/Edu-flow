@@ -12,11 +12,13 @@ export class QuizService {
 
   constructor(private http: HttpClient) {}
 
-  getQuiz(quizId: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${quizId}`);
-  }
 
-  // ✅ Bulk create with quizRequest + questionRequest
+// GET quiz by ID (with questions and options)
+  getQuiz(quizId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${quizId}/bulk`);
+  }
+ 
+  //  Bulk create with quizRequest + questionRequest
   bulkCreateQuiz(payload: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/bulk`, payload);
   }

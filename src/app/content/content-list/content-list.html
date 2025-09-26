@@ -53,6 +53,21 @@
       >
         ➕ Add Questions
       </a>
+      
+      <!-- View Questions for Quiz -->
+      <a
+        *ngIf="c.type === 'QUIZ'"
+        [routerLink]="[
+          '/courses',
+          courseId,
+          'quizzes',
+          c.id,
+          'view'
+        ]"
+        class="text-green-600 text-sm font-medium hover:underline mt-1"
+      >
+        👀 View Questions
+      </a>
 
 
       <!-- Article content -->

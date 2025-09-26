@@ -1,0 +1,106 @@
+import { Component } from "@angular/core"
+import { CommonModule } from "@angular/common"
+
+@Component({
+  selector: "app-hero",
+  standalone: true,
+  imports: [CommonModule],
+  template: `
+    <section class="relative bg-gradient-to-br from-gray-50 to-blue-50 overflow-hidden">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+          <!-- Left Content -->
+          <div class="space-y-8">
+            <div class="space-y-4">
+              <h1 class="text-4xl lg:text-6xl font-bold leading-tight text-balance">
+                <span class="text-accent-500">Learning</span> 
+                <span class="text-primary-600"> Online is now</span>
+                <br>
+                <span class="text-primary-800">much easier</span>
+              </h1>
+              <p class="text-lg text-gray-600 max-w-lg leading-relaxed text-pretty">
+                Eduflow is an innovative platform that will teach you in a more interactive way. 
+                Discover thousands of courses and start your learning journey today.
+              </p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4">
+              <button class="bg-accent-500 hover:bg-accent-600 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all transform hover:scale-105 shadow-lg">
+                Join for free
+              </button>
+              <button class="flex items-center justify-center space-x-3 text-primary-600 hover:text-primary-700 px-8 py-4 font-semibold text-lg transition-colors">
+                <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md">
+                  <svg class="w-5 h-5 text-primary-600 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M8 5v10l7-5-7-5z"/>
+                  </svg>
+                </div>
+                <span>Watch how it works</span>
+              </button>
+            </div>
+
+            <!-- Stats -->
+            <div class="flex items-center space-x-8 pt-8">
+              <div class="text-center">
+                <div class="text-2xl font-bold text-primary-600">250k+</div>
+                <div class="text-sm text-gray-600">Assisted Students</div>
+              </div>
+              <div class="text-center">
+                <div class="text-2xl font-bold text-primary-600">1000+</div>
+                <div class="text-sm text-gray-600">Expert Instructors</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Content - Hero Image -->
+          <div class="relative">
+            <div class="relative z-10">
+              <img 
+                src="/happy-student-learning-online-with-books-and-lapto.jpg" 
+                alt="Student learning online" 
+                class="w-full h-auto rounded-2xl shadow-2xl"
+              >
+            </div>
+            
+            <!-- Floating Elements -->
+            <div class="absolute top-20 -right-4 bg-white rounded-2xl p-4 shadow-lg z-20">
+              <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                  <svg class="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="font-semibold text-gray-900">Congratulations</div>
+                  <div class="text-sm text-gray-600">Course completed!</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="absolute bottom-20 -left-4 bg-white rounded-2xl p-4 shadow-lg z-20">
+              <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
+                  <svg class="w-5 h-5 text-primary-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+                <div>
+                  <div class="font-semibold text-gray-900">UI/UX Design</div>
+                  <div class="text-sm text-gray-600">Today at 12:00 PM</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trust Indicator -->
+      <div class="bg-white border-t border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <p class="text-center text-gray-600 mb-8">Trusted by 5,000+ Companies Worldwide</p>
+        </div>
+      </div>
+    </section>
+  `,
+})
+export class HeroComponent {}

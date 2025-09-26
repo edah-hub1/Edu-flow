@@ -9,7 +9,7 @@ import { ForgotPassword } from './auth/forgot-password/forgot-password';
 import { StudentDashboard } from './dashboard/student-dashboard/student-dashboard';
 import { InstructorDashboard } from './dashboard/instructor-dashboard/instructor-dashboard';
 import { AdminDashboard } from './dashboard/admin-dashboard/admin-dashboard';
-import { LandingPage } from './dashboard/landing-page/landing-page';
+import { LandingPage } from './landing-page/landing-page';
 
 // Courses
 import { CourseList } from './courses/course-list/course-list';
@@ -23,6 +23,7 @@ import { ContentForm } from './content/content-form/content-form';
 
 // Quizzes
 import { QuizForm } from './Quizz/quiz/quiz-form';
+import { QuizList } from './Quizz/quiz-list/quiz-list';
 import { QuestionForm } from './Quizz/question-form/question-form';
 
 // Enrollment
@@ -64,9 +65,10 @@ export const routes: Routes = [
   { path: 'courses/:courseId/modules/:moduleId/contents', component: ContentList },
   { path: 'courses/:courseId/modules/:moduleId/contents/create', component: ContentForm },
   { path: 'courses/:courseId/modules/:moduleId/contents/:contentId/edit', component: ContentForm },
+  { path: 'courses/:courseId/quizzes/:quizId/view', component: QuizList },
   { path: 'courses/:courseId/modules/:moduleId/contents/:contentId/questions', component: QuestionForm },
 
-  // 🔹 Quizzes (direct, if needed separately)
+  // 🔹 Quizzes ()
   { path: 'courses/:courseId/quizzes', component: QuizForm },
   { path: 'courses/:courseId/quizzes/create', component: QuizForm },
   { path: 'courses/:courseId/quizzes/:quizId/edit', component: QuizForm },
