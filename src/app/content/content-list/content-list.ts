@@ -15,12 +15,10 @@ import { Content } from '../content.model';
 })
 export class ContentList implements OnInit {
   contents: Content[] = [];
-  contents$!: Observable<Content[]>;
   loading = false;
   errorMessage = '';
   moduleId!: number;
   courseId!: number | string;
-  progress = 40; // TODO: fetch actual progress
 
   constructor(
     private contentService: ContentService,
@@ -33,7 +31,7 @@ export class ContentList implements OnInit {
     this.route.paramMap
       .pipe(
         map(params => {
-          this.courseId = params.get('courseId')!;  // 👈 capture courseId
+          this.courseId = params.get('courseId')!;
           this.moduleId = Number(params.get('moduleId'));
           return this.moduleId;
         }),
@@ -41,8 +39,7 @@ export class ContentList implements OnInit {
           this.contentService.getContentsByModule(id).pipe(
             catchError(err => {
               console.error('Error loading contents:', err);
-              this.errorMessage =
-                'Failed to load contents. Please try again.';
+              this.errorMessage = 'Failed to load contents. Please try again.';
               return of([]);
             }),
             startWith([])
@@ -75,9 +72,13 @@ export class ContentList implements OnInit {
       },
       error: err => {
         console.error('Failed to create quiz content:', err);
-        this.errorMessage =
-          err?.error?.message || 'Failed to create quiz';
+        this.errorMessage = err?.error?.message || 'Failed to create quiz';
       }
     });
+  }
+
+  // ✅ Helper: check if this quiz already exists
+  hasQuiz(c: Content): boolean {
+    return !!c.quizId;
   }
 }

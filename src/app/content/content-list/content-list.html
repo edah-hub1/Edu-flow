@@ -13,10 +13,7 @@
 
   <!-- Content list -->
   <ul *ngIf="!loading && !errorMessage && contents.length > 0" class="space-y-3">
-    <li
-      *ngFor="let c of contents"
-      class="p-4 bg-white shadow rounded-lg border flex flex-col gap-1"
-    >
+    <li *ngFor="let c of contents" class="p-4 bg-white shadow rounded-lg border flex flex-col gap-1">
       <div class="flex justify-between items-center">
         <span class="font-semibold text-gray-800">
           {{ c.orderInModule }}. {{ c.title }}
@@ -37,9 +34,9 @@
         Open Resource
       </a>
 
-      <!-- Add Questions for Quiz -->
+      <!-- Quiz section -->
       <a
-        *ngIf="c.type === 'QUIZ'"
+        *ngIf="c.type === 'QUIZ' && !c.quizId"
         [routerLink]="[
           '/courses',
           courseId,
@@ -53,22 +50,24 @@
       >
         ➕ Add Questions
       </a>
-      
-      <!-- View Questions for Quiz -->
+
       <a
-        *ngIf="c.type === 'QUIZ'"
+        *ngIf="c.type === 'QUIZ' && c.quizId"
         [routerLink]="[
           '/courses',
           courseId,
-          'quizzes',
+          'modules',
+          moduleId,
+          'contents',
           c.id,
+          'quiz',
+          c.quizId,
           'view'
         ]"
-        class="text-green-600 text-sm font-medium hover:underline mt-1"
+        class="text-green-600 text-sm font-medium hover:underline mt-2"
       >
         👀 View Questions
       </a>
-
 
       <!-- Article content -->
       <p *ngIf="c.type === 'ARTICLE'" class="text-xs text-gray-500 mt-1">
@@ -78,10 +77,8 @@
   </ul>
 
   <!-- Empty State -->
-  <div
-    *ngIf="!loading && !errorMessage && contents.length === 0"
-    class="bg-gray-50 text-gray-600 p-4 rounded text-center"
-  >
+  <div *ngIf="!loading && !errorMessage && contents.length === 0"
+       class="bg-gray-50 text-gray-600 p-4 rounded text-center">
     No contents found for this module.
   </div>
 

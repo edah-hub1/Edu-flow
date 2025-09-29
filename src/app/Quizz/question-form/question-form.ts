@@ -85,26 +85,37 @@ export class QuestionForm implements OnInit {
     this.options(qIndex).removeAt(optIndex);
   }
 
-  saveQuiz(): void {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
-
-    this.isSubmitting = true;
-    const payload = this.form.value;
-
-    this.quizService.bulkCreateQuiz(payload).subscribe({
-      next: (res) => {
-        console.log('Quiz saved:', res);
-        this.router.navigate(['/modules', this.contentId, 'contents']); // adjust route as needed
-      },
-      error: (err) => {
-        console.error('Failed to save quiz', err);
-        this.errorMessage = err?.error?.message || 'Failed to save quiz';
-        this.isSubmitting = false;
-      },
-      complete: () => (this.isSubmitting = false)
-    });
+ saveQuiz(): void {
+  if (this.form.invalid) {
+    this.form.markAllAsTouched();
+    return;
   }
+
+  this.isSubmitting = true;
+  const payload = this.form.value;
+
+  this.quizService.bulkCreateQuiz(payload).subscribe({
+    next: (res) => {
+      console.log('Quiz saved:', res);
+
+      // ✅ Correct navigation back to the right module's contents
+      const courseId = this.route.snapshot.paramMap.get('courseId');
+      const moduleId = this.route.snapshot.paramMap.get('moduleId');
+
+      this.router.navigate([
+        '/courses',
+        courseId,
+        'modules',
+        moduleId,
+        'contents'
+      ]);
+    },
+    error: (err) => {
+      console.error('Failed to save quiz', err);
+      this.errorMessage = err?.error?.message || 'Failed to save quiz';
+      this.isSubmitting = false;
+    },
+    complete: () => (this.isSubmitting = false)
+  });
+}
 }

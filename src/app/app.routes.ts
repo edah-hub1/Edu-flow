@@ -11,20 +11,18 @@ import { InstructorDashboard } from './dashboard/instructor-dashboard/instructor
 import { AdminDashboard } from './dashboard/admin-dashboard/admin-dashboard';
 import { LandingPage } from './landing-page/landing-page';
 
-// Courses
+// Courses & Modules
 import { CourseList } from './courses/course-list/course-list';
 import { CourseDetail } from './courses/course-detail/course-detail';
 import { CourseForm } from './courses/course-form/course-form';
-
 import { ModuleList } from './modules/module-list/module-list';
 import { ModuleForm } from './modules/module-form/module-form';
+
+// Content & Quiz
 import { ContentList } from './content/content-list/content-list';
 import { ContentForm } from './content/content-form/content-form';
-
-// Quizzes
-import { QuizForm } from './Quizz/quiz/quiz-form';
-import { QuizList } from './Quizz/quiz-list/quiz-list';
 import { QuestionForm } from './Quizz/question-form/question-form';
+import { QuizList } from './Quizz/quiz-list/quiz-list';
 
 // Enrollment
 import { EnrollmentList } from './enrollment/enrollment-list/enrollment-list';
@@ -43,57 +41,56 @@ import { Certificates } from './courses/certificates/certificates';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
-  // 🔹 Auth
+  // Auth
   { path: 'login', component: Login },
   { path: 'register', component: Register },
   { path: 'forgot-password', component: ForgotPassword },
 
-  // 🔹 Dashboards
+  // Dashboards
   { path: 'dashboard/student', component: StudentDashboard },
   { path: 'dashboard/instructor', component: InstructorDashboard },
   { path: 'dashboard/admin', component: AdminDashboard },
   { path: 'landing-page', component: LandingPage },
 
-  // 🔹 Courses
+  // Courses
   { path: 'courses', component: CourseList },
   { path: 'courses/new', component: CourseForm },
   { path: 'courses/edit/:id', component: CourseForm },
+  { path: 'courses/:id', component: CourseDetail },
 
-  // 🔹 Modules + Contents (order matters → before CourseDetail!)
+  // Modules
   { path: 'courses/:courseId/modules', component: ModuleList },
   { path: 'courses/:courseId/modules/create', component: ModuleForm },
+
+  // Contents
   { path: 'courses/:courseId/modules/:moduleId/contents', component: ContentList },
   { path: 'courses/:courseId/modules/:moduleId/contents/create', component: ContentForm },
   { path: 'courses/:courseId/modules/:moduleId/contents/:contentId/edit', component: ContentForm },
-  { path: 'courses/:courseId/quizzes/:quizId/view', component: QuizList },
-  { path: 'courses/:courseId/modules/:moduleId/contents/:contentId/questions', component: QuestionForm },
 
-  // 🔹 Quizzes ()
-  { path: 'courses/:courseId/quizzes', component: QuizForm },
-  { path: 'courses/:courseId/quizzes/create', component: QuizForm },
-  { path: 'courses/:courseId/quizzes/:quizId/edit', component: QuizForm },
+  // Quiz Management
+  {
+    path: 'courses/:courseId/modules/:moduleId/contents/:contentId/questions',
+    component: QuestionForm
+  },
+  {
+    path: 'courses/:courseId/modules/:moduleId/contents/:contentId/quiz/:quizId/view',
+    component: QuizList
+  },
 
-  // Temporary shortcut routes
-  { path: 'quiz/create', component: QuizForm },
-  { path: 'quiz/questions', component: QuestionForm },
-
-  // 🔹 Course Detail (must be AFTER nested module/content routes)
-  { path: 'courses/:id', component: CourseDetail },
-
-  // 🔹 Enrollment
+  // Enrollment
   { path: 'enrollments', component: EnrollmentList },
   { path: 'progress', component: ProgressTracker },
 
-  // 🔹 Notifications
+  // Notifications
   { path: 'notifications', component: NotificationList },
 
-  // 🔹 Profile
+  // Profile
   { path: 'profile', component: ProfileView },
   { path: 'profile/edit', component: ProfileEdit },
 
-  // 🔹 Certificate
+  // Certificates
   { path: 'certificates', component: Certificates },
 
-  // 🔹 Fallback
+  // Fallback
   { path: '**', redirectTo: 'login' }
 ];
