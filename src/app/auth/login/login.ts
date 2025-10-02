@@ -5,7 +5,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+
 import { AuthService } from '../service/auth.service';
 import { MatCardContent, MatCardModule } from "@angular/material/card";
 
@@ -13,10 +14,11 @@ import { MatCardContent, MatCardModule } from "@angular/material/card";
   selector: 'app-login',
   standalone: true,
   templateUrl: './login.html',
-  styleUrl: './login.css',
+  styleUrls: ['./login.css'],
   imports: [
     CommonModule,
     FormsModule,
+    RouterLink,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,

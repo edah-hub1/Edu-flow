@@ -1,8 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { Subject, takeUntil, switchMap, catchError, of } from 'rxjs';
 import { ModuleService } from '../module.service';
 import { Module } from '../module.model';
 
@@ -13,11 +12,14 @@ import { Module } from '../module.model';
   templateUrl: './module-list.html',
   styleUrls: ['./module-list.css']
 })
-export class ModuleList {
-  modules$!: Observable<Module[]>;
+export class ModuleList implements OnDestroy {
+  modules: Module[] = [];
   loading: boolean = false;
   errorMessage: string = '';
-  courseId!: number;
+  courseId: number | null = null;
+  openMenu: number | null = null;
+  
+  private destroy$ = new Subject<void>();
 
   constructor(
     private moduleService: ModuleService,
@@ -29,59 +31,142 @@ export class ModuleList {
     this.loadModules();
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   loadModules(): void {
     this.loading = true;
     this.errorMessage = '';
+    this.modules = [];
 
-    this.modules$ = this.route.paramMap.pipe(
-      map(params => Number(params.get('courseId'))),
-      switchMap((id: number) => {
-        this.courseId = id;
-        return this.moduleService.getModulesByCourse(id).pipe(
-          map((data: any) => {
-            if (Array.isArray(data)) {
-              return data;
-            } else if (data && typeof data === 'object' && data.hasOwnProperty('modules')) {
-              return data.modules || [];
-            } else if (data && typeof data === 'object' && data.hasOwnProperty('data')) {
-              return data.data || [];
-            } else {
-              return data ? [data] : [];
-            }
-          }),
+    this.route.paramMap.pipe(
+      takeUntil(this.destroy$),
+      switchMap(params => {
+        const id = params.get('courseId');
+        
+        if (!id || isNaN(Number(id))) {
+          this.loading = false;
+          this.errorMessage = 'Invalid course ID';
+          return of(null);
+        }
+        
+        this.courseId = Number(id);
+        return this.moduleService.getModulesByCourse(this.courseId).pipe(
           catchError(err => {
             console.error('Error loading modules:', err);
-            this.errorMessage = 'Failed to load modules. Please try again.';
-            return of([]);
-          }),
-          startWith([]) // so UI has an initial value
+            this.errorMessage = this.getErrorMessage(err);
+            this.loading = false;
+            return of(null);
+          })
         );
       })
-    );
-
-    this.modules$.subscribe(() => {
-      this.loading = false;
+    ).subscribe({
+      next: (data) => {
+        if (data === null) return;
+        
+        try {
+          this.modules = this.normalizeModulesData(data);
+          this.modules.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+          console.log('Modules loaded:', this.modules);
+        } catch (err) {
+          console.error('Error processing modules data:', err);
+          this.errorMessage = 'Failed to process modules data';
+          this.modules = [];
+        } finally {
+          this.loading = false;
+        }
+      },
+      error: (err) => {
+        console.error('Subscription error:', err);
+        this.errorMessage = 'An unexpected error occurred';
+        this.loading = false;
+      }
     });
   }
 
-  // ✅ Delete logic (called from template button)
-  deleteModule(moduleId: number): void {
+  private normalizeModulesData(data: any): Module[] {
+    if (!data) return [];
+    
+    if (Array.isArray(data)) {
+      return this.validateModules(data);
+    }
+    
+    if (data.modules && Array.isArray(data.modules)) {
+      return this.validateModules(data.modules);
+    }
+    
+    if (data.data && Array.isArray(data.data)) {
+      return this.validateModules(data.data);
+    }
+    
+    if (typeof data === 'object' && data.id) {
+      return this.validateModules([data]);
+    }
+    
+    return [];
+  }
+
+  private validateModules(modules: any[]): Module[] {
+    return modules
+      .filter(mod => mod && typeof mod === 'object' && mod.id)
+      .map(mod => ({
+        id: Number(mod.id),
+        title: String(mod.title || 'Untitled Module'),
+        description: String(mod.description || ''),
+        order: Number(mod.order ?? 0),
+        courseId: Number(mod.courseId || this.courseId)
+      }));
+  }
+
+  private getErrorMessage(err: any): string {
+    if (err.status === 404) {
+      return 'Course not found';
+    } else if (err.status === 403) {
+      return 'You do not have permission to view these modules';
+    } else if (err.status === 0) {
+      return 'Unable to connect to server. Please check your connection.';
+    } else if (err.error?.message) {
+      return err.error.message;
+    }
+    return 'Failed to load modules. Please try again.';
+  }
+
+  editModule(moduleId: number): void {
+    if (!this.courseId) return;
+    this.router.navigate([`/courses/${this.courseId}/modules/${moduleId}/edit`]);
+  }
+
+  deleteModule(id: number): void {
+    if (!this.courseId) return;
+    
     if (!confirm('Are you sure you want to delete this module?')) return;
 
-    this.moduleService.deleteModule(this.courseId, moduleId).subscribe({
-      next: () => this.loadModules(),
-      error: (err) => {
+    this.loading = true;
+    this.moduleService.deleteModule(this.courseId, id).pipe(
+      takeUntil(this.destroy$),
+      catchError(err => {
         console.error('Failed to delete module:', err);
-        this.errorMessage = 'Could not delete module.';
+        this.errorMessage = 'Could not delete module. Please try again.';
+        this.loading = false;
+        return of(null);
+      })
+    ).subscribe({
+      next: (response) => {
+        if (response !== null) {
+          this.loadModules();
+        }
       }
     });
   }
 
   goToCreate(): void {
+    if (!this.courseId) return;
     this.router.navigate([`/courses/${this.courseId}/modules/create`]);
   }
 
-  trackByModule(index: number, mod: Module): any {
+  trackByModule(index: number, mod: Module): number {
     return mod.id;
   }
 }

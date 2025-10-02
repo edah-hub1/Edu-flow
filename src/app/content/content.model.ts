@@ -1,5 +1,5 @@
 export interface Content {
-  id?: number;
+  id: number;
   title: string;
   description: string;
   type: 'VIDEO' | 'PDF' | 'ARTICLE' | 'QUIZ'; // enum-like

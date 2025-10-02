@@ -1,62 +1,67 @@
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="card shadow-sm p-4">
-        <h3 class="mb-3">{{ isEdit ? 'Edit Course' : 'Add New Course' }}</h3>
+<div class="max-w-2xl mx-auto mt-10">
+  <div class="bg-white shadow rounded-lg p-6">
+    <h3 class="text-xl font-semibold mb-4 text-center">
+      {{ isEdit ? 'Edit Course' : 'Add New Course' }}
+    </h3>
 
-        @if (course$ | async; as course) {
-          <form #courseForm="ngForm" (ngSubmit)="courseForm.valid && saveCourse(course)">
-            <div class="mb-3">
-              <label class="form-label">Course Title</label>
-              <input
-                type="text"
-                class="form-control"
-                [(ngModel)]="course.title"
-                name="title"
-                required
-                #title="ngModel"
-              />
-              @if (title.invalid && title.touched) {
-                <div class="text-danger small">Title is required</div>
-              }
-            </div>
+    @if (course$ | async; as course) {
+      <form #courseForm="ngForm" (ngSubmit)="courseForm.valid && saveCourse(course)">
+        
+        <!-- Title -->
+        <div class="mb-4">
+          <label class="block text-sm font-medium mb-1">Course Title</label>
+          <input
+            type="text"
+            class="w-full border rounded px-3 py-2 focus:ring focus:ring-blue-300"
+            [(ngModel)]="course.title"
+            name="title"
+            required
+            #title="ngModel"
+          />
+          @if (title.invalid && title.touched) {
+            <p class="text-red-500 text-xs mt-1">Title is required</p>
+          }
+        </div>
 
-            <div class="mb-3">
-              <label class="form-label">Description</label>
-              <textarea
-                class="form-control"
-                rows="4"
-                [(ngModel)]="course.description"
-                name="description"
-                required
-                #description="ngModel"
-              ></textarea>
-              @if (description.invalid && description.touched) {
-                <div class="text-danger small">Description is required</div>
-              }
-            </div>
-            <input
-                type="hidden"
-                [(ngModel)]="course.instructorId"
-                name="instructorId"
-              />
+        <!-- Description -->
+        <div class="mb-4">
+          <label class="block text-sm font-medium mb-1">Description</label>
+          <textarea
+            rows="4"
+            class="w-full border rounded px-3 py-2 focus:ring focus:ring-blue-300"
+            [(ngModel)]="course.description"
+            name="description"
+            required
+            #description="ngModel"
+          ></textarea>
+          @if (description.invalid && description.touched) {
+            <p class="text-red-500 text-xs mt-1">Description is required</p>
+          }
+        </div>
 
+        <input type="hidden" [(ngModel)]="course.instructorId" name="instructorId" />
 
-            <div class="d-flex justify-content-between">
-              <button type="submit" class="btn btn-success" [disabled]="courseForm.invalid">
-                {{ isEdit ? 'Update' : 'Create' }}
-              </button>
-              <a routerLink="/courses" class="btn btn-secondary">Cancel</a>
-            </div>
-          </form>
-        } @else {
-          <div class="text-center p-3">
-            <div class="spinner-border text-primary" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-          </div>
-        }
+        <!-- Buttons -->
+        <div class="flex justify-between">
+           <a
+            routerLink="/courses"
+            class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+          >
+            Cancel
+          </a>
+           <button
+            type="submit"
+            class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 disabled:opacity-50"
+            [disabled]="courseForm.invalid"
+          >
+            {{ isEdit ? 'Update' : 'Create' }}
+          </button>
+        </div>
+      </form>
+    } @else {
+      <div class="flex justify-center p-4">
+        <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
       </div>
-    </div>
-  </div>
+    }
+  </div>
 </div>

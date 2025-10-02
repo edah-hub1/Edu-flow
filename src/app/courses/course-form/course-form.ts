@@ -1,15 +1,20 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router ,RouterLink} from '@angular/router';
 import { Course } from '../course.model';
 import { CourseService } from '../course.service';
 import { Observable, of, switchMap } from 'rxjs';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCard } from '@angular/material/card';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-course-form',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,
+    MatFormFieldModule,MatCard,MatProgressSpinner, RouterLink
+  ],
   templateUrl: './course-form.html',
   styleUrls: ['./course-form.css']
 })

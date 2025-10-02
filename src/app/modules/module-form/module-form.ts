@@ -23,7 +23,8 @@ export class ModuleForm implements OnInit {
     title: ['', Validators.required],
     description: ['', Validators.required],
     order: 1,
-    courseId: 0
+    courseId: 0,
+    id: 0
   });
 
   errorMessage = '';
@@ -59,6 +60,7 @@ export class ModuleForm implements OnInit {
 
     const raw = this.form.getRawValue();
     const payload: Module = {
+      id: raw.id,
       title: raw.title,
       description: raw.description,
       order: raw.order,

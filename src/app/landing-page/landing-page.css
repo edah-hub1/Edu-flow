@@ -1,4 +1,7 @@
 /* Hero Section */
+@import "tailwindcss";
+@import "tailwindcss/preflight";
+@import "tailwindcss-typography";
 .hero-section {
   @apply bg-gradient-to-r from-primary-600 to-primary-700 text-white;
 }
