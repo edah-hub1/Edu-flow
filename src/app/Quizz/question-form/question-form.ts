@@ -63,8 +63,8 @@ export class QuestionForm implements OnInit {
     });
 
     this.questions.push(qGroup);
-    this.addOption(this.questions.length - 1); // add first option
-    this.addOption(this.questions.length - 1); // add second option
+    this.addOption(this.questions.length - 1); //  first option
+    this.addOption(this.questions.length - 1); //  second option
   }
 
   removeQuestion(index: number): void {
@@ -98,7 +98,7 @@ export class QuestionForm implements OnInit {
     next: (res) => {
       console.log('Quiz saved:', res);
 
-      // ✅ Correct navigation back to the right module's contents
+      // navigate back to the module's contents
       const courseId = this.route.snapshot.paramMap.get('courseId');
       const moduleId = this.route.snapshot.paramMap.get('moduleId');
 

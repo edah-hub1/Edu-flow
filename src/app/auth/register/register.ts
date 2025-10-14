@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Router, RouterLink} from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../service/auth.service';
 
 @Component({
@@ -15,7 +15,6 @@ import { AuthService } from '../service/auth.service';
   standalone: true,
   templateUrl: './register.html',
   styleUrls: ['./register.css'],
-
   imports: [
     CommonModule,
     FormsModule,
@@ -40,51 +39,48 @@ export class Register {
     private authService: AuthService,
     private router: Router
   ) {
-    this.registerForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', Validators.required],
-      dob: ['', Validators.required],
-      password: ['', Validators.required],
-      confirmPassword: ['', Validators.required],
-      role: ['', Validators.required]
-    });
-
+    this.registerForm = this.fb.group(
+      {
+        firstName: ['', Validators.required],
+        lastName: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
+        phone: ['', Validators.required],
+        dob: ['', Validators.required],
+        password: ['', Validators.required],
+        confirmPassword: ['', Validators.required],
+        role: ['', Validators.required],
+      },
+      { validators: this.passwordsMatchValidator } 
+    );
   }
 
+  //  check if password and confirmPassword match
+  passwordsMatchValidator: ValidatorFn = (group: AbstractControl) => {
+    const password = group.get('password')?.value;
+    const confirm = group.get('confirmPassword')?.value;
+    return password === confirm ? null : { passwordsMismatch: true };
+  };
+
   onSubmit() {
+    if (this.registerForm.invalid) return;
 
-    if (this.registerForm.valid) {
-      this.isLoading = true;
-      const { confirmPassword, role, ...formValue } = this.registerForm.value;
+    this.isLoading = true;
+    const { confirmPassword, ...formValue } = this.registerForm.value;
 
-      if (formValue.password !== confirmPassword) {
-        alert("Passwords don't match");
+    this.authService.register(formValue).subscribe({
+      next: (res: any) => {
+        console.log('Registration successful:', res);
+        console.log('Account created! Please login.');
+        this.router.navigate(['/login']);
+      },
+      error: (err: any) => {
+        console.error('Registration failed', err);
+        alert(err.error?.message || 'Something went wrong');
         this.isLoading = false;
-        return;
-      }
-
-      const payload = {
-        ...formValue,
-        role: role
-      };
-
-      this.authService.register(payload).subscribe({
-        next: (res: any) => {
-          console.log('Registration successful:', res);
-          alert('Account created! Please login.');
-          this.router.navigate(['/login']);
-        },
-        error: (err: any) => {
-          console.error('Registration failed', err);
-          alert(err.error?.message || 'Something went wrong');
-          this.isLoading = false;
-        },
-        complete: () => {
-          this.isLoading = false;
-        }
-      });
-    }
+      },
+      complete: () => {
+        this.isLoading = false;
+      },
+    });
   }
 }

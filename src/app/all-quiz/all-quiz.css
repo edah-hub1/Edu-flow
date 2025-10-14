@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+:host {
+  display: block;
+}
+
+/* Smooth hover transitions for all buttons and table rows */
+button, tr {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Make table headers sticky when scrolling (optional) */
+table thead th {
+  position: sticky;
+  top: 0;
+  background-color: var(--tw-bg-opacity);
+  backdrop-filter: blur(4px);
+  z-index: 10;
+}
+
+/* Custom dark mode border colors */
+.dark table thead th {
+  background-color: #18272f;
+}
+
+/* Slight hover lift for the “New Quiz” button */
+button.bg-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* Smooth fade-in for page content */
+main {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  table th, table td {
+    padding: 0.75rem 0.5rem;
+  }
+}
+@media (max-width: 480px) {
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+}

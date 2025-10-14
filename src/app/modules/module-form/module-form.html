@@ -1,5 +1,5 @@
-<div class="bg-white shadow rounded-2xl p-6 max-w-2xl mx-auto">
-  <h3 class="text-xl font-semibold text-gray-800 mb-6">Create Module</h3>
+<div class="bg-white shadow rounded-2xl p-6 max-w-2xl mx-auto mt-10 border border-gray-200">
+  <h3 class="text-xl font-semibold text-gray-800 mb-6 text-center">Create Module</h3>
 
   <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-5">
     <!-- Title -->
@@ -80,7 +80,7 @@
         class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded"
       >
         @if (!isSubmitting) {
-        <span>Create</span>
+        <span>Create Module</span>
         } @else {
         <span>Creating...</span>
         }

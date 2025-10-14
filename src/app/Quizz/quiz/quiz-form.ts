@@ -1,48 +1,3 @@
-// import { Component } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-// import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-// import { Router } from '@angular/router';
-
-// @Component({
-//   selector: 'app-create-quiz',
-//   standalone: true,
-//   imports: [CommonModule, ReactiveFormsModule],
-//   templateUrl: './quiz-form.html',
-//   styleUrls: ['./quiz-form.css']
-// })
-// export class QuizForm {
-//   quizForm: FormGroup;
-
-//   constructor(private fb: FormBuilder, private router: Router) {
-//     // ✅ define the form inside constructor
-//     this.quizForm = this.fb.group({
-//       title: ['', Validators.required],
-//       instructions: [''],
-//       timeLimitMinutes: [30, [Validators.min(0)]],
-//       maximumAttempts: [1, [Validators.min(1)]],
-//       passPercentage: [70, [Validators.min(0), Validators.max(100)]],
-//       randomizeQuestions: [true],
-//       showResultsImmediately: [true],
-//       published: [true],
-//       contentId: [null, Validators.required] // Link to course/lesson id
-//     });
-//   }
-
-//   // ✅ move to questions page and pass quiz metadata
-//   next(): void {
-//     if (this.quizForm.invalid) {
-//       this.quizForm.markAllAsTouched();
-//       return;
-//     }
-
-//     // Navigate to Question Builder
-//     this.router.navigate(['/quiz/questions'], {
-//       state: { quizMeta: this.quizForm.value }
-//     });
-//   }
-// }
-
-// src/app/quizzes/quiz-form/quiz-form.ts
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
@@ -54,7 +9,8 @@ import { Content } from '../../content/content.model';
   selector: 'app-quiz-form',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
-  templateUrl: './quiz-form.html'
+  templateUrl: './quiz-form.html',
+  styleUrls: ['./quiz-form.css']
 })
 export class QuizForm implements OnInit {
   private fb = inject(FormBuilder);
@@ -85,7 +41,7 @@ export class QuizForm implements OnInit {
 
     this.contentService.getContentsByModule(this.contentId).subscribe({
   next: (c) => {
-    const content = Array.isArray(c) ? c[0] : c; // pick first if array
+    const content = Array.isArray(c) ? c[0] : c; 
     this.contentTitle = content?.title ?? '';
     this.contentDescription = content?.description ?? '';
   }

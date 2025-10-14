@@ -43,7 +43,7 @@ export class ContentList implements OnInit {
         this.contentService.getContentsByModule(moduleId).pipe(
           map((data: any) => (Array.isArray(data) ? data : data?.data || [])),
           catchError((err) => {
-            console.error('❌ Error loading contents:', err);
+            console.error('Error loading contents:', err);
             this.errorMessage = 'Failed to load contents. Please try again.';
             return of([] as Content[]);
           }),

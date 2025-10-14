@@ -20,7 +20,7 @@ export class QuizList implements OnInit {
   errorMessage = '';
 
   ngOnInit(): void {
-    // ✅ Get quizId from route 
+    //  Get quizId from route 
     const quizId = Number(this.route.snapshot.paramMap.get('quizId'));
 
     if (!quizId) {

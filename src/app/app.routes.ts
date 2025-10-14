@@ -23,6 +23,7 @@ import { ContentList } from './content/content-list/content-list';
 import { ContentForm } from './content/content-form/content-form';
 import { QuestionForm } from './Quizz/question-form/question-form';
 import { QuizList } from './Quizz/quiz-list/quiz-list';
+import { AllQuiz } from './all-quiz/all-quiz';
 
 // Enrollment
 import { EnrollmentList } from './enrollment/enrollment-list/enrollment-list';
@@ -76,6 +77,11 @@ export const routes: Routes = [
     path: 'courses/:courseId/modules/:moduleId/contents/:contentId/quiz/:quizId/view',
     component: QuizList
   },
+  {
+  path: 'quizzes', component: AllQuiz,
+},
+ 
+
 
   // Enrollment
   { path: 'enrollments', component: EnrollmentList },
