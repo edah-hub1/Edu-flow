@@ -1,4 +1,4 @@
-import { inject } from '@angular/core';
+import { inject, PLATFORM_ID } from '@angular/core';
 import {
   HttpInterceptorFn,
   HttpErrorResponse,
@@ -8,9 +8,10 @@ import {
   HttpClient
 } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { catchError, switchMap, throwError, Observable, of, from } from 'rxjs';
+import { catchError, switchMap, throwError, Observable, from } from 'rxjs';
 import { AuthService } from '../../auth/service/auth.service';
 import { environment } from '../../../environments/environment';
+import { isPlatformBrowser } from '@angular/common';
 
 let isRefreshing = false;
 let refreshSubscribers: ((token: string) => void)[] = [];
@@ -31,69 +32,87 @@ export const authInterceptor: HttpInterceptorFn = (
   const authService = inject(AuthService);
   const router = inject(Router);
   const http = inject(HttpClient);
+  const platformId = inject(PLATFORM_ID);
 
-  // Skip login/register
+  // Skip login/register endpoints
   if (req.url.includes('/auth/login') || req.url.includes('/auth/register')) {
     return next(req);
   }
 
-  const accessToken = localStorage.getItem('access_token');
+  let accessToken: string | null = null;
+  let refreshToken: string | null = null;
+
+  // ✅ Only access localStorage on browser
+  if (isPlatformBrowser(platformId)) {
+    accessToken = localStorage.getItem('access_token');
+    refreshToken = localStorage.getItem('refresh_token');
+  }
+
+  // Attach access token if available
+  let authReq = req;
   if (accessToken) {
-    req = req.clone({
+    authReq = req.clone({
       setHeaders: { Authorization: `Bearer ${accessToken}` }
     });
   }
 
-  return next(req).pipe(
+  return next(authReq).pipe(
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401) {
-        const refreshToken = localStorage.getItem('refresh_token');
         if (!refreshToken) {
+          // No refresh token → force logout
           authService.logout();
           router.navigate(['/auth/login']);
           return throwError(() => error);
         }
 
         if (isRefreshing) {
-          // queue retry until refresh finishes
+          // Queue until refresh completes
           return new Observable<HttpEvent<unknown>>(observer => {
             subscribeTokenRefresh((newToken: string) => {
-              observer.next(
-                req.clone({
-                  setHeaders: { Authorization: `Bearer ${newToken}` }
-                }) as unknown as HttpEvent<unknown>
-              );
-              observer.complete();
+              const newReq = req.clone({
+                setHeaders: { Authorization: `Bearer ${newToken}` }
+              });
+              // ✅ Actually retry the HTTP request
+              next(newReq).subscribe({
+                next: (event) => observer.next(event),
+                error: (err) => observer.error(err),
+                complete: () => observer.complete(),
+              });
             });
           });
         }
 
+        // Start refresh
         isRefreshing = true;
 
-        return http.post<any>(`${environment.apiUrl}/auth/refresh`, { refreshToken }).pipe(
-          switchMap((res) => {
-            isRefreshing = false;
+        return http
+          .post<any>(`${environment.apiUrl}/auth/refresh`, { refreshToken })
+          .pipe(
+            switchMap((res) => {
+              isRefreshing = false;
 
-            // Save new tokens
-            localStorage.setItem('access_token', res.accessToken);
-            localStorage.setItem('refresh_token', res.refreshToken);
+              if (isPlatformBrowser(platformId)) {
+                // Save new tokens
+                localStorage.setItem('access_token', res.accessToken);
+                localStorage.setItem('refresh_token', res.refreshToken);
+              }
 
-            notifyTokenRefreshed(res.accessToken);
+              notifyTokenRefreshed(res.accessToken);
 
-            // Retry original request with new token
-            return next(
-              req.clone({
+              // Retry original request with new token
+              const newReq = req.clone({
                 setHeaders: { Authorization: `Bearer ${res.accessToken}` }
-              })
-            );
-          }),
-          catchError(err => {
-            isRefreshing = false;
-            authService.logout();
-            router.navigate(['/auth/login']);
-            return throwError(() => err);
-          })
-        );
+              });
+              return next(newReq);
+            }),
+            catchError((err) => {
+              isRefreshing = false;
+              authService.logout();
+              router.navigate(['/auth/login']);
+              return throwError(() => err);
+            })
+          );
       }
 
       return throwError(() => error);

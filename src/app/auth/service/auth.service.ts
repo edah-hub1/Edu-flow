@@ -1,127 +1,86 @@
 import { Injectable, inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, switchMap, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { isPlatformBrowser } from '@angular/common';
-import { jwtDecode } from 'jwt-decode';
-import { UserService, User } from '../service/user.service';
 
-interface LoginRequest {
+export interface LoginRequest {
   email: string;
   password: string;
 }
 
-interface LoginResponse {
-  token: string;
+export interface LoginResponse {
+  accessToken: string;
+  refreshToken: string;
+  accessExpiresIn: number;
+  refreshExpiresIn: number;
   message: string;
+  user: {
+    uuid: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    role: string;
+  };
 }
 
-interface DecodedToken {
-  sub: string;
-  iat: number;
-  exp: number;
-}
-
-const TOKEN_KEY = 'auth_token';
+const ACCESS_KEY = 'access_token';
+const REFRESH_KEY = 'refresh_token';
 const EMAIL_KEY = 'auth_email';
 const ROLE_KEY = 'auth_role';
-const USERID_KEY = 'auth_id';
+const UUID_KEY = 'auth_uuid';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private apiUrl = `${environment.apiUrl}`;
   private platformId = inject(PLATFORM_ID);
 
-  constructor(private http: HttpClient, private userService: UserService) {}
+  constructor(private http: HttpClient) {}
+
+  /** Login */
   login(payload: LoginRequest): Observable<LoginResponse> {
-  return this.http.post<LoginResponse>(`${this.apiUrl}/auth/login`, payload, {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  }).pipe(
-    tap((res) => this.handleAuthResponse(res)) //  store token + email
-  );
-}
+    return this.http
+      .post<LoginResponse>(`${this.apiUrl}/auth/login`, payload, {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      })
+      .pipe(tap((res) => this.handleAuthResponse(res)));
+  }
 
-
-  // login(payload: LoginRequest): Observable<User> {
-  //   return this.http.post<LoginResponse>(`${this.apiUrl}/auth/login`, payload, {
-  //     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  //   }).pipe(
-  //     switchMap((res) => {
-  //       this.handleAuthResponse(res);
-
-  //       // decode email
-  //       const decoded = jwtDecode<DecodedToken>(res.token);
-  //       const email = decoded.sub;
-
-  //       // fetch full user profile
-  //       return this.userService.getUserByEmail(email);
-  //     }),
-  //     tap((user) => {
-  //       if (isPlatformBrowser(this.platformId) && user) {
-  //         localStorage.setItem(ROLE_KEY, user.userRole);
-  //         localStorage.setItem(USERID_KEY, user.id.toString());
-  //       }
-  //     })
-  //   );
-  // }
-
-   //  Register
+  /** Register */
   register(payload: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/register`, payload, {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
     });
   }
 
-  
-
-  // Logout
+  /** Logout */
   logout(): void {
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem(ACCESS_KEY);
+      localStorage.removeItem(REFRESH_KEY);
       localStorage.removeItem(EMAIL_KEY);
+      localStorage.removeItem(ROLE_KEY);
+      localStorage.removeItem(UUID_KEY);
     }
   }
 
-  // Check if logged in (token must not be expired)
+  /** Check login */
   isLoggedIn(): boolean {
     if (!isPlatformBrowser(this.platformId)) return false;
-
-    const token = localStorage.getItem(TOKEN_KEY);
-    if (!token) return false;
-
-    try {
-      const decoded = jwtDecode<DecodedToken>(token);
-      const now = Math.floor(Date.now() / 1000);
-      return decoded.exp > now; // still valid
-    } catch {
-      return false;
-    }
+    return !!localStorage.getItem(ACCESS_KEY);
   }
 
-  // Get stored JWT
   getToken(): string | null {
     return isPlatformBrowser(this.platformId)
-      ? localStorage.getItem(TOKEN_KEY)
+      ? localStorage.getItem(ACCESS_KEY)
       : null;
   }
 
-  // Get logged-in email
-  getEmail(): string | null {
+  getRefreshToken(): string | null {
     return isPlatformBrowser(this.platformId)
-      ? localStorage.getItem(EMAIL_KEY)
+      ? localStorage.getItem(REFRESH_KEY)
       : null;
   }
-
-  // Shared logic for login/register
-  // private handleAuthResponse(res: LoginResponse): void {
-  //   if (isPlatformBrowser(this.platformId)) {
-  //     localStorage.setItem(TOKEN_KEY, res.token);
-
-  //     const decoded = jwtDecode<DecodedToken>(res.token);
-  //     localStorage.setItem(EMAIL_KEY, decoded.sub);
-  //   }
-  // }
-
 
   getRole(): string | null {
     return isPlatformBrowser(this.platformId)
@@ -129,16 +88,26 @@ export class AuthService {
       : null;
   }
 
-
-
-  private handleAuthResponse(res: any): void {
-  if (isPlatformBrowser(this.platformId)) {
-    localStorage.setItem('access_token', res.accessToken);
-    localStorage.setItem('refresh_token', res.refreshToken);
-    localStorage.setItem('auth_email', res.user.email);
-    localStorage.setItem('auth_role', res.user.role);
-    localStorage.setItem('auth_id', res.user.uuid);
+  getEmail(): string | null {
+    return isPlatformBrowser(this.platformId)
+      ? localStorage.getItem(EMAIL_KEY)
+      : null;
   }
-}
 
+  getUuid(): string | null {
+    return isPlatformBrowser(this.platformId)
+      ? localStorage.getItem(UUID_KEY)
+      : null;
+  }
+
+  /** Save tokens + user info */
+  private handleAuthResponse(res: LoginResponse): void {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem(ACCESS_KEY, res.accessToken);
+      localStorage.setItem(REFRESH_KEY, res.refreshToken);
+      localStorage.setItem(EMAIL_KEY, res.user.email);
+      localStorage.setItem(ROLE_KEY, res.user.role);
+      localStorage.setItem(UUID_KEY, res.user.uuid);
+    }
+  }
 }

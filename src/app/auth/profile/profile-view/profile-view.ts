@@ -1,89 +1,64 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { AuthService } from '../../service/auth.service';
-import { UserService, User } from '../../service/user.service';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Router } from '@angular/router';
 
+import { UserService, User } from '../../service/user.service';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
+  templateUrl: './profile-view.html',
+  styleUrls: ['./profile-view.css'],
   imports: [
     CommonModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDividerModule,
+    MatProgressSpinnerModule,
   ],
-  templateUrl: './profile-view.html',
-  styleUrls: ['./profile-view.css']
 })
 export class ProfileView implements OnInit {
-  profileForm!: FormGroup;
-  user: User | null = null;
-  saving = false;
-
-  private fb = inject(FormBuilder);
-  private authService = inject(AuthService);
   private userService = inject(UserService);
+  private router = inject(Router);
+
+  user: User | null = null;
+  loading = false;
 
   ngOnInit(): void {
-    this.profileForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: [{ value: '', disabled: true }],
-      password: ['']
-    });
+    this.fetchProfile();
+  }
 
-    const email = this.authService.getEmail();
-    if (email) {
-      this.userService.getUserByEmail(email).subscribe({
+  fetchProfile(): void {
+    this.loading = true;
+
+    try {
+      this.userService.getMyProfile().subscribe({
         next: (res) => {
-          if (res) {
-            this.user = res;
-            this.profileForm.patchValue({
-              firstName: res.firstName,
-              lastName: res.lastName,
-              email: res.email
-            });
-          }
+          this.user = res;
+          this.loading = false;
         },
-        error: (err) => console.error('Failed to load user:', err)
+        error: (err) => {
+          console.error('❌ Failed to load profile', err);
+          this.loading = false;
+
+          // Redirect to login if unauthorized or UUID missing
+          this.router.navigate(['/auth/login']);
+        },
       });
+    } catch (e) {
+      console.error('❌ No UUID in localStorage', e);
+      this.router.navigate(['/auth/login']);
     }
   }
 
-  saveProfile() {
-    if (!this.user) return;
-
-    this.saving = true;
-
-    const updated = this.profileForm.getRawValue();
-    const payload: Partial<User> = {
-      firstName: updated.firstName,
-      lastName: updated.lastName,
-      ...(updated.password ? { password: updated.password } : {})
-    };
-
-    this.userService.updateUser(this.user.id, payload).subscribe({
-      next: (res) => {
-        this.saving = false;
-        alert('Profile updated successfully ✅');
-        this.user = res; // update local copy
-        this.profileForm.patchValue({
-          firstName: res.firstName,
-          lastName: res.lastName,
-          email: res.email
-        });
-      },
-      error: (err) => {
-        this.saving = false;
-        console.error('Failed to update profile:', err);
-        alert('Failed to update profile');
-      }
-    });
+  editProfile(): void {
+    console.log('Edit profile clicked');
+    // Navigate to edit form if you build one
   }
 }

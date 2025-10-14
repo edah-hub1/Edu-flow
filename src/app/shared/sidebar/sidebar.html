@@ -51,10 +51,28 @@
     </li>
   </ul>
 
-   <!-- Optional Footer -->
-  <div class="mt-auto pt-3 border-top border-secondary">
-    <a href="#" class="d-flex align-items-center text-white text-decoration-none">
-      <i class="fas fa-sign-out-alt me-2"></i> Logout
-    </a>
-  </div>
+
+<!-- Sidebar Footer -->
+<div class="mt-auto pt-3 border-top border-secondary relative">
+<div class="mt-auto pt-3 border-top border-secondary">
+  <button
+    mat-button
+    [matMenuTriggerFor]="accountMenu"
+    class="text-white w-100 d-flex align-items-center"
+  >
+    <mat-icon class="me-2">account_circle</mat-icon>
+    Account
+  </button>
+
+  <mat-menu #accountMenu="matMenu">
+    <button mat-menu-item [routerLink]="'/profile'">
+      <mat-icon>badge</mat-icon>
+      <span>Profile</span>
+    </button>
+    <mat-divider></mat-divider>
+    <button mat-menu-item (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      <span>Logout</span>
+    </button>
+  </mat-menu>
 </div>

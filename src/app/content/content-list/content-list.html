@@ -3,101 +3,74 @@
     Contents for Module {{ moduleId }}
   </h2>
 
-  <!-- Loading -->
-  <div *ngIf="loading" class="text-blue-500">Loading contents...</div>
-
   <!-- Error -->
   <div *ngIf="errorMessage" class="bg-red-100 text-red-700 p-3 rounded mb-4">
     {{ errorMessage }}
   </div>
 
-  <!-- Content list -->
-  <ul *ngIf="!loading && !errorMessage && contents.length > 0" class="space-y-3">
-    <li *ngFor="let c of contents" class="p-4 bg-white shadow rounded-lg border flex flex-col gap-1">
-      <div class="flex justify-between items-center">
-        <span class="font-semibold text-gray-800">
-          {{ c.orderInModule }}. {{ c.title }}
-        </span>
-        <span class="px-2 py-1 text-xs rounded bg-gray-200 text-gray-700">
-          {{ c.type }}
-        </span>
-      </div>
-      <p class="text-sm text-gray-600">{{ c.description }}</p>
-
-      <!-- Resource link -->
-      <a
-        *ngIf="c.type === 'PDF' || c.type === 'VIDEO'"
-        [href]="c.resourceUrl"
-        target="_blank"
-        class="text-blue-600 hover:underline text-sm"
-      >
-        Open Resource
-      </a>
-
-      <!-- Quiz section -->
-      <a
-        *ngIf="c.type === 'QUIZ' && !c.quizId"
-        [routerLink]="[
-          '/courses',
-          courseId,
-          'modules',
-          moduleId,
-          'contents',
-          c.id,
-          'questions'
-        ]"
-        class="text-indigo-600 text-sm font-medium hover:underline mt-2"
-      >
-        ➕ Add Questions
-      </a>
-
-      <a
-        *ngIf="c.type === 'QUIZ' && c.quizId"
-        [routerLink]="[
-          '/courses',
-          courseId,
-          'modules',
-          moduleId,
-          'contents',
-          c.id,
-          'quiz',
-          c.quizId,
-          'view'
-        ]"
-        class="text-green-600 text-sm font-medium hover:underline mt-2"
-      >
-        👀 View Questions
-      </a>
-
-      <!-- Article content -->
-      <p *ngIf="c.type === 'ARTICLE'" class="text-xs text-gray-500 mt-1">
-        {{ c.articleContent }}
-      </p>
-    </li>
-  </ul>
-
-  <!-- Empty State -->
-  <div *ngIf="!loading && !errorMessage && contents.length === 0"
-       class="bg-gray-50 text-gray-600 p-4 rounded text-center">
-    No contents found for this module.
+  <!-- Loading -->
+  <div *ngIf="loading" class="text-blue-500 mb-4 animate-pulse">
+    Loading contents...
   </div>
+
+  <!-- Content list -->
+  <ng-container *ngIf="contents$ | async as contents">
+    <ul *ngIf="contents.length > 0" class="space-y-3">
+      <li *ngFor="let c of contents; trackBy: trackById" class="p-4 bg-white shadow rounded-lg border flex flex-col gap-1">
+        <div class="flex justify-between items-center">
+          <span class="font-semibold text-gray-800">
+            {{ c.orderInModule }}. {{ c.title }}
+          </span>
+          <span class="px-2 py-1 text-xs rounded bg-gray-200 text-gray-700 uppercase">
+            {{ c.type }}
+          </span>
+        </div>
+
+        <p class="text-sm text-gray-600">{{ c.description }}</p>
+
+        <!-- Resource -->
+        <a *ngIf="c.type === 'PDF' || c.type === 'VIDEO'"
+           [href]="c.resourceUrl"
+           target="_blank"
+           class="text-blue-600 hover:underline text-sm">
+          Open Resource
+        </a>
+
+        <!-- Quiz add/view toggle -->
+        <a *ngIf="c.type === 'QUIZ' && !c.quizId"
+           [routerLink]="['/courses', courseId, 'modules', moduleId, 'contents', c.id, 'questions']"
+           class="text-indigo-600 text-sm font-medium hover:underline mt-2">
+          ➕ Add Questions
+        </a>
+        <a *ngIf="c.type === 'QUIZ' && c.quizId"
+           [routerLink]="['/courses', courseId, 'modules', moduleId, 'contents', c.id, 'quiz', c.quizId, 'view']"
+           class="text-green-600 text-sm font-medium hover:underline mt-2">
+          👀 View Questions
+        </a>
+
+        <!-- Article -->
+        <p *ngIf="c.type === 'ARTICLE'" class="text-xs text-gray-500 mt-1">
+          {{ c.articleContent }}
+        </p>
+      </li>
+    </ul>
+
+    <!-- No contents -->
+    <div *ngIf="contents.length === 0 && !loading" class="bg-gray-50 text-gray-600 p-4 rounded text-center">
+      No contents found for this module.
+    </div>
+  </ng-container>
 
   <!-- Action buttons -->
   <div class="flex justify-between mt-4">
-    <!-- Back to all modules -->
-    <a
-      [routerLink]="['/courses', courseId, 'modules']"
-      class="ml-8 px-4 py-2 bg-gray-600 no-underline text-white rounded-lg shadow hover:bg-gray-700 transition"
-    >
-      ← All Modules
+    <a [routerLink]="['/courses', courseId, 'modules']"
+       class="ml-8 px-4 py-2 bg-gray-600 text-white rounded-lg shadow hover:bg-gray-700 transition">
+      ← Back to Modules
     </a>
 
-    <!-- Add new quiz content -->
-    <button
-      (click)="addQuizContent()"
-      class="px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition"
-    >
-      + Add Quiz
+    <button (click)="goToCreate()"
+            class="px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition">
+      + Add New Content
     </button>
   </div>
 </section>
