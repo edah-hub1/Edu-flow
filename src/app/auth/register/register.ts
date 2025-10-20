@@ -9,6 +9,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../service/auth.service';
+import { MatCardActions, MatCardContent } from "@angular/material/card";
 
 @Component({
   selector: 'app-register',
@@ -26,6 +27,10 @@ import { AuthService } from '../service/auth.service';
     MatButtonModule,
     MatIconModule,
     MatCheckboxModule,
+    MatProgressSpinnerModule,
+    MatButtonModule,
+    MatCardActions,
+    MatCardContent
   ],
 })
 export class Register {

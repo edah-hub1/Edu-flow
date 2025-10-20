@@ -6,14 +6,14 @@ import { Course } from '../course.model';
 import { CourseService } from '../course.service';
 import { Observable, of, switchMap } from 'rxjs';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatCard } from '@angular/material/card';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
+// import { MatCard } from '@angular/material/card';
+// import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-course-form',
   standalone: true,
   imports: [CommonModule, FormsModule,
-    MatFormFieldModule,MatCard,MatProgressSpinner, RouterLink
+    MatFormFieldModule, RouterLink
   ],
   templateUrl: './course-form.html',
   styleUrls: ['./course-form.css']

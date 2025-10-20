@@ -2,3 +2,34 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+/* styles.scss or component.scss */
+
+body, html {
+  height: 100%;
+  margin: 0;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: white; /* or your theme color */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+main {
+  flex: 1;
+  overflow-y: auto;
+  padding-top: 1rem; /* space below the header */
+}
+footer {
+  background-color: #f8f9fa;
+  text-align: center;
+  padding: 1rem 0;
+}

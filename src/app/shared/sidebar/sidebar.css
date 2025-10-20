@@ -18,3 +18,62 @@
 }
 
 
+/* Sidebar Base */
+.sidebar {
+  background-color: #1a237e !important; /* Indigo 900 */
+  color: #fff;
+  min-height: 100vh;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+/* Logo Section */
+.sidebar .fa-cube {
+  color: #fff;
+}
+
+.sidebar h4 {
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Nav Links */
+.sidebar .nav-link {
+  color: #e0e7ff; /* Light indigo/white tint */
+  border-radius: 8px;
+  margin-bottom: 6px;
+  padding: 8px 12px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* Hover and Active States */
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+  background-color: #0d175e !important; /* Slightly darker indigo */
+  color: #fff !important;
+}
+
+/* Divider and Footer */
+.sidebar .border-top {
+  border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.sidebar button[mat-button] {
+  color: #fff;
+  justify-content: flex-start;
+  text-align: left;
+  text-transform: none;
+  font-weight: 500;
+}
+
+.sidebar button[mat-button]:hover {
+  background-color: #0d175e !important;
+}
+
+/* Account Menu styling */
+.mat-mdc-menu-content {
+  background-color: #fff;
+  color: #000;
+}

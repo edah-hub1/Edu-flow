@@ -1,13 +1,12 @@
-<div class="login-container d-flex justify-content-center align-items-center vh-100 bg-light">
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
   <div class="card mat-elevation-z8 p-4" style="width: 400px; border-radius: 12px;">
-
+    
     <!-- Logo + App Name -->
     <div class="text-center mb-4">
       <div class="d-flex justify-content-center align-items-center mb-2">
         <i class="fas fa-cube fa-2x me-2 text-primary"></i>
-        <h3 class="m-0 fw-bold">Eduflow</h3>
+        <h3 class="m-0 fw-bold text-primary">Eduflow</h3>
       </div>
-      <!-- <h4 class="fw-semibold mt-3 mb-1 mat-typography">Welcome Back</h4> -->
       <p class="text-muted mb-0">Sign in to continue to Eduflow</p>
     </div>
 
@@ -21,11 +20,11 @@
             matInput   
             type="email" 
             formControlName="email" 
-            placeholder="Enter email" 
+            placeholder="Enter your email" 
             required>
           <mat-icon matSuffix>mail</mat-icon>
 
-          @if (loginForm.get('email')?.invalid) {
+          @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
             <mat-error>Valid email is required</mat-error>
           }
         </mat-form-field>
@@ -43,7 +42,7 @@
             <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
           </button>
 
-          @if (loginForm.get('password')?.invalid) {
+          @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
             <mat-error>Password is required</mat-error>
           }
         </mat-form-field>
@@ -52,19 +51,20 @@
         <button 
           mat-raised-button 
           color="primary" 
-          class="w-100 mt-2 to-blue-700"
+          class="w-100 mt-2 py-2 fw-semibold"
           [disabled]="loginForm.invalid">
           Sign In
         </button>
       </form>
     </mat-card-content>
 
+    <!-- Links -->
     <mat-card-actions class="text-center mt-3 d-flex flex-column">
-      <a mat-button routerLink="/forgot-password" class="text-primary mb-2">
+      <a mat-button routerLink="/forgot-password" class="text-primary fw-medium mb-2">
         Forgot your password?
       </a>
-      <a mat-button routerLink="/register">
-        Don’t have an account? <strong>Sign Up</strong>
+      <a mat-button routerLink="/register" class="fw-medium">
+        Don’t have an account? <strong class="text-primary">Sign Up</strong>
       </a>
     </mat-card-actions>
 
