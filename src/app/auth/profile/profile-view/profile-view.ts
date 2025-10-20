@@ -44,7 +44,7 @@ export class ProfileView implements OnInit {
           this.loading = false;
         },
         error: (err) => {
-          console.error('❌ Failed to load profile', err);
+          console.error('Failed to load profile', err);
           this.loading = false;
 
           // Redirect to login if unauthorized or UUID missing
@@ -52,7 +52,7 @@ export class ProfileView implements OnInit {
         },
       });
     } catch (e) {
-      console.error('❌ No UUID in localStorage', e);
+      console.error('No UUID in localStorage', e);
       this.router.navigate(['/auth/login']);
     }
   }

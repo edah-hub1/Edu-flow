@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterLink } from '@angular/router';
 
 import { AuthService } from '../service/auth.service';
-import { MatCardContent, MatCardModule } from "@angular/material/card";
+import { MatCardModule } from "@angular/material/card";
 
 @Component({
   selector: 'app-login',
@@ -24,7 +24,7 @@ import { MatCardContent, MatCardModule } from "@angular/material/card";
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatCardContent,
+    // MatCardContent,
     MatCardModule
 ],
 })
