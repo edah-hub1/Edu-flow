@@ -49,7 +49,7 @@ export class Login {
         next: (res: any) => {
           console.log('Login successful:', res);
 
-          // ✅ Save tokens + user info
+          //  Save tokens + user info
           localStorage.setItem('access_token', res.accessToken);
           localStorage.setItem('refresh_token', res.refreshToken);
           localStorage.setItem('auth_uuid', res.user.uuid);
@@ -57,7 +57,7 @@ export class Login {
           localStorage.setItem('auth_role', res.user.role);
           localStorage.setItem('auth_name', `${res.user.firstName} ${res.user.lastName}`);
 
-          // ✅ Redirect based on role
+          //  Redirect based on role
           switch (res.user.role.toUpperCase()) {
             case 'ADMIN':
               this.router.navigate(['/dashboard/admin']);

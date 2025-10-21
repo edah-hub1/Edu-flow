@@ -1,24 +1,56 @@
-/* Hero Section */
 @import "tailwindcss";
-@import "tailwindcss/preflight";
-@import "tailwindcss-typography";
-.hero-section {
-  @apply bg-gradient-to-r from-primary-600 to-primary-700 text-white;
+/* Testimonials hover and animation */
+section.bg-primary\/5 .rounded-xl {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.hero-title {
-  @apply text-4xl lg:text-5xl font-bold mb-6 leading-tight text-balance;
+section.bg-primary\/5 .rounded-xl:hover {
+  box-shadow: 0 8px 20px rgba(19, 164, 236, 0.15);
+  transform: translateY(-4px);
 }
 
-.hero-subtitle {
-  @apply text-lg lg:text-xl text-primary-100 mb-8 max-w-2xl mx-auto text-pretty;
+/* Subtle fade-in */
+section {
+  animation: fadeInUp 0.8s ease both;
 }
 
-/* Buttons */
-.btn-primary {
-  @apply bg-accent-500 hover:bg-accent-600 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all shadow-lg;
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.btn-secondary {
-  @apply bg-white text-primary-600 hover:bg-gray-100 px-8 py-4 rounded-full font-semibold text-lg transition-all shadow-lg;
+@import "tailwindcss";
+
+:host {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  background-color: #f9fafc;
 }
+
+/* Shared brand color */
+.text-primary {
+  color: #1a237e;
+}
+
+.bg-primary {
+  background-color: #1a237e;
+}
+
+.bg-primary:hover {
+  background-color: #0d175e;
+}
+
+button {
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+

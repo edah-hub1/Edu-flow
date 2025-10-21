@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 
+//
+
 // Auth
 import { Login } from './auth/login/login';
 import { Register } from './auth/register/register';
@@ -40,7 +42,8 @@ import { ProfileEdit } from './auth/profile/profile-edit/profile-edit';
 import { Certificates } from './courses/certificates/certificates';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  // { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', component: LandingPage, pathMatch: 'full' },
 
   // Auth
   { path: 'login', component: Login },
@@ -51,7 +54,7 @@ export const routes: Routes = [
   { path: 'dashboard/student', component: StudentDashboard },
   { path: 'dashboard/instructor', component: InstructorDashboard },
   { path: 'dashboard/admin', component: AdminDashboard },
-  { path: 'landing-page', component: LandingPage },
+  // { path: '', component: LandingPage },
 
   // Courses
   { path: 'courses', component: CourseList },

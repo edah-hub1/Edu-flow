@@ -1,16 +1,100 @@
-<div class="flex flex-col min-h-screen bg-gray-50">
+<div class="flex flex-col min-h-screen bg-gray-50 font-display text-gray-800">
   <!-- Header -->
-  <app-header></app-header>
+  <header class="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-gray-200 px-6 lg:px-24">
+    <div class="flex items-center justify-between h-16 max-w-[1440px] mx-auto">
+      <div class="flex items-center gap-3 text-indigo-900">
+        <i class="fas fa-cube fa-2x text-indigo-900"></i>
+        <h2 class="text-xl font-bold">Eduflow</h2>
+      </div>
 
-  <!-- Hero Section -->
-  <app-hero></app-hero>
+      <nav class="hidden md:flex gap-8">
+        <a routerLink="/courses" class="hover:text-indigo-900 text-gray-700 text-sm font-medium">Courses</a>
+        <a href="#" class="hover:text-indigo-900 text-gray-700 text-sm font-medium">About</a>
+        <a href="#" class="hover:text-indigo-900 text-gray-700 text-sm font-medium">Pricing</a>
+      </nav>
+
+      <div class="flex gap-3">
+        <button routerLink="/auth/login" class="h-10 px-4 text-indigo-900 border border-indigo-900 rounded-lg text-sm font-semibold hover:bg-indigo-900 hover:text-white transition">
+          Login
+        </button>
+        <button routerLink="/register" class="h-10 px-4 bg-indigo-900 text-white rounded-lg text-sm font-semibold hover:bg-indigo-800 transition">
+          Sign Up
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="py-20 bg-cover bg-center bg-no-repeat text-center text-white" 
+    style="background-image: linear-gradient(rgba(26,35,126,0.6), rgba(26,35,126,0.6)), url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b');">
+    <h1 class="text-4xl sm:text-6xl font-black mb-4">Unlock Your Potential</h1>
+    <p class="max-w-2xl mx-auto text-slate-100 text-lg mb-8">Join thousands of learners and take the next step in your career with Eduflow.</p>
+    <button routerLink="/register" class="h-12 px-6 bg-white text-indigo-900 font-bold rounded-lg hover:bg-gray-200 transition">
+      Get Started
+    </button>
+  </section>
+
+  <!-- Why Learn With Us -->
+  <section class="py-16 px-6 lg:px-24 bg-white text-center">
+    <h2 class="text-3xl font-bold text-indigo-900 mb-10">Why Learn With Eduflow</h2>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="p-6 bg-gray-50 rounded-2xl shadow hover:shadow-md transition">
+        <i class="fas fa-graduation-cap fa-2x text-indigo-900 mb-4"></i>
+        <h3 class="font-semibold text-lg mb-2">Expert Instructors</h3>
+        <p class="text-gray-600">Learn from industry professionals with years of experience.</p>
+      </div>
+      <div class="p-6 bg-gray-50 rounded-2xl shadow hover:shadow-md transition">
+        <i class="fas fa-laptop-code fa-2x text-indigo-900 mb-4"></i>
+        <h3 class="font-semibold text-lg mb-2">Flexible Learning</h3>
+        <p class="text-gray-600">Access courses anytime, anywhere — at your own pace.</p>
+      </div>
+      <div class="p-6 bg-gray-50 rounded-2xl shadow hover:shadow-md transition">
+        <i class="fas fa-certificate fa-2x text-indigo-900 mb-4"></i>
+        <h3 class="font-semibold text-lg mb-2">Certified Courses</h3>
+        <p class="text-gray-600">Earn certificates that boost your career credibility.</p>
+      </div>
+    </div>
+  </section>
 
   <!-- Featured Courses -->
-  <app-featured-courses></app-featured-courses>
+  <section class="py-16 px-6 lg:px-24 bg-gray-50">
+    <h2 class="text-3xl font-bold text-indigo-900 mb-10 text-center">Featured Courses</h2>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div *ngFor="let course of featuredCourses" class="bg-white rounded-xl shadow-lg hover:-translate-y-2 transition p-4">
+        <div class="aspect-video rounded-lg bg-cover bg-center mb-4" [style.backgroundImage]="'url(' + course.image + ')'"></div>
+        <h3 class="text-lg font-semibold text-indigo-900">{{ course.title }}</h3>
+        <p class="text-sm text-gray-600 mb-4">{{ course.author }}</p>
+        <button class="h-10 px-4 bg-indigo-900/10 text-indigo-900 rounded-lg text-sm font-bold hover:bg-indigo-900/20 transition">
+          View Course
+        </button>
+      </div>
+    </div>
+  </section>
 
-  <!-- Call To Action -->
-  <app-call-to-action></app-call-to-action>
+  <!-- Testimonials -->
+  <section class="py-16 px-6 lg:px-24 bg-white text-center">
+    <h2 class="text-3xl font-bold text-indigo-900 mb-10">What Our Learners Say</h2>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="p-6 rounded-2xl shadow bg-gray-50">
+        <p class="text-gray-600 italic mb-4">“Eduflow transformed how I learn. The instructors are fantastic and easy to follow!”</p>
+        <h4 class="font-semibold text-indigo-900">Sarah K.</h4>
+        <span class="text-sm text-gray-500">Student</span>
+      </div>
+      <div class="p-6 rounded-2xl shadow bg-gray-50">
+        <p class="text-gray-600 italic mb-4">“I could learn at my own pace while balancing work. Highly recommend!”</p>
+        <h4 class="font-semibold text-indigo-900">David M.</h4>
+        <span class="text-sm text-gray-500">Software Engineer</span>
+      </div>
+      <div class="p-6 rounded-2xl shadow bg-gray-50">
+        <p class="text-gray-600 italic mb-4">“The certificates helped me get a promotion — Eduflow is a game changer!”</p>
+        <h4 class="font-semibold text-indigo-900">Angela W.</h4>
+        <span class="text-sm text-gray-500">Data Analyst</span>
+      </div>
+    </div>
+  </section>
 
   <!-- Footer -->
-  <app-footer></app-footer>
+  <footer class="bg-indigo-900 text-white py-10 px-6 lg:px-24 text-center">
+    <p class="text-sm">&copy; 2025 Eduflow. All rights reserved.</p>
+  </footer>
 </div>
