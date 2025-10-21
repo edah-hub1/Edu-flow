@@ -1,0 +1,278 @@
+@import "tailwindcss";
+/* --------------------------------------
+   GENERAL PAGE STYLES
+--------------------------------------- */
+.about-container {
+  background-color: #f9fafc;
+  color: #1f2937;
+}
+
+.section {
+  padding: 4rem 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.section-subtitle {
+  color: #4b5563;
+  margin-bottom: 2rem;
+  max-width: 640px;
+}
+
+/* --------------------------------------
+   HERO SECTION
+--------------------------------------- */
+.hero {
+  position: relative;
+  background: linear-gradient(rgba(26, 35, 126, 0.8), rgba(26, 35, 126, 0.8)),
+    url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b') center/cover no-repeat;
+  color: #fff;
+  text-align: center;
+  padding: 8rem 1.5rem;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  font-size: 1.125rem;
+  color: #e5e7eb;
+  margin-bottom: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero button {
+  background-color: #1a237e;
+  color: #fff;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.hero button:hover {
+  background-color: #0d175e;
+  transform: scale(1.05);
+}
+
+/* --------------------------------------
+   MISSION & VISION
+--------------------------------------- */
+.mission-vision {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .mission-vision {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.card {
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.card h3 {
+  font-size: 1.25rem;
+  color: #1a237e;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.card p {
+  font-size: 0.95rem;
+  color: #4b5563;
+}
+
+/* --------------------------------------
+   STORY TIMELINE
+--------------------------------------- */
+.timeline {
+  border-left: 4px solid #1a237e;
+  padding-left: 1.5rem;
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -0.75rem;
+  top: 0.4rem;
+  width: 0.75rem;
+  height: 0.75rem;
+  background-color: #1a237e;
+  border-radius: 50%;
+}
+
+.timeline-item h4 {
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.25rem;
+}
+
+.timeline-item span {
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+/* --------------------------------------
+   VALUES SECTION
+--------------------------------------- */
+.values {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .values {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.value-card {
+  background-color: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  text-align: left;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.value-card h4 {
+  color: #1a237e;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.value-card p {
+  color: #4b5563;
+  font-size: 0.9rem;
+}
+
+/* --------------------------------------
+   TEAM SECTION
+--------------------------------------- */
+.team {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 2rem;
+  text-align: center;
+}
+
+.team-member img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.team-member h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.team-member p {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+/* --------------------------------------
+   CTA SECTION
+--------------------------------------- */
+.cta {
+  text-align: center;
+  background-color: #1a237e;
+  color: #fff;
+  padding: 4rem 1.5rem;
+  border-radius: 0;
+}
+
+.cta h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.cta p {
+  font-size: 0.9rem;
+  color: #e5e7eb;
+  margin-bottom: 2rem;
+}
+
+.cta button {
+  background-color: #fff;
+  color: #1a237e;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.cta button:hover {
+  background-color: #f3f4f6;
+  transform: scale(1.05);
+}
+
+/* --------------------------------------
+   FOOTER
+--------------------------------------- */
+footer {
+  background-color: #0d175e;
+  color: #e5e7eb;
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+footer p {
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+footer a {
+  color: #a5b4fc;
+  text-decoration: none;
+  transition: color 0.2s;
+  margin: 0 0.5rem;
+}
+
+footer a:hover {
+  color: #fff;
+}
