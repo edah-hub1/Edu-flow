@@ -18,7 +18,7 @@ export interface User {
   updatedAt?: string;
 }
 
-// ✅ Must match AuthService
+//  match AuthService
 const USER_UUID_KEY = 'auth_uuid';
 
 @Injectable({ providedIn: 'root' })
