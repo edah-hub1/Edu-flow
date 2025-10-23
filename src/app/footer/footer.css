@@ -1,11 +1,9 @@
-.footer a {
-  transition: color 0.3s ease;
-}
+@import "tailwindcss";
 
-.footer svg {
-  transition: color 0.3s ease;
+.bg-indigo-900 {
+  background-color: #312e81 !important; 
+  font-weight: bold;
 }
-
-.footer .space-x-4 > * + * {
-  margin-left: 1rem;
+.text-grey-500 {
+  color: #6b7280 !important; 
 }

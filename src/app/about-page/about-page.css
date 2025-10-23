@@ -276,3 +276,202 @@ footer a {
 footer a:hover {
   color: #fff;
 }
+/* Page background */
+.about-container {
+  background-color: #f9fafc; /* subtle light background */
+  color: #1f2937; /* gray-800 default text */
+}
+
+.dark .about-container {
+  background-color: #1a237e; /* dark-indigo */
+  color: #e0e7ff; /* light text in dark mode */
+}
+
+/* Hero Section */
+.hero-section {
+  height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  background-image: linear-gradient(rgba(26,35,126,0.6), rgba(26,35,126,0.6)), url('https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&w=1200&q=60');
+}
+.hero-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+.hero-subtitle {
+  color: #c7d2fe; /* indigo-100 */
+  margin-bottom: 1.5rem;
+}
+.hero-btn {
+  background-color: #facc15; /* yellow-400 */
+  color: #1a237e; /* indigo-900 */
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: 0.2s;
+}
+.hero-btn:hover {
+  background-color: #eab308;
+}
+
+/* Section titles */
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a237e; /* indigo-900 */
+}
+.dark .section-title {
+  color: #c7d2fe; /* indigo-100 */
+}
+.section-description {
+  color: #4b5563; /* gray-600 */
+}
+.dark .section-description {
+  color: #d1d5db; /* gray-300 */
+}
+
+/* Cards */
+.card {
+  background-color: #fff;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  border: 1px solid #e5e7eb; /* gray-200 */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+.dark .card {
+  background-color: #1a237e; /* dark-indigo */
+  border-color: #3730a3;
+}
+.card-icon {
+  color: #1a237e;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+.dark .card-icon {
+  color: #c7d2fe;
+}
+.card-title {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #1a237e;
+}
+.dark .card-title {
+  color: #c7d2fe;
+}
+.card-text {
+  color: #4b5563;
+}
+.dark .card-text {
+  color: #d1d5db;
+}
+
+/* Timeline (Our Story) */
+.timeline h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+.timeline span {
+  color: #1a237e;
+  font-weight: 700;
+}
+.dark .timeline span {
+  color: #c7d2fe;
+}
+
+/* Team Section */
+.team-member img {
+  width: 112px;
+  height: 112px;
+  border-radius: 9999px;
+  object-fit: cover;
+  margin: 0 auto 0.75rem;
+}
+.team-member h4 {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: #1a237e;
+}
+.dark .team-member h4 {
+  color: #c7d2fe;
+}
+.team-member p {
+  font-size: 0.875rem;
+  color: #6b7280; /* gray-500 */
+}
+.dark .team-member p {
+  color: #9ca3af; /* gray-400 */
+}
+
+/* Join Section */
+.join-section {
+  background-color: #1a237e; /* Indigo 900 */
+  color: #fff;
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
+.join-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+.join-description {
+  max-width: 40rem;
+  margin: 0 auto 1.5rem;
+  color: #c7d2fe;
+}
+.join-btn {
+  background-color: #facc15; /* yellow-400 */
+  color: #1a237e;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: 0.2s;
+}
+.join-btn:hover {
+  background-color: #eab308;
+}
+
+/* Footer */
+.footer {
+  background-color: #f9fafc; /* subtle login-like footer */
+  color: #6b7280; /* gray-500 */
+  border-top: 1px solid #e5e7eb; /* gray-200 */
+}
+.dark .footer {
+  background-color: #1a237e;
+  color: #c7d2fe;
+  border-color: #3730a3;
+}
+.footer-link {
+  color: #1a237e;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.2s;
+}
+.footer-link:hover {
+  color: #0d175e;
+}
+.dark .footer-link {
+  color: #c7d2fe;
+}
+.dark .footer-link:hover {
+  color: #eab308;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+  .section-title {
+    font-size: 1.75rem;
+  }
+}
