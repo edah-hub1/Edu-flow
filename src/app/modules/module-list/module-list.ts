@@ -85,18 +85,18 @@ export class ModuleList {
     console.log('🗑️ Deleting module:', moduleId);
     this.moduleService.deleteModule(this.courseId, moduleId).subscribe({
       next: () => {
-        console.log('✅ Module deleted successfully');
+        console.log('Module deleted successfully');
         this.loadModules();
       },
       error: (err) => {
-        console.error('❌ Failed to delete module:', err);
+        console.error('Failed to delete module:', err);
         this.errorMessage = 'Could not delete module.';
       }
     });
   }
 
   goToCreate(): void {
-    console.log('➕ Navigating to create module page');
+    console.log('Navigating to create module page');
     this.router.navigate([`/courses/${this.courseId}/modules/create`]);
   }
 

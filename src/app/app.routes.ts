@@ -20,6 +20,7 @@ import { LandingPage } from './landing-page/landing-page';
 import { CourseList } from './courses/course-list/course-list';
 import { CourseDetail } from './courses/course-detail/course-detail';
 import { CourseForm } from './courses/course-form/course-form';
+import { CourseManagement } from './course-management/course-management';
 import { ModuleList } from './modules/module-list/module-list';
 import { ModuleForm } from './modules/module-form/module-form';
 
@@ -43,6 +44,7 @@ import { ProfileEdit } from './auth/profile/profile-edit/profile-edit';
 
 // Certificates
 import { Certificates } from './courses/certificates/certificates';
+import path from 'path';
 
 export const routes: Routes = [
   // { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -67,6 +69,7 @@ export const routes: Routes = [
   { path: 'courses/new', component: CourseForm },
   { path: 'courses/edit/:id', component: CourseForm },
   { path: 'courses/:id', component: CourseDetail },
+  { path: 'courses-management', component: CourseManagement },
 
   // Modules
   { path: 'courses/:courseId/modules', component: ModuleList },
