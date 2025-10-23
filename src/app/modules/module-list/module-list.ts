@@ -27,19 +27,17 @@ export class ModuleList {
   ) {}
 
   ngOnInit(): void {
-    console.log('✅ ModuleList initialized');
     this.loadModules();
   }
 
   loadModules(): void {
     this.loading = true;
-    console.log('🔍 Loading modules...');
-
+    
     this.modules$ = this.route.paramMap.pipe(
       map(params => Number(params.get('courseId'))),
       switchMap((id: number) => {
         this.courseId = id;
-        console.log('📘 Course ID detected:', id);
+        
 
         return this.moduleService.getModulesByCourse(id).pipe(
           map((data: any) => {
@@ -50,7 +48,7 @@ export class ModuleList {
             return [];
           }),
           catchError(err => {
-            console.error('❌ Error loading modules:', err);
+            console.error('Error loading modules:', err);
             this.errorMessage = 'Failed to load modules. Please try again.';
             return of([]);
           }),
@@ -60,7 +58,7 @@ export class ModuleList {
     );
 
     this.modules$.subscribe(() => {
-      console.log('✅ Modules stream emitted');
+      
       this.loading = false;
     });
   }
@@ -70,12 +68,12 @@ export class ModuleList {
   }
 
   viewContents(moduleId: number): void {
-    console.log('➡️ View contents for module:', moduleId);
+    console.log('View contents for module:', moduleId);
     this.router.navigate([`/courses/${this.courseId}/modules/${moduleId}/contents`]);
   }
 
   editModule(moduleId: number): void {
-    console.log('✏️ Editing module:', moduleId);
+    console.log('Editing module:', moduleId);
     this.router.navigate([`/courses/${this.courseId}/modules/${moduleId}/edit`]);
   }
 
