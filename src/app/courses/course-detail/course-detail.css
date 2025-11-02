@@ -45,3 +45,32 @@
   gap: 16px;
   margin-top: 24px;
 }
+.course-details-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.course-card {
+  padding: 1rem;
+}
+
+.course-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+.course-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.course-description {
+  margin-top: 1rem;
+  line-height: 1.6;
+}

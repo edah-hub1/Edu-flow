@@ -41,42 +41,42 @@ export class Login {
     });
   }
 
-  onSubmit() {
-    if (this.loginForm.valid) {
-      const { email, password } = this.loginForm.value;
+onSubmit() {
+  if (this.loginForm.valid) {
+    const { email, password } = this.loginForm.value;
 
-      this.authService.login({ email, password }).subscribe({
-        next: (res: any) => {
-          console.log('Login successful:', res);
+    this.authService.login({ email, password }).subscribe({
+      next: (res: any) => {
+        console.log('Login successful:', res);
 
-          //  Save tokens + user info
-          localStorage.setItem('access_token', res.accessToken);
-          localStorage.setItem('refresh_token', res.refreshToken);
-          localStorage.setItem('auth_uuid', res.user.uuid);
-          localStorage.setItem('auth_email', res.user.email);
-          localStorage.setItem('auth_role', res.user.role);
-          localStorage.setItem('auth_name', `${res.user.firstName} ${res.user.lastName}`);
+        //  Save tokens
+        localStorage.setItem('access_token', res.accessToken);
+        localStorage.setItem('refresh_token', res.refreshToken);
 
-          //  Redirect based on role
-          switch (res.user.role.toUpperCase()) {
-            case 'ADMIN':
-              this.router.navigate(['/dashboard/admin']);
-              break;
-            case 'INSTRUCTOR':
-              this.router.navigate(['/dashboard/instructor']);
-              break;
-            case 'STUDENT':
-              this.router.navigate(['/dashboard/student']);
-              break;
-            default:
-              this.router.navigate(['/dashboard']);
-          }
-        },
-        error: (err: any) => {
-          console.error('Login failed', err);
-          alert('Invalid credentials');
+        //  Save user info (ID + UUID + role)
+        this.authService.saveUserData(res.user);
+
+        //  Redirect by role
+        switch (res.user.role.toUpperCase()) {
+          case 'ADMIN':
+            this.router.navigate(['/dashboard/admin']);
+            break;
+          case 'INSTRUCTOR':
+            this.router.navigate(['/dashboard/instructor']);
+            break;
+          case 'STUDENT':
+            this.router.navigate(['/dashboard/student']);
+            break;
+          default:
+            this.router.navigate(['/dashboard']);
         }
-      });
-    }
+      },
+      error: (err: any) => {
+        console.error('Login failed', err);
+        alert('Invalid credentials');
+      }
+    });
   }
+}
+
 }

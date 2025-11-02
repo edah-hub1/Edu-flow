@@ -66,26 +66,56 @@ export class Register {
     return password === confirm ? null : { passwordsMismatch: true };
   };
 
+  // onSubmit() {
+  //   if (this.registerForm.invalid) return;
+
+  //   this.isLoading = true;
+  //   const { confirmPassword, ...formValue } = this.registerForm.value;
+
+  //   this.authService.register(formValue).subscribe({
+  //     next: (res: any) => {
+  //       console.log('Registration successful:', res);
+  //       console.log('Account created! Please login.');
+  //       this.router.navigate(['/login']);
+  //     },
+  //     error: (err: any) => {
+  //       console.error('Registration failed', err);
+  //       alert(err.error?.message || 'Something went wrong');
+  //       this.isLoading = false;
+  //     },
+  //     complete: () => {
+  //       this.isLoading = false;
+  //     },
+  //   });
+  // }
   onSubmit() {
-    if (this.registerForm.invalid) return;
+  if (this.registerForm.invalid) return;
 
-    this.isLoading = true;
-    const { confirmPassword, ...formValue } = this.registerForm.value;
+  this.isLoading = true;
+  const { confirmPassword, ...formValue } = this.registerForm.value;
 
-    this.authService.register(formValue).subscribe({
-      next: (res: any) => {
-        console.log('Registration successful:', res);
-        console.log('Account created! Please login.');
-        this.router.navigate(['/login']);
-      },
-      error: (err: any) => {
-        console.error('Registration failed', err);
-        alert(err.error?.message || 'Something went wrong');
-        this.isLoading = false;
-      },
-      complete: () => {
-        this.isLoading = false;
-      },
-    });
-  }
+  this.authService.register(formValue).subscribe({
+    next: (res: any) => {
+      console.log('Registration successful:', res);
+
+      // Save numeric ID + UUID locally
+      this.authService.saveUserData(res);
+
+      console.log('Account created! Please login.');
+      alert('Account created! Please login.');
+
+      // Redirect to login
+      this.router.navigate(['/login']);
+    },
+    error: (err: any) => {
+      console.error('Registration failed', err);
+      alert(err.error?.message || 'Something went wrong');
+      this.isLoading = false;
+    },
+    complete: () => {
+      this.isLoading = false;
+    },
+  });
+}
+
 }

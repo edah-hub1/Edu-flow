@@ -27,9 +27,16 @@
       <div class="grid md:grid-cols-3 gap-6">
         @for (course of courses; track course.id; let i = $index) {
           <div class="bg-white shadow-lg rounded-xl p-5 flex flex-col hover:shadow-2xl transition">
-            <h5 class="text-lg font-semibold text-gray-800">
+            <!-- <h5 class="text-lg font-semibold text-gray-800">
+              {{ course.title || 'Untitled Course' }}
+            </h5> -->
+            <h5
+              class="text-lg font-semibold text-gray-800 hover:text-indigo-600 cursor-pointer"
+              [routerLink]="['/courses', course.id]"
+            >
               {{ course.title || 'Untitled Course' }}
             </h5>
+
             <p class="text-gray-500 flex-grow mt-2">
               {{ course.description || 'No description available' }}
             </p>

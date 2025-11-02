@@ -2,9 +2,11 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { catchError, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { ModuleService } from '../module.service';
 import { Module } from '../module.model';
+import { CourseService } from '../../courses/course.service';
+import { Course } from '../../courses/course.model';
 
 @Component({
   selector: 'app-module-list',
@@ -18,10 +20,12 @@ export class ModuleList {
   loading = false;
   errorMessage = '';
   courseId!: number;
-  openMenuId: number | null = null; // track open dropdown
+  courseTitle = ''; //  store course title
+  openMenuId: number | null = null;
 
   constructor(
     private moduleService: ModuleService,
+    private courseService: CourseService, // inject CourseService
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -30,16 +34,18 @@ export class ModuleList {
     this.loadModules();
   }
 
+  /** Load modules and also fetch course title */
   loadModules(): void {
     this.loading = true;
-    
+
     this.modules$ = this.route.paramMap.pipe(
       map(params => Number(params.get('courseId'))),
-      switchMap((id: number) => {
+      tap((id) => {
         this.courseId = id;
-        
-
-        return this.moduleService.getModulesByCourse(id).pipe(
+        this.fetchCourseTitle(id); // fetch course title in parallel
+      }),
+      switchMap((id: number) => 
+        this.moduleService.getModulesByCourse(id).pipe(
           map((data: any) => {
             if (Array.isArray(data)) return data;
             if (data?.modules) return data.modules;
@@ -53,14 +59,27 @@ export class ModuleList {
             return of([]);
           }),
           startWith([])
-        );
-      })
+        )
+      )
     );
 
     this.modules$.subscribe(() => {
-      
       this.loading = false;
     });
+  }
+
+  /** ✅ Fetch course title for heading */
+  private fetchCourseTitle(courseId: number): void {
+    this.courseService.getCourse(courseId).pipe(
+      tap((course: Course) => {
+        this.courseTitle = course.title || `Course ${courseId}`;
+      }),
+      catchError(err => {
+        console.error('Failed to fetch course title:', err);
+        this.courseTitle = `Course ${courseId}`;
+        return of(null);
+      })
+    ).subscribe();
   }
 
   toggleMenu(id: number): void {
@@ -80,7 +99,7 @@ export class ModuleList {
   deleteModule(moduleId: number): void {
     if (!confirm('Are you sure you want to delete this module?')) return;
 
-    console.log('🗑️ Deleting module:', moduleId);
+    console.log('Deleting module:', moduleId);
     this.moduleService.deleteModule(this.courseId, moduleId).subscribe({
       next: () => {
         console.log('Module deleted successfully');

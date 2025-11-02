@@ -2,35 +2,56 @@
   @if (course$ | async; as course) {
     @if (course && !loading) {
       <mat-card class="course-card">
+
+        <!-- Course Title -->
         <mat-card-header class="course-header">
           <mat-card-title>{{ course.title }}</mat-card-title>
         </mat-card-header>
 
+        <!-- Course Description -->
         <mat-card-content>
           <div class="course-meta">
             <mat-icon>calendar_today</mat-icon>
-            <span>
-              Created on {{ course.createdAt | date:'fullDate' }}
-            </span>
+            <span>Created on {{ course.createdAt | date:'fullDate' }}</span>
           </div>
-
           <p class="course-description">{{ course.description }}</p>
         </mat-card-content>
 
+        <!-- Actions -->
         <mat-card-actions class="course-actions">
+
+          <!-- Back Button -->
           <button mat-stroked-button color="primary" routerLink="/courses">
             <mat-icon>arrow_back</mat-icon>
             Back to Courses
           </button>
-          <button mat-flat-button color="primary" [routerLink]="['/courses/edit', course.id]">
-            <mat-icon>edit</mat-icon>
-            Edit Course
-          </button>
-            <button mat-flat-button color="primary" [routerLink]="['/courses', course.id, 'modules']">
-            <mat-icon>edit</mat-icon>
+
+          <!-- View Modules -->
+          <button mat-flat-button color="primary" [routerLink]="['/courses', course.id, 'modules']">
+            <mat-icon>view_list</mat-icon>
             View Modules
           </button>
+
+          <!-- Enroll -->
+          <button 
+            *ngIf="!isEnrolled"
+            mat-flat-button color="accent"
+            (click)="enrollNow()">
+            <mat-icon>school</mat-icon>
+            Enroll Now
+          </button>
+
+          <!-- Continue Learning -->
+          <button 
+            *ngIf="isEnrolled"
+            mat-flat-button color="accent"
+            (click)="goToCourse()">
+            <mat-icon>play_circle</mat-icon>
+            Continue Learning
+          </button>
+
         </mat-card-actions>
+
       </mat-card>
     }
   }

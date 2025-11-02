@@ -1,1 +1,188 @@
 @import "tailwindcss";
+
+/* Overall container with soft login-style background */
+.content-container {
+  /* p-6 (1.5rem), max-w-5xl (~64rem), mx-auto, rounded-lg (0.5rem), gradient background, small shadow */
+  padding: 1.5rem;
+  max-width: 64rem;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 0.5rem;
+  background: linear-gradient(to bottom, #eff6ff, #f9fafb);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Breadcrumb */
+.breadcrumb a {
+  color: #2563eb;
+  text-decoration: none;
+}
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+/* Heading styles */
+.page-heading {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+.page-subtext {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin-bottom: 1.5rem;
+}
+
+/* Status styles */
+.loading-text {
+  color: #3b82f6;
+  margin-bottom: 1rem;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0% { opacity: 1; transform: translateZ(0); }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; transform: translateZ(0); }
+}
+.error-box {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  padding: 0.75rem;
+  border-radius: 0.375rem;
+  margin-bottom: 1rem;
+  border: 1px solid #fecaca;
+}
+
+/* Grid for cards */
+.content-grid {
+  display: grid;
+  gap: 1.25rem; /* gap-5 */
+  grid-template-columns: 1fr; /* default: 1 column (sm:grid-cols-1) */
+}
+@media (min-width: 768px) {
+  .content-grid {
+    grid-template-columns: repeat(2, 1fr); /* md:grid-cols-2 */
+  }
+}
+
+/* Content card */
+.content-card {
+  background-color: #ffffff;
+  padding: 1.25rem; /* p-5 */
+  border-radius: 0.75rem; /* rounded-xl */
+  border: 1px solid #e5e7eb; /* gray-200 */
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease;
+}
+.content-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+.card-title {
+  font-weight: 600;
+  color: #1f2937;
+}
+.badge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  background-color: #dbeafe;
+  color: #1d4ed8;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+.card-description {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
+}
+
+/* Resource link */
+.resource-link {
+  color: #2563eb;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: inline-block;
+  margin-bottom: 0.25rem;
+  text-decoration: none;
+}
+.resource-link:hover {
+  text-decoration: underline;
+}
+
+/* Quiz links */
+.quiz-link {
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: block;
+  margin-top: 0.25rem;
+}
+.quiz-link.add {
+  color: #4f46e5;
+}
+.quiz-link.add:hover {
+  text-decoration: underline;
+}
+.quiz-link.view {
+  color: #16a34a;
+}
+.quiz-link.view:hover {
+  text-decoration: underline;
+}
+
+/* Article text */
+.article-text {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+}
+
+/* No contents */
+.no-content {
+  background-color: #f9fafb;
+  color: #4b5563;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+/* Buttons */
+.action-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+}
+.btn-back {
+  padding: 0.5rem 1rem;
+  background-color: #4b5563;
+  color: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.btn-back:hover {
+  background-color: #374151;
+}
+.btn-primary {
+  padding: 0.5rem 1rem;
+  background-color: #2563eb;
+  color: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.btn-primary:hover {
+  background-color: #1d4ed8;
+}
