@@ -96,20 +96,24 @@ export class QuestionForm implements OnInit {
 
   this.quizService.bulkCreateQuiz(payload).subscribe({
     next: (res) => {
-      console.log('Quiz saved:', res);
-
-      // navigate back to the module's contents
       const courseId = this.route.snapshot.paramMap.get('courseId');
       const moduleId = this.route.snapshot.paramMap.get('moduleId');
+      const contentId = this.route.snapshot.paramMap.get('contentId');
 
       this.router.navigate([
         '/courses',
         courseId,
         'modules',
         moduleId,
-        'contents'
+        'contents',
+        contentId,
+        'quiz',
+        res.id,
+        'view'
       ]);
     },
+
+    
     error: (err) => {
       console.error('Failed to save quiz', err);
       this.errorMessage = err?.error?.message || 'Failed to save quiz';

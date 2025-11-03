@@ -1,44 +1,55 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { QuizService } from '../quiz.service';
-import { catchError, of } from 'rxjs';
+import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+
+interface QuizState {
+  loading: boolean;
+  quiz: any | null;
+  errorMessage: string;
+}
 
 @Component({
   selector: 'app-quiz-list',
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './quiz-list.html',
-  styleUrls: ['./quiz-list.css']
+  styleUrls: ['./quiz-list.css'],
 })
-export class QuizList implements OnInit {
+export class QuizList {
   private route = inject(ActivatedRoute);
   private quizService = inject(QuizService);
 
-  quiz: any = null;
-  loading = false;
-  errorMessage = '';
+  // ✅ Strongly typed reactive stream
+  quizState$: Observable<QuizState> = this.route.paramMap.pipe(
+    map(params => Number(params.get('quizId'))),
+    switchMap((quizId): Observable<QuizState> => {
+      if (!quizId) {
+        return of({
+          loading: false,
+          quiz: null,
+          errorMessage: 'Invalid quiz ID in route.',
+        });
+      }
 
-  ngOnInit(): void {
-    //  Get quizId from route 
-    const quizId = Number(this.route.snapshot.paramMap.get('quizId'));
-
-    if (!quizId) {
-      this.errorMessage = 'Invalid quiz ID in route.';
-      return;
-    }
-
-    this.loading = true;
-    this.quizService.getQuiz(quizId).pipe(
-      catchError(err => {
-        console.error('Failed to load quiz', err);
-        this.errorMessage = 'No quiz found for this content yet.';
-        this.loading = false;
-        return of(null);
-      })
-    ).subscribe(res => {
-      this.quiz = res;
-      this.loading = false;
-    });
-  }
+      return this.quizService.getQuiz(quizId).pipe(
+        map(quiz => ({
+          loading: false,
+          quiz,
+          errorMessage: '',
+        })),
+        startWith({ loading: true, quiz: null, errorMessage: '' }),
+        catchError(err =>
+          of({
+            loading: false,
+            quiz: null,
+            errorMessage:
+              err.error?.messages?.[0] || 'No quiz found for this content yet.',
+          })
+        )
+      );
+    })
+  );
 }

@@ -77,14 +77,16 @@ export class ContentForm implements OnInit {
 
     this.contentService.createContent(payload).subscribe({
       next: (res) => {
-        // if content is quiz, redirect to quiz create prefill page
-        if (res.type === 'QUIZ') {
-          this.router.navigate(['/courses', res.moduleId, 'modules']);
-        } else {
-          // back to module contents
-          this.router.navigate(['/courses', res.moduleId, 'modules']);
-        }
+        const courseId = this.route.snapshot.paramMap.get('courseId');
+        this.router.navigate([
+          '/courses',
+          courseId,
+          'modules',
+          res.moduleId,
+          'contents'
+        ]);
       },
+
       error: (err) => {
         console.error('create content error', err);
         this.errorMessage = err?.message || 'Failed to create content';

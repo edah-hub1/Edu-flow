@@ -1,6 +1,6 @@
 <section class="min-h-screen bg-gray-50">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-
+    
     <!-- Breadcrumb -->
     <nav class="mb-6 flex items-center text-sm text-gray-500">
       <a [routerLink]="['/courses']" class="hover:text-blue-600 transition">Courses</a>
@@ -14,12 +14,15 @@
     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
       <div class="flex justify-between items-center">
         <div>
-          <h1 class="text-3xl font-bold text-gray-900 mb-2">Module {{ moduleId }} Contents</h1>
+          <h1 class="text-3xl font-bold text-gray-900 mb-2">
+            Module {{ moduleId }} Contents
+          </h1>
           <p class="text-gray-600">Learn at your own pace with videos, articles, and quizzes</p>
         </div>
         <button (click)="goToCreate()"
                 class="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-lg shadow-sm hover:bg-blue-700 transition font-medium">
-          <span class="text-lg">+</span> Add Content
+          <span class="text-lg">+</span>
+          Add Content
         </button>
       </div>
     </div>
@@ -43,7 +46,7 @@
     <!-- Content list -->
     <ng-container *ngIf="contents$ | async as contents">
       <div *ngIf="contents.length > 0" class="space-y-4">
-        <div *ngFor="let c of contents; trackBy: trackById"
+        <div *ngFor="let c of contents; trackBy: trackById" 
              class="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
           
           <!-- Content Header -->
@@ -85,7 +88,7 @@
                   <p class="text-sm text-gray-600 mb-3">{{ c.description }}</p>
 
                   <!-- Article Content Preview -->
-                  <p *ngIf="c.type === 'ARTICLE' && c.articleContent"
+                  <p *ngIf="c.type === 'ARTICLE' && c.articleContent" 
                      class="text-sm text-gray-500 bg-gray-50 p-3 rounded border border-gray-200 line-clamp-3">
                     {{ c.articleContent }}
                   </p>
@@ -106,22 +109,34 @@
 
             <!-- Action Buttons -->
             <div class="flex gap-3 pt-4 border-t border-gray-100">
-              <!-- PDF / Video -->
-              <button *ngIf="c.type === 'PDF' || c.type === 'VIDEO'"
-                      (click)="openResourceModal(c)"
-                      class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">
-                <span>{{ c.type === 'PDF' ? 'View PDF' : 'Play Video' }}</span>
+              <!-- Resource Link -->
+              <button *ngIf="(c.type === 'PDF' || c.type === 'VIDEO') && c.resourceUrl"
+                 (click)="openResourceModal(c)"
+                 class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path *ngIf="c.type === 'VIDEO'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                  <path *ngIf="c.type === 'PDF'" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                </svg>
+                {{ c.type === 'PDF' ? 'View PDF' : 'Play Video' }}
               </button>
 
-              <!-- Quiz -->
+              <!-- Quiz Actions -->
               <a *ngIf="c.type === 'QUIZ' && !c.quizId"
                  [routerLink]="['/courses', courseId, 'modules', moduleId, 'contents', c.id, 'questions']"
                  class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
                 Add Questions
               </a>
+              
               <a *ngIf="c.type === 'QUIZ' && c.quizId"
                  [routerLink]="['/courses', courseId, 'modules', moduleId, 'contents', c.id, 'quiz', c.quizId, 'view']"
                  class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                </svg>
                 View Questions
               </a>
             </div>
@@ -130,17 +145,20 @@
       </div>
 
       <!-- No contents -->
-      <div *ngIf="contents.length === 0 && !loading"
-           class="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
-        <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-        </svg>
-        <h3 class="text-lg font-medium text-gray-900 mb-2">No contents yet</h3>
-        <p class="text-gray-600 mb-4">Get started by adding your first content to this module.</p>
-        <button (click)="goToCreate()"
-                class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium">
-          <span class="text-lg">+</span> Add First Content
-        </button>
+      <div *ngIf="contents.length === 0 && !loading" 
+           class="bg-white rounded-lg shadow-sm border border-gray-200 p-12">
+        <div class="text-center">
+          <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+          <h3 class="text-lg font-medium text-gray-900 mb-2">No contents yet</h3>
+          <p class="text-gray-600 mb-4">Get started by adding your first content to this module.</p>
+          <button (click)="goToCreate()"
+                  class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium">
+            <span class="text-lg">+</span>
+            Add First Content
+          </button>
+        </div>
       </div>
     </ng-container>
 
@@ -157,77 +175,63 @@
   </div>
 
   <!-- Modal for PDF/Video/Article -->
-  <div *ngIf="selectedResource" class="fixed inset-0 z-50 overflow-y-auto" (click)="closeResourceModal()">
-    <div class="fixed inset-0 bg-gradient-to-br from-blue-500 to-indigo-700 opacity-90"></div>
+  <div *ngIf="selectedResource" class="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto">
+    <!-- Overlay -->
+    <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-600 opacity-90" (click)="closeResourceModal()"></div>
 
-    <div class="flex min-h-screen items-center justify-center p-4">
-      <div class="relative w-full max-w-6xl bg-white rounded-lg shadow-xl" (click)="$event.stopPropagation()">
+    <!-- Modal Content -->
+    <div class="relative z-50 bg-white rounded-lg shadow-xl max-w-6xl w-full p-6" (click)="$event.stopPropagation()">
+      <!-- Header -->
+      <div class="flex items-center justify-between mb-4">
+        <span class="px-3 py-1 text-xs font-semibold rounded-full uppercase"
+              [ngClass]="{
+                'bg-red-100 text-red-700': selectedResource.type === 'PDF',
+                'bg-purple-100 text-purple-700': selectedResource.type === 'VIDEO',
+                'bg-blue-100 text-blue-700': selectedResource.type === 'ARTICLE'
+              }">
+          {{ selectedResource.type }}
+        </span>
+        <h3 class="text-lg font-semibold text-gray-900">{{ selectedResource.title }}</h3>
+        <button (click)="closeResourceModal()" class="text-gray-400 hover:text-gray-600 transition p-2 rounded-lg hover:bg-gray-100">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
 
-        <!-- Header -->
-        <div class="flex items-center justify-between p-4 border-b border-gray-200">
-          <div class="flex items-center gap-3">
-            <span class="px-3 py-1 text-xs font-semibold rounded-full uppercase"
-                  [ngClass]="{
-                    'bg-red-100 text-red-700': selectedResource.type === 'PDF',
-                    'bg-purple-100 text-purple-700': selectedResource.type === 'VIDEO',
-                    'bg-blue-100 text-blue-700': selectedResource.type === 'ARTICLE'
-                  }">
-              {{ selectedResource.type }}
-            </span>
-            <h3 class="text-lg font-semibold text-gray-900">{{ selectedResource.title }}</h3>
-          </div>
-          <button (click)="closeResourceModal()"
-                  class="text-gray-400 hover:text-gray-600 transition p-2 rounded-lg hover:bg-gray-100">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-            </svg>
-          </button>
+      <!-- Body -->
+      <div class="w-full">
+        <!-- PDF -->
+        <iframe *ngIf="selectedResource.type === 'PDF' && selectedResource.resourceUrl"
+                [src]="getSafeUrl(selectedResource.resourceUrl!)"
+                class="w-full h-[75vh] border-0 rounded"></iframe>
+
+        <!-- Video -->
+        <video *ngIf="selectedResource.type === 'VIDEO' && selectedResource.resourceUrl"
+               [src]="selectedResource.resourceUrl"
+               controls class="w-full h-[75vh] rounded" controlsList="nodownload">
+          Your browser does not support the video tag.
+        </video>
+
+        <!-- Article -->
+        <div *ngIf="selectedResource.type === 'ARTICLE' && selectedResource.articleContent" class="prose max-w-full">
+          <p [innerHTML]="selectedResource.articleContent"></p>
         </div>
 
-        <!-- Body -->
-        <div class="p-6">
-          <!-- PDF -->
-          <iframe *ngIf="selectedResource.type === 'PDF' && selectedResource.resourceUrl"
-                  [src]="getSafeUrl(selectedResource.resourceUrl!)"
-                  class="w-full h-[75vh] border-0 rounded"></iframe>
+        <!-- Fallback -->
+        <p *ngIf="!selectedResource.resourceUrl && selectedResource.type !== 'ARTICLE'" class="text-red-500">
+          No resource available.
+        </p>
+      </div>
 
-          <!-- YouTube -->
-          <iframe *ngIf="selectedResource.type === 'VIDEO' && isYouTubeUrl(selectedResource.resourceUrl)"
-                  [src]="getSafeUrl(getYouTubeEmbedUrl(selectedResource.resourceUrl!))"
-                  class="w-full h-[75vh] rounded"
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowfullscreen>
-          </iframe>
-
-          <!-- Local Video -->
-          <video *ngIf="selectedResource.type === 'VIDEO' && selectedResource.resourceUrl && !isYouTubeUrl(selectedResource.resourceUrl)"
-                 [src]="selectedResource.resourceUrl"
-                 controls class="w-full h-[75vh] rounded" controlsList="nodownload">
-            Your browser does not support the video tag.
-          </video>
-
-          <!-- Article -->
-          <div *ngIf="selectedResource.type === 'ARTICLE' && selectedResource.articleContent" class="prose max-w-full">
-            <p [innerHTML]="selectedResource.articleContent"></p>
-          </div>
-
-          <!-- Fallback -->
-          <p *ngIf="!selectedResource.resourceUrl && selectedResource.type !== 'ARTICLE'" class="text-red-500">
-            No resource available.
-          </p>
-        </div>
-
-        <!-- Footer -->
-        <div class="flex items-center justify-between p-4 border-t border-gray-200 bg-gray-50 rounded-b-lg">
-          <p class="text-sm text-gray-600">{{ selectedResource.description }}</p>
-          <a *ngIf="selectedResource.resourceUrl"
-             [href]="selectedResource.resourceUrl"
-             target="_blank"
-             class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 transition">
-            Open in new tab
-          </a>
-        </div>
+      <!-- Footer -->
+      <div class="mt-4 flex justify-end">
+        <a *ngIf="selectedResource.resourceUrl"
+           [href]="selectedResource.resourceUrl"
+           target="_blank"
+           class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 transition">
+          Open in new tab
+        </a>
       </div>
     </div>
   </div>

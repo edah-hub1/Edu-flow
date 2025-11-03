@@ -6,17 +6,16 @@ import { environment } from '../../environments/environment';
 @Injectable({ providedIn: 'root' })
 export class QuizService {
   private apiUrl = `${environment.apiUrl}/quizzes`;
-  
 
   constructor(private http: HttpClient) {}
 
-
-// GET quiz by ID (questions and options)
+  //  Fetch quiz (with questions + options)
   getQuiz(quizId: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/${quizId}/bulk`);
   }
- 
-  //  Bulk create with quizRequest + questionRequest
+  
+
+  //  Bulk create quiz (with questions)
   bulkCreateQuiz(payload: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/bulk`, payload);
   }
