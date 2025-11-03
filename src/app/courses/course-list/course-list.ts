@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Observable, of } from 'rxjs';
@@ -8,6 +8,12 @@ import { Course } from '../course.model';
 import { DateCountPipe } from '../../date-count-pipe';
 import { DashboardLayout } from '../../dashboard/dashboard-layout/dashboard-layout';
 
+interface CourseState {
+  loading: boolean;
+  errorMessage: string;
+  courses: Course[];
+}
+
 @Component({
   selector: 'app-course-list',
   standalone: true,
@@ -16,61 +22,56 @@ import { DashboardLayout } from '../../dashboard/dashboard-layout/dashboard-layo
   styleUrls: ['./course-list.css']
 })
 export class CourseList {
-  courses$!: Observable<Course[]>;
-  loading: boolean = false;
-  errorMessage: string = '';
+  private courseService = inject(CourseService);
 
-  constructor(private courseService: CourseService) {}
+  // ✅ Reactive, type-safe state
+  state$: Observable<CourseState> = this.courseService.getCourses().pipe(
+    map((data: any) => {
+      const courses = Array.isArray(data)
+        ? data
+        : data?.courses || data?.data || (data ? [data] : []);
+      return { loading: false, errorMessage: '', courses };
+    }),
+    startWith({ loading: true, errorMessage: '', courses: [] }),
+    catchError(err => {
+      console.error('Error loading courses:', err);
+      let message = 'Failed to load courses. Please try again.';
 
-  ngOnInit(): void {
-    this.loadCourses();
-  }
+      if (err.status === 0) message = 'Cannot connect to server.';
+      else if (err.status === 401) message = 'Unauthorized. Please log in again.';
+      else if (err.status === 403) message = 'Access denied.';
+      else if (err.status >= 500) message = 'Server error. Try later.';
 
-  loadCourses(): void {
-    this.loading = true;
-    this.errorMessage = '';
-
-    this.courses$ = this.courseService.getCourses().pipe(
-      map((data: any) => {
-        if (Array.isArray(data)) {
-          return data;
-        } else if (data && typeof data === 'object' && data.hasOwnProperty('courses')) {
-          return data.courses || [];
-        } else if (data && typeof data === 'object' && data.hasOwnProperty('data')) {
-          return data.data || [];
-        } else {
-          return data ? [data] : [];
-        }
-      }),
-      catchError(err => {
-        console.error('Error loading courses:', err);
-        this.errorMessage = 'Failed to load courses. Please try again.';
-        return of([]);
-      }),
-      startWith([]) // lets the UI render an initial value
-    );
-
-    // Simulate "loading complete" when observable emits
-    this.courses$.subscribe(() => {
-      this.loading = false;
-    });
-  }
+      return of({ loading: false, errorMessage: message, courses: [] });
+    })
+  );
 
   deleteCourse(id: number): void {
-    if (!confirm('Are you sure you want to delete this course?')) {
-      return;
-    }
+    if (!confirm('Are you sure you want to delete this course?')) return;
 
     this.courseService.deleteCourse(id).subscribe({
-      next: () => this.loadCourses(),
-      error: (err:any) => {
+      next: () => {
+        // refresh 
+        this.state$ = this.courseService.getCourses().pipe(
+          map(courses => ({ loading: false, errorMessage: '', courses })),
+          startWith({ loading: true, errorMessage: '', courses: [] }),
+          catchError(err =>
+            of({
+              loading: false,
+              errorMessage: 'Failed to refresh after delete.',
+              courses: []
+            })
+          )
+        );
+      },
+      error: (err: any) => {
         console.error('Delete failed:', err);
-        this.errorMessage = 'Failed to delete the course. Please try again.';
+        alert('Failed to delete course. Please try again.');
       }
     });
   }
 
-  trackByCourse(index: number, course: Course): any {
+  trackByCourse(index: number, course: Course): number {
     return course.id;
-  }
+  }
 }

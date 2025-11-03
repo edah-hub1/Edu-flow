@@ -1,83 +1,92 @@
 <app-dashboard-layout>
-<div class="max-w-7xl mx-auto px-4 py-8">
-  <div class="flex justify-between items-center mb-6">
-    <h2 class="text-2xl font-bold text-indigo-600">Explore Our Courses</h2>
-    <a routerLink="/courses/new"
-       class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition">
-      + Add New Course
-    </a>
-  </div>
-
-  <!-- Error -->
-  @if (errorMessage) {
-    <div class="p-4 bg-red-100 text-red-700 rounded-lg mb-4">{{ errorMessage }}</div>
-  }
-
-  <!-- Loading -->
-  @if (loading) {
-    <div class="flex flex-col items-center py-10">
-      <div class="animate-spin h-10 w-10 border-4 border-indigo-500 border-t-transparent rounded-full"></div>
-      <p class="mt-3 text-gray-600">Loading courses...</p>
+  <div class="max-w-7xl mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-2xl font-bold text-indigo-600">Explore Our Courses</h2>
+      <a
+        routerLink="/courses/new"
+        class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition"
+      >
+        + Add New Course
+      </a>
     </div>
-  }
 
-  <!-- Courses -->
-  @if (courses$ | async; as courses) {
-    @if (courses.length > 0 && !loading) {
-      <div class="grid md:grid-cols-3 gap-6">
-        @for (course of courses; track course.id; let i = $index) {
-          <div class="bg-white shadow-lg rounded-xl p-5 flex flex-col hover:shadow-2xl transition">
-            <!-- <h5 class="text-lg font-semibold text-gray-800">
-              {{ course.title || 'Untitled Course' }}
-            </h5> -->
-            <h5
-              class="text-lg font-semibold text-gray-800 hover:text-indigo-600 cursor-pointer"
-              [routerLink]="['/courses', course.id]"
+    @if (state$ | async; as state) {
+      <!-- Error -->
+      @if (state.errorMessage) {
+        <div class="p-4 bg-red-100 text-red-700 rounded-lg mb-4">
+          {{ state.errorMessage }}
+        </div>
+      }
+
+      <!-- Loading -->
+      @if (state.loading) {
+        <div class="flex flex-col items-center py-10">
+          <div
+            class="animate-spin h-10 w-10 border-4 border-indigo-500 border-t-transparent rounded-full"
+          ></div>
+          <p class="mt-3 text-gray-600">Loading courses...</p>
+        </div>
+      }
+
+      <!-- Courses -->
+      @if (state.courses.length > 0 && !state.loading) {
+        <div class="grid md:grid-cols-3 gap-6">
+          @for (course of state.courses; track course.id) {
+            <div
+              class="bg-white shadow-lg rounded-xl p-5 flex flex-col hover:shadow-2xl transition"
             >
-              {{ course.title || 'Untitled Course' }}
-            </h5>
+              <h5
+                class="text-lg font-semibold text-gray-800 hover:text-indigo-600 cursor-pointer"
+                [routerLink]="['/courses', course.id]"
+              >
+                {{ course.title || 'Untitled Course' }}
+              </h5>
 
-            <p class="text-gray-500 flex-grow mt-2">
-              {{ course.description || 'No description available' }}
-            </p>
-            @if (course.createdAt) {
-              <p class="text-sm text-gray-400 mt-2">📅 {{ course.createdAt }}</p>
-             <i> <small class="text-muted">Created {{ course.createdAt | dateCount }}</small></i>
-            }
-            
-         <div class="flex justify-between mt-4">
-  <!-- Left side -->
-          <div>
-            <a [routerLink]="['/courses', course.id, 'modules']"
-              class="px-3 py-1 bg-indigo-600 text-white rounded hover:bg-indigo-700 text-sm">
-              View Modules
-            </a>
-          </div>
+              <p class="text-gray-500 flex-grow mt-2">
+                {{ course.description || 'No description available' }}
+              </p>
 
-            <!-- Right side: Edit + Delete in one line -->
-            <div class="flex space-x-3 text-gray-600">
-              <!-- Edit -->
-              <a [routerLink]="['/courses/edit', course.id]"
-                class="flex items-center text-yellow-600 hover:text-yellow-700 transition">
-                <i class="fas fa-edit mr-1"></i> 
-              </a>
+              @if (course.createdAt) {
+                <p class="text-sm text-gray-400 mt-2">📅 {{ course.createdAt }}</p>
+                <i>
+                  <small class="text-muted">
+                    Created {{ course.createdAt | dateCount }}
+                  </small>
+                </i>
+              }
 
-              <!-- Delete -->
-              <button (click)="deleteCourse(course.id)"
-                      class="flex items-center text-red-600 hover:text-red-700 transition">
-                <i class="fas fa-trash-alt mr-1"></i> 
-              </button>
+              <div class="flex justify-between mt-4">
+                <a
+                  [routerLink]="['/courses', course.id, 'modules']"
+                  class="px-3 py-1 bg-indigo-600 text-white rounded hover:bg-indigo-700 text-sm"
+                >
+                  View Modules
+                </a>
+
+                <div class="flex space-x-3 text-gray-600">
+                  <a
+                    [routerLink]="['/courses/edit', course.id]"
+                    class="flex items-center text-yellow-600 hover:text-yellow-700 transition"
+                  >
+                    <i class="fas fa-edit mr-1"></i>
+                  </a>
+
+                  <button
+                    (click)="deleteCourse(course.id)"
+                    class="flex items-center text-red-600 hover:text-red-700 transition"
+                  >
+                    <i class="fas fa-trash-alt mr-1"></i>
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-
-          </div>
-        }
-      </div>
-    } @else {
-      <div class="bg-blue-50 text-blue-700 text-center p-6 rounded-lg mt-4">
-        No Courses Found
-      </div>
+          }
+        </div>
+      } @else {
+        <div class="bg-blue-50 text-blue-700 text-center p-6 rounded-lg mt-4">
+          No Courses Found
+        </div>
+      }
     }
-  }
-</div>
+  </div>
 </app-dashboard-layout>
